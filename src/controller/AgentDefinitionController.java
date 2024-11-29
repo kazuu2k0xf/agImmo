@@ -66,7 +66,7 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 	private ObservableList<TypeAgent> listeTypeAgent	= FXCollections.observableArrayList(); 
 	private ObservableList<Civility>  listeCivility		= FXCollections.observableArrayList(); 
 	private boolean validerClicked 						= false;
-	InfoDetail dossierPortraits							= null;
+	InfoDetail dossierPortraits 						= InfoDetailBdd.selectOneInfoDetailDescription(Cstes.DOSSIERS, Cstes.DOSSIERPORTRAITS);
 	private boolean valid 								= true;
 	/** *************************************************************
 	 * Déclaration des contrôles du fichier fxml
@@ -144,8 +144,6 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 
 
 
-
-
 		/** Rajout d'un évènement sur le bouton btnAgentImage pour afficher l'explorateur Windows **/
 		btnAgentImage.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -189,15 +187,7 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 		cbxCivilite.setItems(listeCivility);
 		cbxTypeAgent.setItems(listeTypeAgent);
 
-
-
-
-
-
-
-
 	}
-
 
 
 
@@ -220,7 +210,6 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 		//TypeAgent typeAgent = selectOneTypeAgent(agentType);
 		String agentLogin = this.agent.getAgentLogin();
 		String agentPwd = this.agent.getAgentPwd();
-		String agentImage = this.agent.getAgentImage();
 
 		txfAgentNom.setText(agentNom);
 		txfAgentPrenom.setText(agentPrenom);
@@ -231,17 +220,10 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 		pwfAgentPwd.setText(agentPwd);
 		LblAgentImage.setText(agent.getAgentImage());
 
-		File fichierImage = new File(agentImage);
 
-		
-		
         InfoDetail list  = InfoDetailBdd.selectOneInfoDetailDescription(Cstes.DOSSIERS, Cstes.DOSSIERPORTRAITS);
 
 		lblAgentDossier.setText("Dans le dossier : " + list.getInfoDetailLbl());
-
-
-
-
 
 
 		for (Civility item : listeCivility) {
@@ -258,9 +240,6 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 			}
 		}
 	}
-
-
-
 
 
 
@@ -459,4 +438,7 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 			dialogStage.close();
 		}
 	}
+	
 }
+
+
