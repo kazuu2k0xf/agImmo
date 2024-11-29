@@ -128,20 +128,15 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 		 *  lorsque vous déplacez la souris sur toute la surface du composant.
 		 **/
 
-
-
-
+		//Ajout de l'icones sur les ToolTip
 		Image image 				= new Image(getClass().getResourceAsStream("/images/icones/information.jpg"));
 		ImageView imageView 		= new ImageView(image);
 		imageView.setFitWidth(20); 
 		imageView.setFitHeight(20);
 
-
-
 		tooltipTelephone.setGraphic(imageView);
 		tooltipEmail.setGraphic(imageView);
 		tooltipPwd.setGraphic(imageView);
-
 
 
 		/** Rajout d'un évènement sur le bouton btnAgentImage pour afficher l'explorateur Windows **/
@@ -190,8 +185,6 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 	}
 
 
-
-
 	/**
 	 * Méthode permettant de recevoir un agent en paramètre de la fenêtre appelante
 	 * @param agent	[Agent] : objet Agent correspondant à l'agent connecté.
@@ -199,6 +192,8 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 	public void setAgent(Agent agent) {
 		index	= 0;
 		this.agent = agent;
+
+		//Récupération des info de l'agent
 		String agentNom = this.agent.getPersonName();
 		String agentPrenom = this.agent.getPersonFirstName();
 		String agentMobile = this.agent.getPersonMobile(); 
@@ -211,6 +206,7 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 		String agentLogin = this.agent.getAgentLogin();
 		String agentPwd = this.agent.getAgentPwd();
 
+		//Affichage des TextField
 		txfAgentNom.setText(agentNom);
 		txfAgentPrenom.setText(agentPrenom);
 		txfAgentMobile.setText(agentMobile);
@@ -220,12 +216,12 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 		pwfAgentPwd.setText(agentPwd);
 		LblAgentImage.setText(agent.getAgentImage());
 
-
-        InfoDetail list  = InfoDetailBdd.selectOneInfoDetailDescription(Cstes.DOSSIERS, Cstes.DOSSIERPORTRAITS);
+		//Affichage du chemins de la photo
+		InfoDetail list  = InfoDetailBdd.selectOneInfoDetailDescription(Cstes.DOSSIERS, Cstes.DOSSIERPORTRAITS);
 
 		lblAgentDossier.setText("Dans le dossier : " + list.getInfoDetailLbl());
 
-
+		//Sélection ComboBox
 		for (Civility item : listeCivility) {
 			if (item.getCivilityIdt() == agentCivility) {
 				cbxCivilite.setValue(item);  
@@ -351,47 +347,54 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 
 		/** Contrôle des zones obligatoires et des formats **/
 
+		//Contrôle du champ Nom
 		if (UtilitiesControls.isTextFieldEmpty(txfAgentNom)) {
 			messageErreur += "Le nom est obligatoire \n";
 			DialogBox dialogbox = new DialogBox("Erreur", "Champ obligatoire manquant", messageErreur, AlertType.ERROR, null);
 			dialogbox.showDialogError();
 		}
 
-		//----------------------------------------------------------------------------------------------------------------
+		//Contrôle du champ prénom
 		if (UtilitiesControls.isTextFieldEmpty(txfAgentPrenom)) {
 			messageErreur += "Le prénom est obligatoire \n";
 			DialogBox dialogbox = new DialogBox("Erreur", "Champ obligatoire manquant", messageErreur, AlertType.ERROR, null);
 			dialogbox.showDialogError();
 		}
 
-		//----------------------------------------------------------------------------------------------------------------
+		//Contrôle du champ mobile
 		if (!UtilitiesControls.validatePhoneNumber(txfAgentMobile)) {
-			messageErreur += "Le téléphone est obligatoire ou ne respecte pas le format requis \n";
+			messageErreur += "Le téléphone est obligatoire ou ne respecte pas le format requis";
 			DialogBox dialogbox = new DialogBox("Erreur", "Champ invalide", messageErreur, AlertType.ERROR, null);
 			dialogbox.showDialogError();
 		}
 
-		//----------------------------------------------------------------------------------------------------------------
+		//Contrôle du champ telephone
 		if (!UtilitiesControls.validatePhoneNumber(txfAgentTelephone)) {
-			messageErreur += "Le portable est obligatoire ou ne respecte pas le format requis \n";
+			messageErreur += "Le portable est obligatoire ou ne respecte pas le format requis";
 			DialogBox dialogbox = new DialogBox("Erreur", "Champ invalide", messageErreur, AlertType.ERROR, null);
 			dialogbox.showDialogError();
 		}
 
-		//----------------------------------------------------------------------------------------------------------------
+		//Contrôle du champ email
 		if (!UtilitiesControls.isEmailAdress(txfAgentEmail)) {
-			messageErreur += "L'adresse email est obligatoire ou ne respecte pas le format requis \n";
+			messageErreur += "L'adresse email est obligatoire ou ne respecte pas le format requis";
 			DialogBox dialogbox = new DialogBox("Erreur", "Champ invalide", messageErreur, AlertType.ERROR, null);
 			dialogbox.showDialogError();
 		}
 
-		//----------------------------------------------------------------------------------------------------------------
+		//Contrôle du champ mots de passe
 		if (!UtilitiesControls.validatePwd(pwfAgentPwd)) {
-			messageErreur += "Le mot de passe est obligatoire ou ne respecte pas le format requis \n";
+			messageErreur += "Le mot de passe est obligatoire ou ne respecte pas le format requis";
 			DialogBox dialogbox = new DialogBox("Erreur", "Champ invalide", messageErreur, AlertType.ERROR, null);
 			dialogbox.showDialogError();
 		}
 
+		//Contrôle du champ confirmation de mots de passe
+		if (!pwfAgentPwdConfirme.getText().equals(pwfAgentPwd.getText())) {
+			messageErreur += "La confirmation du mot de passe ne correspond pas";
+			DialogBox dialogbox = new DialogBox("Erreur", "Champ invalide", messageErreur, AlertType.ERROR, null);
+			dialogbox.showDialogError();
+		}
 
 
 
@@ -418,27 +421,21 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 				String agentPwd = pwfAgentPwd.getText();
 				String agentImage = LblAgentImage.getText();
 
+				// Création d'un nouvel objet Agent
 				Agent agent = new Agent(agentIdt, agentNom, agentPrenom, agentMobile, agentTelephone, agentEmail, agentCivility, agentCivilite, agentTypeInt, agentType, agentLogin, agentPwd, agentImage
 						);
 
+				// Mise à jour des informations de l'agent dans la base de données
 				AgentBdd.updateAgent(agent);
 
 				validerClicked = true;
-
-
-
-
-
-
-
-
 
 			}
 			/** Sortie de la fenêtre **/
 			dialogStage.close();
 		}
 	}
-	
+
 }
 
 
