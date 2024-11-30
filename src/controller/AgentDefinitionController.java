@@ -410,6 +410,10 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 				int agentIdt = agent.getPersonIdt();
 				String agentNom = txfAgentNom.getText();
 				String agentPrenom = txfAgentPrenom.getText();
+				
+				String premiereLettrePrenomLogin = agentPrenom.substring(0, 1).toLowerCase();
+				String nomEnMinusculeLogin = agentNom.toLowerCase().replaceAll(" ", "");
+				
 				String agentMobile = txfAgentMobile.getText();
 				String agentTelephone = txfAgentTelephone.getText();
 				String agentEmail = txfAgentEmail.getText();
@@ -417,7 +421,7 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 				Civility agentCivilite = cbxCivilite.getValue();
 				int agentTypeInt = agent.getAgentType();
 				TypeAgent agentType = cbxTypeAgent.getValue();
-				String agentLogin = txfAgentLogin.getText();
+				String agentLogin = premiereLettrePrenomLogin + nomEnMinusculeLogin;
 				String agentPwd = pwfAgentPwd.getText();
 				String agentImage = LblAgentImage.getText();
 
