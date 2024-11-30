@@ -47,6 +47,8 @@ public class DashboardController {
 	@FXML public void initialize() {	
 		gestionRendezVous();
 		gestionEtatsDesLieux();
+		
+		lblVersion.setText(Cstes.VERSIONAPPLICATION);
 	}
 	/**
 	 * Méthode servant à définir le stage pour pouvoir fermer la fenêtre
