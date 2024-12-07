@@ -47,7 +47,7 @@ public class DashboardController {
 	@FXML public void initialize() {	
 		gestionRendezVous();
 		gestionEtatsDesLieux();
-		
+
 		lblVersion.setText(Cstes.VERSIONAPPLICATION);
 	}
 	/**
@@ -68,7 +68,7 @@ public class DashboardController {
 		String agentNom = this.agent.getPersonName();
 		String agentPrenom = this.agent.getPersonFirstName();
 
-		lblAgentNom.setText(agentNom + " " + agentPrenom);
+		lblAgentNom.setText(agentPrenom + " " + agentNom);
 
 
 		//Affichage du type de l'agnet connecter
@@ -93,8 +93,6 @@ public class DashboardController {
 		} catch (Exception e) {
 			System.err.println("Erreur lors du chargement de l'image : " + e.getMessage());
 		}
-
-
 
 	}
 
@@ -149,11 +147,40 @@ public class DashboardController {
 			controler.setAgent(agent);
 			primaryStage.showAndWait();
 			if(controler.isValiderClicked()) {
-				setAgent(agent);
+				mettreAJourAgent(controler.getAgent());
 			}
 		}
 
 	}
+
+
+	/**
+	 * Met à jour les informations de l'agent dans l'interface utilisateur
+	 * @param agent L'objet Agent contenant les nouvelles informations
+	 */
+	public void mettreAJourAgent(Agent agent) {
+	    // Mise à jour de l'objet agent local
+	    this.agent = agent;
+	    
+	    // Mise à jour du nom de l'agent dans l'interface
+	    lblAgentNom.setText(agent.getPersonFirstName() + " " + agent.getPersonName());
+	    
+	    // Mise à jour du poste de l'agent dans l'interface
+	    lblAgentPoste.setText(agent.getTypeAgent().getTypeAgentLbl());
+	    
+	    // Récupération du chemin de base pour les images de portraits
+	    InfoDetail list = InfoDetailBdd.selectOneInfoDetailDescription(Cstes.DOSSIERS, Cstes.DOSSIERPORTRAITS);
+	    
+	    // Construction de l'URL complète de l'image de l'agent
+	    String imageUrl = (list.getInfoDetailLbl() + agent.getAgentImage());
+
+	    // Création d'un objet Image à partir de l'URL du fichier
+	    Image image = new Image("file:" + imageUrl);
+
+	    // Affichage de la photo de l'agent dans l'interface
+	    imvAgent.setImage(image);
+	}
+
 
 
 	/** Choix de menu : déconnexion, quitter l'application après validation par l'utilisateur**/

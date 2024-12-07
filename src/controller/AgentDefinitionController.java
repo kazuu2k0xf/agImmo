@@ -194,12 +194,12 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 		this.agent = agent;
 
 		//Récupération des info de l'agent
-		String agentNom = this.agent.getPersonName();
+		String agentNom    = this.agent.getPersonName();
 		String agentPrenom = this.agent.getPersonFirstName();
 		String agentMobile = this.agent.getPersonMobile(); 
-		String agentPhone = this.agent.getPersonPhone();
-		String agentEmail = this.agent.getPersonEmail();
-		int agentCivility = this.agent.getPersonCivility();
+		String agentPhone  = this.agent.getPersonPhone();
+		String agentEmail  = this.agent.getPersonEmail();
+		int agentCivility  = this.agent.getPersonCivility();
 		//Civility civility = selectOneCivility(agentCivility);
 		int agentType = this.agent.getAgentType();
 		//TypeAgent typeAgent = selectOneTypeAgent(agentType);
@@ -407,39 +407,47 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 			if(traitementControleModification()) {
 
 				/** Modification de l'agent **/
-				int agentIdt = agent.getPersonIdt();
-				String agentNom = txfAgentNom.getText();
-				String agentPrenom = txfAgentPrenom.getText();
-				
+				int agentIdt 					 = agent.getPersonIdt();
+				String agentNom 				 = txfAgentNom.getText();
+				String agentPrenom 				 = txfAgentPrenom.getText();
+
 				String premiereLettrePrenomLogin = agentPrenom.substring(0, 1).toLowerCase();
-				String nomEnMinusculeLogin = agentNom.toLowerCase().replaceAll(" ", "");
+				String nomEnMinusculeLogin 		 = agentNom.toLowerCase().replaceAll(" ", "");
 				
-				String agentMobile = txfAgentMobile.getText();
-				String agentTelephone = txfAgentTelephone.getText();
-				String agentEmail = txfAgentEmail.getText();
-				int agentCivility = agent.getPersonCivility();
-				Civility agentCivilite = cbxCivilite.getValue();
-				int agentTypeInt = agent.getAgentType();
-				TypeAgent agentType = cbxTypeAgent.getValue();
-				String agentLogin = premiereLettrePrenomLogin + nomEnMinusculeLogin;
-				String agentPwd = pwfAgentPwd.getText();
-				String agentImage = LblAgentImage.getText();
+				String agentMobile 				 = txfAgentMobile.getText();
+				String agentTelephone			 = txfAgentTelephone.getText();
+				String agentEmail 				 = txfAgentEmail.getText();
+				int agentCivility 				 = agent.getPersonCivility();
+				Civility agentCivilite 			 = cbxCivilite.getValue();
+				int agentTypeInt 				 = agent.getAgentType();
+				TypeAgent agentType 			 = cbxTypeAgent.getValue();
+				String agentLogin 				 = premiereLettrePrenomLogin + nomEnMinusculeLogin;
+				String agentPwd 				 = pwfAgentPwd.getText();
+				String agentImage 				 = LblAgentImage.getText();
 
 				// Création d'un nouvel objet Agent
 				Agent agent = new Agent(agentIdt, agentNom, agentPrenom, agentMobile, agentTelephone, agentEmail, agentCivility, agentCivilite, agentTypeInt, agentType, agentLogin, agentPwd, agentImage
 						);
+				this.agent = agent;
 
 				// Mise à jour des informations de l'agent dans la base de données
 				AgentBdd.updateAgent(agent);
 
+				// Indication que la validation a été effectuée
 				validerClicked = true;
 
 			}
 			/** Sortie de la fenêtre **/
 			dialogStage.close();
 		}
+		
+		
 	}
 
+	public Agent getAgent() {
+		return agent;
+	}
+	
 }
 
 
