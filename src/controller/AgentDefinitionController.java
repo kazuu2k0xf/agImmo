@@ -397,8 +397,9 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 
 				/** Modification de l'agent **/
 				int agentIdt 					 = agent.getPersonIdt();
-				String agentNom 				 = txfAgentNom.getText();
+				String agentNom 				 = txfAgentNom.getText().toUpperCase();
 				String agentPrenom 				 = txfAgentPrenom.getText();
+				agentPrenom = agentPrenom.substring(0, 1).toUpperCase() + agentPrenom.substring(1).toLowerCase();;
 
 				String premiereLettrePrenomLogin = agentPrenom.substring(0, 1).toLowerCase();
 				String nomEnMinusculeLogin 		 = agentNom.toLowerCase().replaceAll(" ", "");
