@@ -173,11 +173,9 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 
 		ObservableList<Civility> testCivility = selectAllCivility();
 		listeCivility.addAll(testCivility);
-		System.out.println("Liste Civilities: " + listeCivility);
 
 		ObservableList<TypeAgent> testTypeAgent = selectAllTypeAgent();
 		listeTypeAgent.addAll(testTypeAgent);
-		System.out.println("Liste TypeAgents: " + listeTypeAgent);
 
 		cbxCivilite.setItems(listeCivility);
 		cbxTypeAgent.setItems(listeTypeAgent);
@@ -346,57 +344,48 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 
 
 		/** Contrôle des zones obligatoires et des formats **/
+		String messageErreur = "";
 
-		//Contrôle du champ Nom
+		// Contrôle du champ Nom
 		if (UtilitiesControls.isTextFieldEmpty(txfAgentNom)) {
-			messageErreur += "Le nom est obligatoire \n";
-			DialogBox dialogbox = new DialogBox("Erreur", "Champ obligatoire manquant", messageErreur, AlertType.ERROR, null);
-			dialogbox.showDialogError();
+		    messageErreur += "Le nom est obligatoire " + Cstes.CR;
 		}
 
-		//Contrôle du champ prénom
+		// Contrôle du champ prénom
 		if (UtilitiesControls.isTextFieldEmpty(txfAgentPrenom)) {
-			messageErreur += "Le prénom est obligatoire \n";
-			DialogBox dialogbox = new DialogBox("Erreur", "Champ obligatoire manquant", messageErreur, AlertType.ERROR, null);
-			dialogbox.showDialogError();
+		    messageErreur += "Le prénom est obligatoire " + Cstes.CR;
 		}
 
-		//Contrôle du champ mobile
+		// Contrôle du champ mobile
 		if (!UtilitiesControls.validatePhoneNumber(txfAgentMobile)) {
-			messageErreur += "Le téléphone est obligatoire ou ne respecte pas le format requis";
-			DialogBox dialogbox = new DialogBox("Erreur", "Champ invalide", messageErreur, AlertType.ERROR, null);
-			dialogbox.showDialogError();
+		    messageErreur += "Le téléphone est obligatoire ou ne respecte pas le format requis " + Cstes.CR;
 		}
 
-		//Contrôle du champ telephone
+		// Contrôle du champ telephone
 		if (!UtilitiesControls.validatePhoneNumber(txfAgentTelephone)) {
-			messageErreur += "Le portable est obligatoire ou ne respecte pas le format requis";
-			DialogBox dialogbox = new DialogBox("Erreur", "Champ invalide", messageErreur, AlertType.ERROR, null);
-			dialogbox.showDialogError();
+		    messageErreur += "Le portable est obligatoire ou ne respecte pas le format requis " + Cstes.CR;
 		}
 
-		//Contrôle du champ email
+		// Contrôle du champ email
 		if (!UtilitiesControls.isEmailAdress(txfAgentEmail)) {
-			messageErreur += "L'adresse email est obligatoire ou ne respecte pas le format requis";
-			DialogBox dialogbox = new DialogBox("Erreur", "Champ invalide", messageErreur, AlertType.ERROR, null);
-			dialogbox.showDialogError();
+		    messageErreur += "L'adresse email est obligatoire ou ne respecte pas le format requis " + Cstes.CR;
 		}
 
-		//Contrôle du champ mots de passe
+		// Contrôle du champ mots de passe
 		if (!UtilitiesControls.validatePwd(pwfAgentPwd)) {
-			messageErreur += "Le mot de passe est obligatoire ou ne respecte pas le format requis";
-			DialogBox dialogbox = new DialogBox("Erreur", "Champ invalide", messageErreur, AlertType.ERROR, null);
-			dialogbox.showDialogError();
+		    messageErreur += "Le mot de passe est obligatoire ou ne respecte pas le format requis " + Cstes.CR;
 		}
 
-		//Contrôle du champ confirmation de mots de passe
+		// Contrôle du champ confirmation de mots de passe
 		if (!pwfAgentPwdConfirme.getText().equals(pwfAgentPwd.getText())) {
-			messageErreur += "La confirmation du mot de passe ne correspond pas";
-			DialogBox dialogbox = new DialogBox("Erreur", "Champ invalide", messageErreur, AlertType.ERROR, null);
-			dialogbox.showDialogError();
+		    messageErreur += "La confirmation du mot de passe ne correspond pas " + Cstes.CR;
 		}
 
-
+		// Affichage de la boîte de dialogue si des erreurs sont présentes
+		if (!messageErreur.isEmpty()) {
+		    DialogBox dialogbox = new DialogBox("Erreur", "Champs invalides ou manquants", messageErreur, AlertType.ERROR, null);
+		    dialogbox.showDialogError();
+		}
 
 
 		/** S'il y a une erreur, on l'affiche dans la textArea **/
