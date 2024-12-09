@@ -147,39 +147,13 @@ public class DashboardController {
 			controler.setAgent(agent);
 			primaryStage.showAndWait();
 			if(controler.isValiderClicked()) {
-				mettreAJourAgent(controler.getAgent());
+				setAgent(controler.getAgent());
 			}
 		}
 
 	}
 
 
-	/**
-	 * Met à jour les informations de l'agent dans l'interface utilisateur
-	 * @param agent L'objet Agent contenant les nouvelles informations
-	 */
-	public void mettreAJourAgent(Agent agent) {
-	    // Mise à jour de l'objet agent local
-	    this.agent = agent;
-	    
-	    // Mise à jour du nom de l'agent dans l'interface
-	    lblAgentNom.setText(agent.getPersonFirstName() + " " + agent.getPersonName());
-	    
-	    // Mise à jour du poste de l'agent dans l'interface
-	    lblAgentPoste.setText(agent.getTypeAgent().getTypeAgentLbl());
-	    
-	    // Récupération du chemin de base pour les images de portraits
-	    InfoDetail list = InfoDetailBdd.selectOneInfoDetailDescription(Cstes.DOSSIERS, Cstes.DOSSIERPORTRAITS);
-	    
-	    // Construction de l'URL complète de l'image de l'agent
-	    String imageUrl = (list.getInfoDetailLbl() + agent.getAgentImage());
-
-	    // Création d'un objet Image à partir de l'URL du fichier
-	    Image image = new Image("file:" + imageUrl);
-
-	    // Affichage de la photo de l'agent dans l'interface
-	    imvAgent.setImage(image);
-	}
 
 
 
