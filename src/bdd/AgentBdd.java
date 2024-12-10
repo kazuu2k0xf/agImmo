@@ -4,6 +4,7 @@ import static bdd.CivilityBdd.selectOneCivility;
 import static bdd.TypeAgentBdd.selectOneTypeAgent;
 import static utilities.GestionExceptions.gestionDesExceptionsMap;
 import static utilities.GestionExceptions.gestionDesExceptionsStates;
+import static utilities.UtilitiesJdbc.initialisationRequete;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -43,13 +44,13 @@ public class AgentBdd extends ConnexionBdd {
 		/** Déclaration des variables **/
 		Agent agent 	= null;
 		/** Initialisation de la requête **/
-		String SQL = "SELECT * FROM Agent WHERE agentLogin = '" + login + "' AND agentPwd = '" + pwd + "'";
+		String SQL = "SELECT * FROM Agent WHERE agentLogin LIKE ? AND agentPwd LIKE ?";
 		/** Connexion à la base de données **/
 		Connection connexion = trtConnexionBdd();
 		/** Traitements SQL avec gestion des Exceptions */
 		try {
-			Statement statement  = connexion.createStatement();
-			ResultSet resultSet  = statement.executeQuery(SQL);
+			PreparedStatement preparedStatement  = initialisationRequete(connexion, SQL, false, login, pwd);
+			ResultSet resultSet  = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				agent = map(resultSet);
 			}	
