@@ -2,8 +2,10 @@ package bdd;
 
 import static utilities.GestionExceptions.gestionDesExceptionsMap;
 import static utilities.GestionExceptions.gestionDesExceptionsStates;
+import static utilities.UtilitiesJdbc.initialisationRequete;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -43,8 +45,8 @@ public class TypeAgentBdd extends ConnexionBdd {
 		Connection connexion = trtConnexionBdd();
 		/** Traitements SQL */
 		try {
-			Statement statement  = connexion.createStatement();
-			ResultSet resultSet  = statement.executeQuery(SQL);
+			PreparedStatement preparedStatement  = initialisationRequete(connexion, SQL, false);
+			ResultSet resultSet  = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				typeAgent = map(resultSet);
 				listeDonnees.add(typeAgent);
@@ -70,13 +72,13 @@ public class TypeAgentBdd extends ConnexionBdd {
 		/** Déclaration des variables **/
 		TypeAgent typeAgent						= null;	
 		/** Initialisation de la requête **/
-		String SQL		= "SELECT * FROM TypeAgent WHERE typeAgentIdt = " + typeAgentIdt;
+		String SQL		= "SELECT * FROM TypeAgent WHERE typeAgentIdt LIKE ?";
 		/** Connexion à la base de données **/
 		Connection connexion = trtConnexionBdd();
 		/** Traitements SQL */
 		try {
-			Statement statement  = connexion.createStatement();
-			ResultSet resultSet  = statement.executeQuery(SQL);
+			PreparedStatement preparedStatement  = initialisationRequete(connexion, SQL, false, typeAgentIdt);
+			ResultSet resultSet  = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				typeAgent = map(resultSet);
 			}	

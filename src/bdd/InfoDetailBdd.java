@@ -2,8 +2,10 @@ package bdd;
 import static bdd.InfoEnteteBdd.selectOneInfoEntete;
 import static utilities.GestionExceptions.gestionDesExceptionsMap;
 import static utilities.GestionExceptions.gestionDesExceptionsStates;
+import static utilities.UtilitiesJdbc.initialisationRequete;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -41,13 +43,13 @@ public class InfoDetailBdd extends ConnexionBdd {
 		ObservableList<InfoDetail> listeDonnees = FXCollections.observableArrayList();
 		InfoDetail infoDetail 				  	= null;
 		/** Initialisation de la requête **/
-		String SQL		= "SELECT * FROM InfoDetail WHERE infoEnteteIdt = " + key;
+		String SQL		= "SELECT * FROM InfoDetail WHERE infoEnteteIdt LIKE ?";
 		/** Connexion à la base de données **/
 		Connection connexion = trtConnexionBdd();
 		/** Traitements SQL */
 		try {
-			Statement statement  = connexion.createStatement();
-			ResultSet resultSet  = statement.executeQuery(SQL);
+			PreparedStatement preparedStatement  = initialisationRequete(connexion, SQL, false, key);
+			ResultSet resultSet  = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				infoDetail = map(resultSet);
 				if(infoDetail!=null) listeDonnees.add(infoDetail);
@@ -111,14 +113,14 @@ public class InfoDetailBdd extends ConnexionBdd {
 		/** Initialisation de la requete **/
 		String SQL = "SELECT * FROM InfoDetail "
                 + "INNER JOIN infoEntete ON InfoDetail.infoEnteteIdt = infoEntete.infoEnteteIdt "
-                + "WHERE InfoEntete.infoEnteteKey = '" +  key +"' AND InfoDetail.infoDetailDescription = '" +  description + "'" ;
+                + "WHERE InfoEntete.infoEnteteKey LIKE ? AND InfoDetail.infoDetailDescription LIKE ?";
 		/** Connexion a la base de donnees **/
 		Connection connexion = trtConnexionBdd();
 		if(connexion!=null) {
 			/** Traitements SQL */
 			try {
-				Statement statement  = connexion.createStatement();
-				ResultSet resultSet  = statement.executeQuery(SQL);
+				PreparedStatement preparedStatement  = initialisationRequete(connexion, SQL, false, key, description);
+				ResultSet resultSet  = preparedStatement.executeQuery();
 				while (resultSet.next()) {
 					infoDetail = map(resultSet);
 				}	

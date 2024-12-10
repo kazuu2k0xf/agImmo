@@ -2,8 +2,10 @@ package bdd;
 
 import static utilities.GestionExceptions.gestionDesExceptionsMap;
 import static utilities.GestionExceptions.gestionDesExceptionsStates;
+import static utilities.UtilitiesJdbc.initialisationRequete;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -70,13 +72,13 @@ public class InfoEnteteBdd extends ConnexionBdd {
 		/** Déclaration des variables **/
 		InfoEntete infoEntete						= null;	
 		/** Initialisation de la requête **/
-		String SQL		= "SELECT * FROM InfoEntete WHERE infoEnteteIdt = " + infoEnteteIdt;
+		String SQL		= "SELECT * FROM InfoEntete WHERE infoEnteteIdt LIKE ?";
 		/** Connexion à la base de données **/
 		Connection connexion = trtConnexionBdd();
 		/** Traitements SQL */
 		try {
-			Statement statement  = connexion.createStatement();
-			ResultSet resultSet  = statement.executeQuery(SQL);
+			PreparedStatement preparedStatement  = initialisationRequete(connexion, SQL, false, infoEntete);
+			ResultSet resultSet  = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				infoEntete = map(resultSet);
 			}	
