@@ -67,7 +67,6 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 	private ObservableList<Civility>  listeCivility		= FXCollections.observableArrayList(); 
 	private boolean validerClicked 						= false;
 	InfoDetail dossierPortraits 						= InfoDetailBdd.selectOneInfoDetailDescription(Cstes.DOSSIERS, Cstes.DOSSIERPORTRAITS);
-	private boolean valid 								= true;
 	/** *************************************************************
 	 * Déclaration des contrôles du fichier fxml
 	 * **************************************************************/
@@ -342,7 +341,6 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 		messageErreur = "";
 
 
-
 		/** Contrôle des zones obligatoires et des formats **/
 		String messageErreur = "";
 
@@ -399,7 +397,7 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 				int agentIdt 					 = agent.getPersonIdt();
 				String agentNom 				 = txfAgentNom.getText().toUpperCase();
 				String agentPrenom 				 = txfAgentPrenom.getText();
-				agentPrenom = agentPrenom.substring(0, 1).toUpperCase() + agentPrenom.substring(1).toLowerCase();;
+				agentPrenom 					 = agentPrenom.substring(0, 1).toUpperCase() + agentPrenom.substring(1).toLowerCase();
 
 				String premiereLettrePrenomLogin = agentPrenom.substring(0, 1).toLowerCase();
 				String nomEnMinusculeLogin 		 = agentNom.toLowerCase().replaceAll(" ", "");

@@ -82,7 +82,7 @@ public class DashboardController {
 		InfoDetail list  = InfoDetailBdd.selectOneInfoDetailDescription(Cstes.DOSSIERS, Cstes.DOSSIERPORTRAITS);
 
 		//Ajout du chemin de la photo de la variable imageUrl
-		String imageUrl = (list.getInfoDetailLbl() + agentImage);
+		String imageUrl = (list.getInfoDetailLbl() + '/' + agentImage);
 
 		try {
 			Image image = new Image("file:" + imageUrl);
