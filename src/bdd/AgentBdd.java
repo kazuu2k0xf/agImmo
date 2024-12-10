@@ -75,13 +75,13 @@ public class AgentBdd extends ConnexionBdd {
 		/** Déclaration des variables **/
 		Agent agent 	= null;
 		/** Initialisation de la requête **/
-		String SQL		 = "SELECT * FROM Agent WHERE agentIdt = " + agentIdt;
+		String SQL		 = "SELECT * FROM Agent WHERE agentIdt LIKE ?";
 		/** Connexion à la base de données **/
 		Connection connexion = trtConnexionBdd();
 		/** Traitements SQL */
 		try {
-			Statement statement   = connexion.createStatement();
-			ResultSet resultSet   = statement.executeQuery(SQL);
+			PreparedStatement preparedStatement  = initialisationRequete(connexion, SQL, false, agentIdt);
+			ResultSet resultSet  = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				agent = map(resultSet);
 			}	
@@ -106,13 +106,29 @@ public class AgentBdd extends ConnexionBdd {
 	    // Déclaration des variables
 	    int nbreEnreg = 0;
 	    // Initialisation de la requête
-	    String SQL = "UPDATE Agent SET agentName = '" + agent.getPersonName() + "', agentFirstName = '" + agent.getPersonFirstName() + "', agentMobile = '" + agent.getPersonMobile() + "', agentPhone = '" + agent.getPersonPhone() + "', agentEmail = '" + agent.getPersonEmail() + "', agentCivility = " + agent.getPersonCivility() + ", agentType = " + agent.getAgentType() + ", agentLogin = '" + agent.getAgentLogin() + "', agentPwd = '" + agent.getAgentPwd() + "', agentImage = '" + agent.getAgentImage() + "' WHERE agentIdt = " + agent.getPersonIdt();
+	    String SQL = "UPDATE Agent SET agentName = ?, agentFirstName = ?, agentMobile = ?, agentPhone = ?, agentEmail = ?, agentCivility = ?, agentType = ?, agentLogin = ?, agentPwd = ?, agentImage = ? WHERE agentIdt = ?";
+
 	    // Connexion à la base de données
 	    Connection connexion = trtConnexionBdd();
-	    // Traitements SQL
+
 	    try {
-	        Statement statement = connexion.createStatement();
-	        nbreEnreg = statement.executeUpdate(SQL);
+	        // Initialisation de la requête préparée
+	        PreparedStatement pstmt = initialisationRequete(connexion, SQL, false, 
+	            agent.getPersonName(), 
+	            agent.getPersonFirstName(), 
+	            agent.getPersonMobile(), 
+	            agent.getPersonPhone(), 
+	            agent.getPersonEmail(), 
+	            agent.getPersonCivility(), 
+	            agent.getAgentType(), 
+	            agent.getAgentLogin(), 
+	            agent.getAgentPwd(), 
+	            agent.getAgentImage(), 
+	            agent.getPersonIdt()
+	        );
+
+	        // Exécuter la requête
+	        nbreEnreg = pstmt.executeUpdate();
 	    } catch (SQLException e) {
 	        /*
 	        L'utilisation de Class.getEnclosingMethod() de la classe Dummy (classe
