@@ -36,6 +36,13 @@ public class Cstes {
 	public final static String  MODIFICATIONAGENT		= "AgentDefinition";
 	public final static String  TABLEAUDEBORD			= "Dashboard";
 	public final static String	LOGIN					= "Login";
+	
+	/** Entetes informations **/
+	public final static String CHIFFREMENT 				= "Chiffrement";
+	
+	/** Valeurs chiffrement **/
+	public final static String KEYBF 					= "BlowFish";
+	public final static String TRTCHIFFREMENTAGENT 		= "chiffrementAgent";
 
 	/** Version de l'application **/
 	public final static String  VERSIONAPPLICATION		= "V.01";
