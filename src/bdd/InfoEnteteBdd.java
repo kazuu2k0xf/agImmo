@@ -94,6 +94,62 @@ public class InfoEnteteBdd extends ConnexionBdd {
 		return infoEntete;			
 	}	
 
+	public static InfoEntete selectOneInfoEnteteByKey(String key){
+		/** Déclaration des variables **/
+		InfoEntete infoEntete						= null;	
+		/** Initialisation de la requête **/
+		String SQL		= "SELECT infoEnteteKey FROM InfoEntete WHERE infoEnteteKey LIKE ?";
+		/** Connexion à la base de données **/
+		Connection connexion = trtConnexionBdd();
+		/** Traitements SQL */
+		try {
+			PreparedStatement preparedStatement  = initialisationRequete(connexion, SQL, false, key);
+			ResultSet resultSet  = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				infoEntete = map(resultSet);
+			}	
+		} catch (SQLException e) {
+			/**
+			 * L'utilisation de Class.getEnclosingMethod() de la classe Dummy (classe interne anonyme) renvoie un objet 
+			 * java.lang.reflect.Method qui contient des informations sur la méthode immédiatement englobante.
+			 */
+			class Dummy {};
+			String methodeName 	= Dummy.class.getEnclosingMethod().getName();
+			gestionDesExceptionsStates(e, SQL, classeName, methodeName);
+		}
+		return infoEntete;			
+	}	
+	
+	
+    public static InfoEntete deleteInfoEntete(String key){
+		/** Déclaration des variables **/
+		InfoEntete infoEntete						= null;	
+		/** Initialisation de la requete **/
+        String SQL = "DELETE FROM AgImmo WHERE infoEnteteKey LIKE ?";
+		/** Connexion a la base de donnees **/
+		Connection connexion = trtConnexionBdd();
+		if(connexion!=null) {
+			/** Traitements SQL */
+			try {
+				PreparedStatement preparedStatement  = initialisationRequete(connexion, SQL, false, key);
+				ResultSet resultSet  = preparedStatement.executeQuery();
+				while (resultSet.next()) {
+					infoEntete = map(resultSet);
+				}	
+			} catch (SQLException e) {
+				/**
+				 * L'utilisation de Class.getEnclosingMethod() de la classe Dummy (classe interne anonyme) renvoie un objet 
+				 * java.lang.reflect.Method qui contient des informations sur la méthode immédiatement englobante.
+				 */
+				class Dummy {};
+				String methodeName 	= Dummy.class.getEnclosingMethod().getName();
+				gestionDesExceptionsStates(e, SQL, classeName, methodeName);
+			}
+		}
+		return infoEntete;			
+	}
+	
+	
 	/** *********************************************************************************
 	 * Méthode permettant de créer un objet de type [InfoEntete] à partir 
 	 * d'un enregistrement de la base de données
@@ -124,31 +180,5 @@ public class InfoEnteteBdd extends ConnexionBdd {
 			gestionDesExceptionsMap(e, classeName, methodeName);
 		}		
 		return infoEntete;
-	}
-	
-	public static InfoEntete selectOneInfoEnteteByKey(String key){
-		/** Déclaration des variables **/
-		InfoEntete infoEntete						= null;	
-		/** Initialisation de la requête **/
-		String SQL		= "SELECT infoEnteteKey FROM InfoEntete WHERE infoEnteteKey LIKE ?";
-		/** Connexion à la base de données **/
-		Connection connexion = trtConnexionBdd();
-		/** Traitements SQL */
-		try {
-			PreparedStatement preparedStatement  = initialisationRequete(connexion, SQL, false, key);
-			ResultSet resultSet  = preparedStatement.executeQuery();
-			while (resultSet.next()) {
-				infoEntete = map(resultSet);
-			}	
-		} catch (SQLException e) {
-			/**
-			 * L'utilisation de Class.getEnclosingMethod() de la classe Dummy (classe interne anonyme) renvoie un objet 
-			 * java.lang.reflect.Method qui contient des informations sur la méthode immédiatement englobante.
-			 */
-			class Dummy {};
-			String methodeName 	= Dummy.class.getEnclosingMethod().getName();
-			gestionDesExceptionsStates(e, SQL, classeName, methodeName);
-		}
-		return infoEntete;			
 	}	
 }
