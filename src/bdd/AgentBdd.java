@@ -40,16 +40,16 @@ public class AgentBdd extends ConnexionBdd {
 	 * @param 	pwd		[String]	: mot de passe
 	 * @return			[Agent]		: instance Agent créée
 	 */
-	public static Agent selectAgentByLoginPwd(String login, String pwd) {
+	public static Agent selectAgentByLoginPwd(String login) {
 		/** Déclaration des variables **/
 		Agent agent 	= null;
 		/** Initialisation de la requête **/
-		String SQL = "SELECT * FROM Agent WHERE agentLogin LIKE ? AND agentPwd LIKE ?";
+		String SQL = "SELECT * FROM Agent WHERE agentLogin LIKE ? ";
 		/** Connexion à la base de données **/
 		Connection connexion = trtConnexionBdd();
 		/** Traitements SQL avec gestion des Exceptions */
 		try {
-			PreparedStatement preparedStatement  = initialisationRequete(connexion, SQL, false, login, pwd);
+			PreparedStatement preparedStatement  = initialisationRequete(connexion, SQL, false, login);
 			ResultSet resultSet  = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				agent = map(resultSet);
