@@ -130,7 +130,7 @@ public class InfoEnteteBdd extends ConnexionBdd {
 		/** Déclaration des variables **/
 		InfoEntete infoEntete						= null;	
 		/** Initialisation de la requête **/
-		String SQL		= "SELECT * FROM InfoEntete WHERE infoEnteteKey LIKE ?";
+		String SQL		= "SELECT infoEnteteKey FROM InfoEntete WHERE infoEnteteKey LIKE ?";
 		/** Connexion à la base de données **/
 		Connection connexion = trtConnexionBdd();
 		/** Traitements SQL */
