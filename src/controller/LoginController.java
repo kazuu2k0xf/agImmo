@@ -4,7 +4,9 @@ import static bdd.AgentBdd.selectAgentByLoginPwd;
 import static batch.TraitementsBatch.traitementChiffrementDonneesPersonnelles;
 import static bdd.FenetresBdd.selectOneFenetre;
 import static utilities.UtilitiesFermeture.fenetreFermeture;
+import static utilities.UtilitiesBlowFish.encrypt;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -15,6 +17,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import model.Agent;
 import model.Fenetres;
+import model.InfoEntete;
 import model.LoaderFXML;
 import resources.Cstes;
 
@@ -42,6 +45,9 @@ public class LoginController {
 	@FXML public void initialize() {	
 		lblErreur.setVisible(false);
 		traitementChiffrementDonneesPersonnelles();
+
+
+		
 	}
 	/**
 	 * Méthode permettant de récupérer le stage initialisé par la fenêtre appelante 
@@ -75,15 +81,16 @@ public class LoginController {
 		 *  à partir de son login et de son mot de passe 
 		 */
 		/** Si l'agent existe **/
-		String login = txfLogin.getText();
+		String login = encrypt(txfLogin.getText());
 		String pwd = pwfPwd.getText();
-		
-
 		Agent agent = selectAgentByLoginPwd(login);
+				
+		BCrypt.Result resultat = BCrypt.verifyer().verify(pwd.toCharArray(), agent.getAgentPwd());
+		
+		
 		
 
-
-		if (agent != null) {
+		if (resultat.verified) {
 			
 			Fenetres fenetre	 				= selectOneFenetre(Cstes.TABLEAUDEBORD);
 			if(fenetre!=null) {

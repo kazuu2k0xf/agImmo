@@ -77,7 +77,7 @@ public class InfoEnteteBdd extends ConnexionBdd {
 		Connection connexion = trtConnexionBdd();
 		/** Traitements SQL */
 		try {
-			PreparedStatement preparedStatement  = initialisationRequete(connexion, SQL, false, infoEntete);
+			PreparedStatement preparedStatement  = initialisationRequete(connexion, SQL, false, infoEnteteIdt);
 			ResultSet resultSet  = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				infoEntete = map(resultSet);
@@ -98,7 +98,7 @@ public class InfoEnteteBdd extends ConnexionBdd {
 		/** Déclaration des variables **/
 		InfoEntete infoEntete						= null;	
 		/** Initialisation de la requête **/
-		String SQL		= "SELECT infoEnteteKey FROM InfoEntete WHERE infoEnteteKey LIKE ?";
+		String SQL		= "SELECT * FROM InfoEntete WHERE infoEnteteKey LIKE ?";
 		/** Connexion à la base de données **/
 		Connection connexion = trtConnexionBdd();
 		/** Traitements SQL */
@@ -120,33 +120,36 @@ public class InfoEnteteBdd extends ConnexionBdd {
 		return infoEntete;			
 	}	
 	
-	
-    public static InfoEntete deleteInfoEntete(InfoEntete key){
-		/** Déclaration des variables **/
-		InfoEntete infoEntete						= null;	
-		/** Initialisation de la requete **/
-        String SQL = "DELETE FROM AgImmo WHERE infoEnteteKey LIKE ?";
-		/** Connexion a la base de donnees **/
-		Connection connexion = trtConnexionBdd();
-		if(connexion!=null) {
-			/** Traitements SQL */
-			try {
-				PreparedStatement preparedStatement  = initialisationRequete(connexion, SQL, false, key);
-				ResultSet resultSet  = preparedStatement.executeQuery();
-				while (resultSet.next()) {
-					infoEntete = map(resultSet);
-				}	
-			} catch (SQLException e) {
-				/**
-				 * L'utilisation de Class.getEnclosingMethod() de la classe Dummy (classe interne anonyme) renvoie un objet 
-				 * java.lang.reflect.Method qui contient des informations sur la méthode immédiatement englobante.
-				 */
-				class Dummy {};
-				String methodeName 	= Dummy.class.getEnclosingMethod().getName();
-				gestionDesExceptionsStates(e, SQL, classeName, methodeName);
-			}
-		}
-		return infoEntete;			
+	/**
+	 * Supprime une entrée InfoEntete de la base de données.
+	 *
+	 * @param key L'objet InfoEntete à supprimer.
+	 * @return L'objet InfoEntete supprimé ou null si la suppression a échoué.
+	 */
+	public static InfoEntete deleteInfoEntete(InfoEntete key) {
+	    // Déclaration des variables
+	    InfoEntete infoEntete = null;
+	    // Initialisation de la requête
+	    String SQL = "DELETE FROM InfoEntete WHERE infoEnteteKey = ?";
+	    // Connexion à la base de données
+	    Connection connexion = trtConnexionBdd();
+	    if (connexion != null) {
+	        // Traitements SQL
+	        try {
+	            PreparedStatement preparedStatement = initialisationRequete(connexion, SQL, false, key.getInfoEnteteKey());
+	            int result = preparedStatement.executeUpdate();
+	            if (result > 0) {
+	                infoEntete = key;
+	            }
+	        } catch (SQLException e) {
+	            // L'utilisation de Class.getEnclosingMethod() de la classe Dummy (classe interne anonyme) renvoie un objet 
+	            // java.lang.reflect.Method qui contient des informations sur la méthode immédiatement englobante.
+	            class Dummy {};
+	            String methodeName = Dummy.class.getEnclosingMethod().getName();
+	            gestionDesExceptionsStates(e, SQL, "NomDeLaClasse", methodeName);
+	        }
+	    }
+	    return infoEntete;
 	}
 	
 	
@@ -162,7 +165,7 @@ public class InfoEnteteBdd extends ConnexionBdd {
 		InfoEntete infoEntete				= null;
 		try {
 			int infoEnteteIdt = resultset.getInt("infoEnteteIdt");
-			String infoEnteteKey = resultset.getString("infoEnteteIdt");
+			String infoEnteteKey = resultset.getString("infoEnteteKey");
 			String infoEnteteDescription = resultset.getString("infoEnteteDescription");
 			String infoEnteteCbx = resultset.getString("infoEnteteCbx");
 			int infoEnteteNbreDetailMax = resultset.getInt("infoEnteteNbreDetailMax");

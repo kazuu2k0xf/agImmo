@@ -6,6 +6,7 @@ import static utilities.GestionExceptions.gestionDesExceptionsMap;
 import static utilities.GestionExceptions.gestionDesExceptionsStates;
 import static utilities.UtilitiesJdbc.initialisationRequete;
 import static utilities.UtilitiesBlowFish.encrypt;
+import static utilities.UtilitiesBlowFish.decrypt;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -159,20 +160,20 @@ public class AgentBdd extends ConnexionBdd {
 		
 		try {
 			/** Initialisation des variables **/
-			int agentIdt = resultset.getInt("agentIdt");
-	        String agentName = resultset.getString("agentName");
-	        String agentFirstName = resultset.getString("agentFirstName");
-	        String agentMobile = resultset.getString("agentMobile");
-	        String agentPhone = resultset.getString("agentPhone");
-	        String agentEmail = resultset.getString("agentEmail");
+			int agentIdt = (resultset.getInt("agentIdt"));
+	        String agentName = decrypt(resultset.getString("agentName"));
+	        String agentFirstName = decrypt(resultset.getString("agentFirstName"));
+	        String agentMobile = decrypt(resultset.getString("agentMobile"));
+	        String agentPhone = decrypt(resultset.getString("agentPhone"));
+	        String agentEmail = decrypt(resultset.getString("agentEmail"));
 	        int agentCivility = resultset.getInt("agentCivility");
 	        Civility civility = selectOneCivility(agentCivility);
 	        int agentType = resultset.getInt("agentType");
 	        TypeAgent typeAgent = selectOneTypeAgent(agentType);
 	        
-	        String agentLogin = resultset.getString("agentLogin");
+	        String agentLogin = decrypt(resultset.getString("agentLogin"));
 	        String agentPwd = resultset.getString("agentPwd");
-	        String agentImage = resultset.getString("agentImage");
+	        String agentImage = decrypt(resultset.getString("agentImage"));
 
 	        // Création de l'objet Agent
 	        agent = new Agent(agentIdt, agentName, agentFirstName, agentMobile, 

@@ -61,5 +61,12 @@ public class InfoEntete {
 		this.infoEnteteNbreDetailMax = infoEnteteNbreDetailMax;
 	}
 	
+	@Override
+	public String toString() {
+		return "InfoEntete [infoEnteteIdt=" + infoEnteteIdt + ", infoEnteteKey=" + infoEnteteKey
+				+ ", infoEnteteDescription=" + infoEnteteDescription + ", infoEnteteCbx=" + infoEnteteCbx
+				+ ", infoEnteteNbreDetailMax=" + infoEnteteNbreDetailMax + "]";
+	}
+	
 
 }
