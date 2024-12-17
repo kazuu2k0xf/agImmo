@@ -17,6 +17,7 @@ import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import bdd.AgentBdd;
 import bdd.InfoDetailBdd;
 import interfaces.GestionCbxInfos;
@@ -29,6 +30,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -90,6 +92,7 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 	@FXML private Tooltip tooltipEmail;
 	@FXML private Tooltip tooltipPwd;
 	@FXML private TextArea txaErreur;
+	@FXML private CheckBox chkUpdatePwd;
 
 
 	/**
@@ -101,6 +104,13 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 		/** Initialisation du titre **/
 
 		lblTitre.setText("Modification d'un Agent");
+		
+		// Champs des mots de passe sont desactivé 
+		pwfAgentPwd.setDisable(true);
+		pwfAgentPwdConfirme.setDisable(true);
+		
+		
+		
 		/** Dossier des portraits **/
 		/** Initialisation des tooltip sur les contrôles ayant un format particulier **/
 		// ToolTip Pour le telephone
@@ -182,6 +192,13 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 	}
 
 
+	@FXML private void evtOnActionChkUpdatePwd() {
+		
+		    pwfAgentPwd.setDisable(false);
+		    pwfAgentPwdConfirme.setDisable(false);
+	}
+	
+	
 	/**
 	 * Méthode permettant de recevoir un agent en paramètre de la fenêtre appelante
 	 * @param agent	[Agent] : objet Agent correspondant à l'agent connecté.
@@ -210,7 +227,7 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 		txfAgentTelephone.setText(agentPhone);
 		txfAgentLogin.setText(agentLogin);
 		txfAgentEmail.setText(agentEmail);
-		pwfAgentPwd.setText(agentPwd);
+		//pwfAgentPwd.setText(agentPwd);
 		LblAgentImage.setText(agent.getAgentImage());
 
 		//Affichage du chemins de la photo
@@ -410,11 +427,12 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 				int agentTypeInt 				 = agent.getAgentType();
 				TypeAgent agentType 			 = cbxTypeAgent.getValue();
 				String agentLogin 				 = premiereLettrePrenomLogin + nomEnMinusculeLogin;
-				String agentPwd 				 = pwfAgentPwd.getText();
+				String agentPwd				 = pwfAgentPwd.getText();
+				String motDePasseHache 			 = BCrypt.withDefaults().hashToString(12, agentPwd.toCharArray());
 				String agentImage 				 = LblAgentImage.getText();
 
 				// Création d'un nouvel objet Agent
-				Agent agent = new Agent(agentIdt, agentNom, agentPrenom, agentMobile, agentTelephone, agentEmail, agentCivility, agentCivilite, agentTypeInt, agentType, agentLogin, agentPwd, agentImage
+				Agent agent = new Agent(agentIdt, agentNom, agentPrenom, agentMobile, agentTelephone, agentEmail, agentCivility, agentCivilite, agentTypeInt, agentType, agentLogin, motDePasseHache, agentImage
 						);
 				this.agent = agent;
 
