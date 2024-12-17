@@ -23,6 +23,8 @@ public class Cstes {
 
 	/** Valeurs par défaut **/
 	public final static int 	DEFAULTCIVILITE			= 1;
+	public final static String  NBRERREURSLOGIN  	 	= "NbreErreursConnexions"; 
+	public final static String  DUREEBLQLOGIN   		= "DureeBlqLogin";
 	
 	/** Dossiers **/
 	public final static String  DOSSIERPORTRAITS		= "Portraits";
