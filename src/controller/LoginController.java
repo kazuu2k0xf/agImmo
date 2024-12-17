@@ -1,6 +1,7 @@
 package controller;
 
 import static bdd.AgentBdd.selectAgentByLoginPwd;
+import static batch.TraitementsBatch.traitementChiffrementDonneesPersonnelles;
 import static bdd.FenetresBdd.selectOneFenetre;
 import static utilities.UtilitiesFermeture.fenetreFermeture;
 
@@ -40,6 +41,7 @@ public class LoginController {
 	 */
 	@FXML public void initialize() {	
 		lblErreur.setVisible(false);
+		traitementChiffrementDonneesPersonnelles();
 	}
 	/**
 	 * Méthode permettant de récupérer le stage initialisé par la fenêtre appelante 
@@ -77,7 +79,7 @@ public class LoginController {
 		String pwd = pwfPwd.getText();
 		
 
-		Agent agent = selectAgentByLoginPwd(login, pwd);
+		Agent agent = selectAgentByLoginPwd(login);
 		
 
 

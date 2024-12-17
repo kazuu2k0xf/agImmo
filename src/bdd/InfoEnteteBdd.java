@@ -121,7 +121,7 @@ public class InfoEnteteBdd extends ConnexionBdd {
 	}	
 	
 	
-    public static InfoEntete deleteInfoEntete(String key){
+    public static InfoEntete deleteInfoEntete(InfoEntete key){
 		/** Déclaration des variables **/
 		InfoEntete infoEntete						= null;	
 		/** Initialisation de la requete **/

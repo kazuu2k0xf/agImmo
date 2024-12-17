@@ -5,6 +5,7 @@ import static bdd.TypeAgentBdd.selectOneTypeAgent;
 import static utilities.GestionExceptions.gestionDesExceptionsMap;
 import static utilities.GestionExceptions.gestionDesExceptionsStates;
 import static utilities.UtilitiesJdbc.initialisationRequete;
+import static utilities.UtilitiesBlowFish.encrypt;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -112,18 +113,21 @@ public class AgentBdd extends ConnexionBdd {
 	    Connection connexion = trtConnexionBdd();
 
 	    try {
+	    	
+
+	    	
 	        // Initialisation de la requête préparée
 	        PreparedStatement pstmt = initialisationRequete(connexion, SQL, false, 
-	            agent.getPersonName(), 
-	            agent.getPersonFirstName(), 
-	            agent.getPersonMobile(), 
-	            agent.getPersonPhone(), 
-	            agent.getPersonEmail(), 
+	            encrypt(agent.getPersonName()), 
+	            encrypt(agent.getPersonFirstName()), 
+	            encrypt(agent.getPersonMobile()), 
+	            encrypt(agent.getPersonPhone()), 
+	            encrypt(agent.getPersonEmail()), 
 	            agent.getPersonCivility(), 
 	            agent.getAgentType(), 
-	            agent.getAgentLogin(), 
+	            encrypt(agent.getAgentLogin()), 
 	            agent.getAgentPwd(), 
-	            agent.getAgentImage(), 
+	            encrypt(agent.getAgentImage()), 
 	            agent.getPersonIdt()
 	        );
 
