@@ -1,6 +1,7 @@
 package controller;
 
 import static bdd.FenetresBdd.selectOneFenetre;
+import static utilities.UtilitiesFermeture.fenetreFermeture;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -29,6 +30,7 @@ public class AgImmo extends Application {
 			primaryStage 	  				= loaderFxml.createLoaderBorderPane();
 			LoginController controler 		= loaderFxml.getLoader().getController();
 			controler.setDialogStage(primaryStage);
+			fenetreFermeture(primaryStage);
 			primaryStage.show();
 		}		
 	}

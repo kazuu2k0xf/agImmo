@@ -105,9 +105,8 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 
 		lblTitre.setText("Modification d'un Agent");
 		
-		// Champs des mots de passe sont desactivé 
-		pwfAgentPwd.setDisable(true);
-		pwfAgentPwdConfirme.setDisable(true);
+
+
 		
 		
 		
@@ -192,11 +191,17 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 	}
 
 
-	@FXML private void evtOnActionChkUpdatePwd() {
-		
-		    pwfAgentPwd.setDisable(false);
-		    pwfAgentPwdConfirme.setDisable(false);
+	@FXML
+	private void evtOnActionChkUpdatePwd() {
+	    if (chkUpdatePwd.isSelected()) {
+	        pwfAgentPwd.setDisable(false);
+	        pwfAgentPwdConfirme.setDisable(false);
+	    } else {
+	        pwfAgentPwd.setDisable(true);
+	        pwfAgentPwdConfirme.setDisable(true);
+	    }
 	}
+
 	
 	
 	/**

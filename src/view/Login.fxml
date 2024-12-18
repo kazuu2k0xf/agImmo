@@ -32,6 +32,8 @@
             <Button fx:id="btnLogin" layoutX="74.0" layoutY="314.0" mnemonicParsing="false" onKeyPressed="#evtOnKeyPressedBtnLogin" onMouseClicked="#evtMouseClickedBtnLogin" styleClass="btnLogin" text="Connexion" />
             <Label fx:id="lblErreur" layoutX="113.0" layoutY="281.0" styleClass="messageErreur" text="Login ou mot de passe incorrect" />
             <Label alignment="CENTER" layoutX="10.0" layoutY="25.0" prefHeight="28.0" prefWidth="378.0" styleClass="titre" text="Application Ag'Immo" textAlignment="CENTER" />
+            <Label fx:id="lblDepassement" layoutX="159.0" layoutY="258.0" styleClass="messageErreur" text="dépassement" />
+            <Button fx:id="btnQuitter" layoutX="71.0" layoutY="372.0" mnemonicParsing="false" onMouseClicked="#evtMouseClickedBtnQuitter" prefHeight="39.0" prefWidth="256.0" text="Quitter" />
          </children>
       </AnchorPane>
    </right>

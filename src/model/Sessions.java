@@ -44,5 +44,12 @@ public class Sessions {
 		this.sessionsTimeFin	= newSessionsTimeFin;
 		this.sessionAgent		= newSessionAgent;
 	}
+	public void setSessionsDateFin(LocalDate sessionsDateFin) {
+		this.sessionsDateFin = sessionsDateFin;
+	}
+	public void setSessionsTimeFin(LocalTime sessionsTimeFin) {
+		this.sessionsTimeFin = sessionsTimeFin;
+	}
+	
 
 }
