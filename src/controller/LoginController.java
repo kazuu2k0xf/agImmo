@@ -35,7 +35,7 @@ public class LoginController {
 	 * **************************************************************/
 	@FXML private Stage 		dialogStage;
 	@FXML private Label lblErreur;
-	//@FXML private Label lblDepassement;
+	@FXML private Label lblDepassement;
 	@FXML private TextField txfLogin;
 	@FXML private PasswordField pwfPwd;
 
@@ -45,7 +45,7 @@ public class LoginController {
 	 */
 	@FXML public void initialize() {	
 		lblErreur.setVisible(false);
-		//lblDepassement.setVisible(false);
+		lblDepassement.setVisible(false);
 
 		traitementChiffrementDonneesPersonnelles();
 		
