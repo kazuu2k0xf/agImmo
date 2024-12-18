@@ -50,6 +50,31 @@ public class Sessions {
 	public void setSessionsTimeFin(LocalTime sessionsTimeFin) {
 		this.sessionsTimeFin = sessionsTimeFin;
 	}
+	public int getSessionsIdt() {
+		return sessionsIdt;
+	}
+	public int getSessionsAgentIdt() {
+		return sessionsAgentIdt;
+	}
+	public String getSessionsUuid() {
+		return sessionsUuid;
+	}
+	public LocalDate getSessionsDateDebut() {
+		return sessionsDateDebut;
+	}
+	public LocalTime getSessionsTimeDebut() {
+		return sessionsTimeDebut;
+	}
+	public LocalDate getSessionsDateFin() {
+		return sessionsDateFin;
+	}
+	public LocalTime getSessionsTimeFin() {
+		return sessionsTimeFin;
+	}
+	public Agent getSessionAgent() {
+		return sessionAgent;
+	}
+	
 	
 
 }

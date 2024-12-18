@@ -6,9 +6,11 @@ import static utilities.GestionExceptions.gestionDesExceptionsStates;
 import static utilities.UtilitiesJdbc.initialisationRequete;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -43,7 +45,7 @@ public class SessionsBdd extends ConnexionBdd {
 		ObservableList<Sessions> listeDonnees 	= FXCollections.observableArrayList();
 		Sessions sessions						= null;
 		/** Initialisation de la requête **/
-		String SQL		= "";
+		String SQL		= "SELECT * FROM Sessions WHERE sessionsAgentIdt = ?";
 		/** Connexion à la base de données **/
 		Connection connexion = trtConnexionBdd();
 		/** Traitements SQL */
@@ -75,7 +77,7 @@ public class SessionsBdd extends ConnexionBdd {
 		/** Déclaration des variables **/
 		Sessions sessions						= null;
 		/** Initialisation de la requête **/
-		String SQL		 = "";
+		String SQL		 = "SELECT * FROM Sessions WHERE sessionsUuid = ?";
 		/** Connexion à la base de données **/
 		Connection connexion = trtConnexionBdd();
 		/** Traitements SQL */
@@ -106,7 +108,7 @@ public class SessionsBdd extends ConnexionBdd {
 		/** Déclaration des variables */
 		int nbreEnreg	= 0;
 		/** Initialisation de la requête */
-		String SQL		   = "";
+		String SQL = "INSERT INTO Sessions (sessionsAgentIdt, sessionsUuid, sessionsDateDebut, sessionsTimeDebut, sessionsDateFin, sessionsTimeFin) VALUES (?, ?, ?, ?, ?, ?)";
 		/** Connexion à la base de données **/
 		Connection connexion = trtConnexionBdd();
 		/** Traitements SQL */
@@ -141,7 +143,7 @@ public class SessionsBdd extends ConnexionBdd {
 		/** Déclaration des variables */
 		int nbreEnreg	= 0;
 		/** Initialisation de la requête */
-		String SQL		   = "";
+	    String SQL = "UPDATE Sessions SET sessionsAgentIdt = ?, sessionsUuid = ?, sessionsDateDebut = ?, sessionsTimeDebut = ?, sessionsDateFin = ?, sessionsTimeFin = ? WHERE sessionsIdt = ?";
 		/** Connexion à la base de données **/
 		Connection connexion = trtConnexionBdd();
 		/** Traitements SQL */
@@ -174,6 +176,25 @@ public class SessionsBdd extends ConnexionBdd {
 		/** Initialisation des variables **/
 		Sessions sessions				= null;
 		try {
+			int sessionsIdt = resultset.getInt("sessionsIdt");
+	        int sessionsAgentIdt = resultset.getInt("sessionsAgentIdt");
+	        String sessionsUuid = resultset.getString("sessionsUuid");
+	        Date DateDebut = resultset.getDate("sessionsDateDebut");
+	        LocalDate sessionsDateDebut= DateDebut.toLocalDate();
+	        
+	        Time TimeDebut = resultset.getTime("sessionsTimeDebut");
+	        LocalTime sessionsTimeDebut = TimeDebut.toLocalTime();
+	        
+	        Date dateFin = resultset.getDate("sessionsDateFin");
+	        LocalDate sessionsDateFin = dateFin.toLocalDate();
+
+	        Time timeFin = resultset.getTime("sessionsTimeFin");
+	        LocalTime sessionsTimeFin = timeFin.toLocalTime();
+	        
+	        sessions = new Sessions(sessionsIdt, sessionsAgentIdt, sessionsUuid, sessionsDateDebut, sessionsTimeDebut, sessionsDateFin, sessionsTimeFin, null);
+			
+			
+			
 		} catch (SQLException e) {
 			/**
 			 * L'utilisation de Class.getEnclosingMethod() de la classe Dummy (classe interne anonyme) renvoie un objet 
