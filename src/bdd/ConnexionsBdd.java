@@ -40,7 +40,7 @@ public class ConnexionsBdd extends ConnexionBdd {
 		/** Déclaration des variables **/
 		Connexions connexions	= null;
 		/** Initialisation de la requête */
-		String SQL		   = "";
+		 String SQL = "SELECT COUNT(*) FROM Connexions WHERE connexionsUuid = ?";
 		/** Connexion à la base de données **/
 		Connection connexion = trtConnexionBdd();
 		/** Traitements SQL */
@@ -71,7 +71,7 @@ public class ConnexionsBdd extends ConnexionBdd {
 		/** Déclaration des variables **/
 		int nbreConnexions	= 0;
 		/** Initialisation de la requête */
-		String SQL		  	= "";
+		String SQL		  	= "SELECT * FROM Sessions WHERE sessionsUuid LIKE ?";
 		/** Connexion à la base de données **/
 		Connection connexion = trtConnexionBdd();
 		/** Traitements SQL */
@@ -102,7 +102,7 @@ public class ConnexionsBdd extends ConnexionBdd {
 		/** Déclaration des variables **/
 		int nbreEnreg	= 0;
 		/** Initialisation de la requête */
-		String SQL		   = "";
+	    String SQL = "INSERT INTO Connexions (connexionsUuid, connexionsDate, connexionsTime) VALUES (?, ?, ?)";
 		/** Connexion à la base de données **/
 		Connection connexion = trtConnexionBdd();
 		/** Traitements SQL */
@@ -134,7 +134,7 @@ public class ConnexionsBdd extends ConnexionBdd {
 		/** Déclaration des variables **/
 		int nbreEnreg	= 0;
 		/** Initialisation de la requête */
-		String SQL		   = "";
+	    String SQL = "DELETE FROM Connexions WHERE connexionsUuid = ?";
 		/** Connexion à la base de données **/
 		Connection connexion = trtConnexionBdd();
 		/** Traitements SQL */
