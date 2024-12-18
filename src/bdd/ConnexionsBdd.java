@@ -5,9 +5,11 @@ import static utilities.GestionExceptions.gestionDesExceptionsStates;
 import static utilities.UtilitiesJdbc.initialisationRequete;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -157,6 +159,17 @@ public class ConnexionsBdd extends ConnexionBdd {
 		/** Initialisation des variables **/
 		Connexions connexion				= null;
 		try {
+			int connexionsIdt 		 = resultset.getInt("connexionsIdt");
+			String connexionsUuid 	 = resultset.getString("connexionsUuid");
+			
+			Date date 				 = resultset.getDate("connexionsDate");
+			LocalDate connexionsDate = date.toLocalDate();
+			
+			Time time 				 = resultset.getTime("connexionsTime");
+			LocalTime connexionsTime = time.toLocalTime();
+			
+			connexion = new Connexions(connexionsIdt, connexionsUuid, connexionsDate, connexionsTime);
+			
 		} catch (SQLException e) {
 			/**
 			 * L'utilisation de Class.getEnclosingMethod() de la classe Dummy (classe interne anonyme) renvoie un objet 
