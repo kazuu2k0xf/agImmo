@@ -4,9 +4,16 @@ import static bdd.AgentBdd.selectAgentByLoginPwd;
 import static batch.TraitementsBatch.traitementChiffrementDonneesPersonnelles;
 import static bdd.FenetresBdd.selectOneFenetre;
 import static utilities.UtilitiesFermeture.fenetreFermeture;
+
+
 import static utilities.UtilitiesBlowFish.encrypt;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -15,6 +22,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.Agent;
 import model.Fenetres;
 import model.InfoEntete;
@@ -33,11 +41,13 @@ public class LoginController {
 	/** *************************************************************
 	 * Déclaration des contrôles du fichier fxml
 	 * **************************************************************/
-	@FXML private Stage 		dialogStage;
+	@FXML private Stage dialogStage;
 	@FXML private Label lblErreur;
 	@FXML private Label lblDepassement;
 	@FXML private TextField txfLogin;
 	@FXML private PasswordField pwfPwd;
+	@FXML private Button btnLogin;
+	@FXML private Button btnQuitter;
 
 	/**
 	 * Méthode lancée implicitement à la génération de la fenêtre fxml.
@@ -48,9 +58,8 @@ public class LoginController {
 		lblDepassement.setVisible(false);
 
 		traitementChiffrementDonneesPersonnelles();
-		
-		
 
+		
 
 		
 	}
@@ -88,10 +97,11 @@ public class LoginController {
 		/** Si l'agent existe **/
 		String login = encrypt(txfLogin.getText());
 		String pwd = pwfPwd.getText();
+		
 		Agent agent = selectAgentByLoginPwd(login);
 				
-		BCrypt.Result resultat = BCrypt.verifyer().verify(pwd.toCharArray(), agent.getAgentPwd());
-		
+		if (agent != null) {
+			BCrypt.Result resultat = BCrypt.verifyer().verify(pwd.toCharArray(), agent.getAgentPwd());
 		
 		
 
@@ -116,14 +126,40 @@ public class LoginController {
 			/** Rajout d'un évènement sur la fenêtre du tableau de bord interdisant de quitter l'appliaction 
 			 *  en cliquant sur la croix de la fenêtre Windows.
 			 */
-
+		}
 		} else {
 			/** Affichage du message d'erreur **/
 			txfLogin.setText("");
 			pwfPwd.setText("");
 			lblErreur.setVisible(true);
+			
+			/** Initialisation d'un timer avec un pas de 1 seconde **/ 
+			Timeline timeline = new Timeline(); 
+			timeline.getKeyFrames().add( 
+						new KeyFrame(Duration.seconds(1),
+			                    new EventHandler<ActionEvent>() { 
+			                  @Override 
+			                  public void handle(ActionEvent event) { 
+								int countdownStarter = 0;
+								countdownStarter--; 
+			                     lblDepassement.setText("Le compte est bloqué pendant encore " + countdownStarter + " seconde(s)"); 
+			                     if(countdownStarter<=0) { 
+			                             btnLogin.setDisable(false); 
+			                             btnQuitter.setDisable(false); 
+			                             lblDepassement.setText("Dépassement de tentatives"); 
+			                             lblDepassement.setVisible(false); 
+			                             lblErreur.setVisible(false); 
+			                             timeline.stop(); 
+			                   } 
+			          } 
+			 
+			  })); 
+			timeline.setCycleCount(Animation.INDEFINITE);  
+			timeline.play(); 
+
 		}		
-	}
+			
+		}
 	
 	@FXML public void evtMouseClickedBtnQuitter() {
 		
