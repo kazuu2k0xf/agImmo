@@ -104,6 +104,8 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 		/** Initialisation du titre **/
 
 		lblTitre.setText("Modification d'un Agent");
+		pwfAgentPwd.setDisable(true);
+		pwfAgentPwdConfirme.setDisable(true);
 		
 
 
