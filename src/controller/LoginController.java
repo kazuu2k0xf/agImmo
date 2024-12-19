@@ -1,14 +1,20 @@
 package controller;
 
 import static bdd.AgentBdd.selectAgentByLoginPwd;
+import static bdd.ConnexionsBdd.insertConnexions;
+import static bdd.ConnexionsBdd.deleteConnexions;
+
 import static batch.TraitementsBatch.traitementChiffrementDonneesPersonnelles;
 import static bdd.FenetresBdd.selectOneFenetre;
 import static utilities.UtilitiesFermeture.fenetreFermeture;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 import static utilities.UtilitiesBlowFish.encrypt;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import bdd.SessionsBdd;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -29,6 +35,7 @@ import model.Agent;
 import model.Fenetres;
 import model.InfoEntete;
 import model.LoaderFXML;
+import model.Sessions;
 import resources.Cstes;
 import utilities.DialogBox;
 
@@ -55,6 +62,8 @@ public class LoginController {
 	//Déclaration de la variable pour compter le nombre de tentatives de connexion effectuées par l'agent
 	private int tentativeConnexion = 0;
 	private boolean compteBloque = false;
+	private String sessionUUID;
+	public Sessions sessions = null;
 
 
 
@@ -67,6 +76,7 @@ public class LoginController {
 		//Initialise les labels non visible
 		lblErreur.setVisible(false);
 		lblDepassement.setVisible(false);
+		
 
 		//Appel de la méthode traitement chiffrement données personnelles
 		traitementChiffrementDonneesPersonnelles();
@@ -80,12 +90,25 @@ public class LoginController {
 	public void setDialogStage(Stage dialogStage) {
 		this.dialogStage = dialogStage;
 	}
+	
+	/**
+	 * Méthode permettant de récupérer le UUID initialisé par la fenêtre appelante 
+	 * Permet de transmettre le uuid
+	 * @param sessionUUID	[String]	: String   
+	 */
+
+	public void setSessionUUID(String sessionUUID) {
+	    this.sessionUUID = sessionUUID;
+	    System.out.println(sessionUUID);
+	}
+
+	
 	/**
 	 * Cette méthode permet de gérer la touche [Entrée] sur le fenêtre.
 	 * @param 	keyEvent	[KeyEvent] : Evènement clique sur une touche du clavier
 	 */
 	@FXML public void evtOnKeyPressedBtnLogin(KeyEvent keyEvent){
-		if(keyEvent.getCode().equals(KeyCode.ENTER)) {
+		if(keyEvent.getCode().equals(KeyCode.ENTER)) {	
 			traitementConnexion();
 		}
 	}
@@ -116,6 +139,7 @@ public class LoginController {
 	        txfLogin.setText("");
 	        pwfPwd.setText("");
 	        lblErreur.setVisible(true);
+	        insertConnexions(sessionUUID);
 
 	        if (tentativeConnexion >= 3) {
 	            compteBloque = true;
@@ -155,6 +179,7 @@ public class LoginController {
 	    }
 
 	    // Si l'authentification est réussie
+	    deleteConnexions(sessionUUID);
 	    Fenetres fenetre = selectOneFenetre(Cstes.TABLEAUDEBORD);
 	    if (fenetre != null) {
 	        LoaderFXML loaderFxml = new LoaderFXML(fenetre);
@@ -164,6 +189,9 @@ public class LoginController {
 	        controler.setAgent(agent);
 	        fenetreFermeture(primaryStage);
 	        primaryStage.show();
+	        
+		     sessions = new Sessions(0, agent.getPersonIdt(), sessionUUID, LocalDate.now(), LocalTime.now(), null, null , agent);
+		     System.out.println(sessions.toString());
 	    }
 
 	    dialogStage.close();
