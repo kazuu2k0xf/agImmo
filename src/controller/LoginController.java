@@ -54,6 +54,7 @@ public class LoginController {
 	
 	//Déclaration de la variable pour compter le nombre de tentatives de connexion effectuées par l'agent
 	private int tentativeConnexion = 0;
+	private boolean compteBloque = false;
 
 
 
@@ -98,86 +99,76 @@ public class LoginController {
 	 * Méthode permettant contrôler les données saisies ( login & pwd ) et d'afficher un message d'erreur si besoin 
 	 * ou d'appeler le tableau de bord
 	 */
-	 public void traitementConnexion() {
-	        /** Contrôle de l'existence de l'agent dans la base de données
-	         *  à partir de son login et de son mot de passe 
-	         */
-	        /** Si l'agent existe **/
-	        String login = encrypt(txfLogin.getText());
-	        String pwd = pwfPwd.getText();
-	        
-	        Agent agent = selectAgentByLoginPwd(login);
+	public void traitementConnexion() {
+	    if (compteBloque) {
+	        lblDepassement.setVisible(true);
+	        lblDepassement.setText("Le compte est bloqué. Veuillez patienter.");
+	        return;
+	    }
 
-	        
-	        if (agent == null) {
-	            tentativeConnexion++;
-	        }
-	        
-	        if (agent != null) {
-	            BCrypt.Result resultat = BCrypt.verifyer().verify(pwd.toCharArray(), agent.getAgentPwd());
+	    String login = encrypt(txfLogin.getText());
+	    String pwd = pwfPwd.getText();
+	    
+	    Agent agent = selectAgentByLoginPwd(login);
 
-	            if (resultat.verified) {
-	                Fenetres fenetre = selectOneFenetre(Cstes.TABLEAUDEBORD);
-	                if (fenetre != null) {
-	                    LoaderFXML loaderFxml = new LoaderFXML(fenetre);
-	                    Stage primaryStage = loaderFxml.createLoaderBorderPane();
-	                    DashboardController controler = loaderFxml.getLoader().getController();
-	                    controler.setDialogStage(primaryStage);
-	                    controler.setAgent(agent);
-	                    fenetreFermeture(primaryStage);
-	                    primaryStage.show();
-	                }
+	    if (agent == null || (agent != null && !BCrypt.verifyer().verify(pwd.toCharArray(), agent.getAgentPwd()).verified)) {
+	        tentativeConnexion++;
+	        txfLogin.setText("");
+	        pwfPwd.setText("");
+	        lblErreur.setVisible(true);
 
-	                /** Fermeture de la fenêtre de login **/
-	                dialogStage.close();
+	        if (tentativeConnexion >= 3) {
+	            compteBloque = true;
+	            btnLogin.setDisable(true);
+	            btnQuitter.setDisable(true);
 
-	                /** Appel de la fenêtre tableau de bord **/
-	                /** Rajout d'un évènement sur la fenêtre du tableau de bord interdisant de quitter l'application 
-	                 *  en cliquant sur la croix de la fenêtre Windows.
-	                 */
-	            }
-	        } else {
-	            /** Affichage du message d'erreur **/
-	            txfLogin.setText("");
-	            pwfPwd.setText("");
-	            lblErreur.setVisible(true);
+	            Timeline timeline = new Timeline();
+	            final int[] countdownStarter = {30};
 
-	            if (tentativeConnexion == 3) {
-	                // Désactivation des boutons
-	                btnLogin.setDisable(true);
-	                btnQuitter.setDisable(true);
+	            timeline.getKeyFrames().add(
+	                new KeyFrame(Duration.seconds(1),
+	                    new EventHandler<ActionEvent>() {
+	                        @Override
+	                        public void handle(ActionEvent event) {
+	                            countdownStarter[0]--;
+	                            lblDepassement.setVisible(true);
+	                            lblDepassement.setText("Le compte est bloqué pendant encore " + countdownStarter[0] + " seconde(s)");
 
-	                // Initialisation du timer
-	                Timeline timeline = new Timeline();
-	                final int[] countdownStarter = {30};
-
-	                timeline.getKeyFrames().add(
-	                    new KeyFrame(Duration.seconds(1),
-	                        new EventHandler<ActionEvent>() {
-	                            @Override
-	                            public void handle(ActionEvent event) {
-	                                countdownStarter[0]--;
-	                                lblDepassement.setVisible(true);
-	                                lblDepassement.setText("Le compte est bloqué pendant encore " + countdownStarter[0] + " seconde(s)");
-
-	                                if (countdownStarter[0] <= 0) {
-	                                    btnLogin.setDisable(false);
-	                                    btnQuitter.setDisable(false);
-	                                    lblDepassement.setText("Dépassement de tentatives"); 
-	                                    lblDepassement.setVisible(false);
-	                                    lblErreur.setVisible(false);
-	                                    timeline.stop();
-	                                }
+	                            if (countdownStarter[0] <= 0) {
+	                                btnLogin.setDisable(false);
+	                                btnQuitter.setDisable(false);
+	                                lblDepassement.setVisible(false);
+	                                lblErreur.setVisible(false);
+	                                compteBloque = false;
+	                                tentativeConnexion = 0;
+	                                timeline.stop();
 	                            }
 	                        }
-	                    )
-	                );
+	                    }
+	                )
+	            );
 
-	                timeline.setCycleCount(Animation.INDEFINITE);
-	                timeline.play();
-	            }
+	            timeline.setCycleCount(Animation.INDEFINITE);
+	            timeline.play();
 	        }
+	        return;
 	    }
+
+	    // Si l'authentification est réussie
+	    Fenetres fenetre = selectOneFenetre(Cstes.TABLEAUDEBORD);
+	    if (fenetre != null) {
+	        LoaderFXML loaderFxml = new LoaderFXML(fenetre);
+	        Stage primaryStage = loaderFxml.createLoaderBorderPane();
+	        DashboardController controler = loaderFxml.getLoader().getController();
+	        controler.setDialogStage(primaryStage);
+	        controler.setAgent(agent);
+	        fenetreFermeture(primaryStage);
+	        primaryStage.show();
+	    }
+
+	    dialogStage.close();
+	}
+
 	 
 	 
 	/** Fermeture de la page en cliquant sur le bouton quitter**/

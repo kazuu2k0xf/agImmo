@@ -3,6 +3,8 @@ package controller;
 import static bdd.FenetresBdd.selectOneFenetre;
 import static utilities.UtilitiesFermeture.fenetreFermeture;
 
+import java.util.UUID;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 import model.Fenetres;
