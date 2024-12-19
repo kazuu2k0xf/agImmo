@@ -160,7 +160,7 @@ public class AgentBdd extends ConnexionBdd {
 		
 		try {
 			/** Initialisation des variables **/
-			int agentIdt = (resultset.getInt("agentIdt"));
+			int agentIdt = resultset.getInt("agentIdt");
 	        String agentName = decrypt(resultset.getString("agentName"));
 	        String agentFirstName = decrypt(resultset.getString("agentFirstName"));
 	        String agentMobile = decrypt(resultset.getString("agentMobile"));
