@@ -24,17 +24,26 @@ import resources.Cstes;
  */
 public class AgImmo extends Application {
 	@Override
-	public void start(Stage primaryStage) {		
-		/** Appel de la fenêtre de login **/
-		Fenetres fenetre	 				= selectOneFenetre(Cstes.LOGIN);
-		if(fenetre!=null) {
-			LoaderFXML loaderFxml 			= new LoaderFXML(fenetre);
-			primaryStage 	  				= loaderFxml.createLoaderBorderPane();
-			LoginController controler 		= loaderFxml.getLoader().getController();
-			controler.setDialogStage(primaryStage);
-			fenetreFermeture(primaryStage);
-			primaryStage.show();
-		}		
+	public void start(Stage primaryStage) {
+	    /** Génération d'un UUID de session **/
+	    UUID uuid = UUID.randomUUID();
+	    String uuidAsString = uuid.toString();
+	    
+	    /** Appel de la fenêtre de login **/
+	    Fenetres fenetre = selectOneFenetre(Cstes.LOGIN);
+
+	    if (fenetre != null) {
+	        LoaderFXML loaderFxml = new LoaderFXML(fenetre);
+	        primaryStage = loaderFxml.createLoaderBorderPane();
+	        LoginController controler = loaderFxml.getLoader().getController();
+	        
+	        // Passer UUID au LoginController
+	        controler.setDialogStage(primaryStage);
+	        controler.setSessionUUID(uuidAsString); 
+
+	        fenetreFermeture(primaryStage);
+	        primaryStage.show();
+	    }
 	}
 	public static void main(String[] args) {
 		launch(args);

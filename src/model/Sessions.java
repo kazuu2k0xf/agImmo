@@ -44,6 +44,14 @@ public class Sessions {
 		this.sessionsTimeFin	= newSessionsTimeFin;
 		this.sessionAgent		= newSessionAgent;
 	}
+	@Override
+	public String toString() {
+		return "Sessions [sessionsIdt=" + sessionsIdt + ", sessionsAgentIdt=" + sessionsAgentIdt + ", sessionsUuid="
+				+ sessionsUuid + ", sessionsDateDebut=" + sessionsDateDebut + ", sessionsTimeDebut=" + sessionsTimeDebut
+				+ ", sessionsDateFin=" + sessionsDateFin + ", sessionsTimeFin=" + sessionsTimeFin + ", sessionAgent="
+				+ sessionAgent + "]";
+	}
+	
 	public void setSessionsDateFin(LocalDate sessionsDateFin) {
 		this.sessionsDateFin = sessionsDateFin;
 	}
