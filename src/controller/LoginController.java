@@ -4,6 +4,7 @@ import static bdd.AgentBdd.selectAgentByLoginPwd;
 import static bdd.ConnexionsBdd.insertConnexions;
 import static bdd.ConnexionsBdd.deleteConnexions;
 import static bdd.InfoDetailBdd.selectOneInfoDetailDescription;
+import static bdd.ConnexionsBdd.selectNbreConnexions;
 
 import static batch.TraitementsBatch.traitementChiffrementDonneesPersonnelles;
 import static bdd.FenetresBdd.selectOneFenetre;
@@ -63,7 +64,6 @@ public class LoginController {
 	@FXML private Button btnQuitter;
 	
 	//Déclaration de la variable pour compter le nombre de tentatives de connexion effectuées par l'agent
-	private int tentativeConnexion = 0;
 	private boolean compteBloque = false;
 	private String sessionUUID;
 	public Sessions sessions = null;
@@ -82,9 +82,7 @@ public class LoginController {
 		//Initialise les labels non visible
 		lblErreur.setVisible(false);
 		lblDepassement.setVisible(false);
-		System.out.println(dureeBlqLogin.getInfoDetailValueInt());
 		
-
 		//Appel de la méthode traitement chiffrement données personnelles
 		traitementChiffrementDonneesPersonnelles();
 
@@ -141,17 +139,18 @@ public class LoginController {
 	    
 	    Agent agent = selectAgentByLoginPwd(login);
 	    
+	    //Compte le nombre de tentative de connexion
+		int tentativeConnexion = selectNbreConnexions(sessionUUID);
 	   
-
 	    if (agent == null || (agent != null && !BCrypt.verifyer().verify(pwd.toCharArray(), agent.getAgentPwd()).verified)) {
-	        tentativeConnexion++;
 	        txfLogin.setText("");
 	        pwfPwd.setText("");
 	        lblErreur.setVisible(true);
 	        insertConnexions(sessionUUID);
+	        System.out.println(tentativeConnexion);
 
 	       
-	        if (tentativeConnexion > nbreErreursConnexions.getInfoDetailValueInt()) {
+	        if (tentativeConnexion >= nbreErreursConnexions.getInfoDetailValueInt()) {
 	            compteBloque = true;
 	            btnLogin.setDisable(true);
 	            btnQuitter.setDisable(true);
@@ -174,7 +173,6 @@ public class LoginController {
 	                                lblDepassement.setVisible(false);
 	                                lblErreur.setVisible(false);
 	                                compteBloque = false;
-	                                tentativeConnexion = 0;
 	                                timeline.stop();
 	                            }
 	                        }
