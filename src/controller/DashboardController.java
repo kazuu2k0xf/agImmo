@@ -49,6 +49,7 @@ public class DashboardController {
 		gestionEtatsDesLieux();
 
 		lblVersion.setText(Cstes.VERSIONAPPLICATION);
+		System.out.println(selectOneFenetre(Cstes.ADMINISTRATION));
 	}
 	/**
 	 * Méthode servant à définir le stage pour pouvoir fermer la fenêtre
@@ -138,9 +139,9 @@ public class DashboardController {
 	@FXML
 	public void evtOnMouseClickedImvParametresAgent() {
 
-		Fenetres fenetre	 				= selectOneFenetre(Cstes.MODIFICATIONAGENT);
+		Fenetres fenetre	 					= selectOneFenetre(Cstes.MODIFICATIONAGENT);
 		if(fenetre!=null) {
-			LoaderFXML loaderFxml 			= new LoaderFXML(fenetre);
+			LoaderFXML loaderFxml 				= new LoaderFXML(fenetre);
 			Stage primaryStage 	  				= loaderFxml.createLoaderBorderPane();
 			AgentDefinitionController controler = loaderFxml.getLoader().getController();
 			controler.setDialogStage(primaryStage);
@@ -152,6 +153,20 @@ public class DashboardController {
 		}
 
 	}
+
+	
+	@FXML public void evtOnActionMnuAdministration() {
+	    Fenetres fenetre 								  = selectOneFenetre(Cstes.ADMINISTRATION);
+
+	    if (fenetre != null) {
+	        LoaderFXML loaderFxml 						  = new LoaderFXML(fenetre);
+	        Stage primaryStage 							  = loaderFxml.createLoaderBorderPane();
+	        MenusAdministrationController controler = loaderFxml.getLoader().getController();
+	        controler.setDialogStage(primaryStage);
+	        primaryStage.show();
+	    }
+	}
+
 
 
 

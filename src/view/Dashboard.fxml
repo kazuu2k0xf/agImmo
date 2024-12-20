@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -60,6 +61,8 @@
                         </Label>
                         <MenuButton id="menuGeneral" alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="150.0" prefWidth="172.0" GridPane.halignment="CENTER" GridPane.valignment="TOP">
                           <items>
+                              <MenuItem fx:id="mnuAdministration" mnemonicParsing="false" onAction="#evtOnActionMnuAdministration" text="Administration" />
+                              <SeparatorMenuItem mnemonicParsing="false" />
                             <MenuItem fx:id="mnuDeconnexion" mnemonicParsing="false" onAction="#evtOnActionMnuDeconnexion" text="Deconnexion" />
                           </items>
                            <GridPane.margin>

@@ -18,7 +18,7 @@ public class MenusAdministrationController {
 	@FXML private 	BorderPane 	racineAdministration;
 	
 	@FXML private void initialize() {
-		lblTitre.setText("Administration des tables de la base de données");
+		//lblTitre.setText("Administration des tables de la base de données");
 	}
 	@FXML private void evtOnActionMnuClose() {
 		dialogStage.close();
