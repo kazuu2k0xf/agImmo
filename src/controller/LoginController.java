@@ -151,6 +151,7 @@ public class LoginController {
 
 	       
 	        if (tentativeConnexion >= nbreErreursConnexions.getInfoDetailValueInt()) {
+	        	deleteConnexions(sessionUUID);
 	            compteBloque = true;
 	            btnLogin.setDisable(true);
 	            btnQuitter.setDisable(true);
