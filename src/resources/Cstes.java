@@ -38,6 +38,11 @@ public class Cstes {
 	public final static String  MODIFICATIONAGENT		= "AgentDefinition";
 	public final static String  TABLEAUDEBORD			= "Dashboard";
 	public final static String	LOGIN					= "Login";
+	public final static String  ADMINISTRATION			= "Administration";
+	public final static String  CIVILITY				= "CivilityAdmin";
+	public final static String  DETAILINFO				= "InfoDetailAdmin";
+	public final static String  ENTETEINFO				= "InfoEnteteAdmin";
+	public final static String  TYPEAGENT				= "TypeAgentAdmin";
 	
 	/** Entetes informations **/
 	public final static String CHIFFREMENT 				= "Chiffrement";
@@ -47,6 +52,6 @@ public class Cstes {
 	public final static String TRTCHIFFREMENTAGENT 		= "chiffrementAgent";
 
 	/** Version de l'application **/
-	public final static String  VERSIONAPPLICATION		= "V.01";
+	public final static String  VERSIONAPPLICATION		= "V.02";
 
 }
