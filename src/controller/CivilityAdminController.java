@@ -7,6 +7,8 @@ import static bdd.CivilityBdd.selectNbreCivility;
 import static bdd.CivilityBdd.insertCivility;
 import static utilities.UtilitiesControls.isTextFieldEmpty;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -18,6 +20,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import model.Civility;
+import model.Person;
 import resources.Cstes;
 import utilities.DialogBox;
 
@@ -30,26 +33,41 @@ public class CivilityAdminController extends AdministrationManagementController 
 	@FXML private TextField						txfCivilityLbc;
 	@FXML private Label							lblCivilityIdt;
 	@FXML private Label							lblMessage;
+	@FXML private Label							lblTitre;
 	@FXML private TableView<Civility>			tbvDonnees;
 	@FXML private TableColumn<Civility, String>	tbcCivilityLbl;
 	@FXML private TableColumn<Civility, String>	tbcCivilityLbc;
 	@Override
 	public void initialize() {
+		
+		lblTitre.setText("Gestion des Civilités");
+		
+	    listeDonnees.addAll(selectAllCivility());
+	    
+		tbcCivilityLbc.setCellValueFactory(cellDataFeatures -> cellDataFeatures.getValue().getCivilityLbc());
+		tbcCivilityLbl.setCellValueFactory(cellDataFeatures -> cellDataFeatures.getValue().getCivilityLbl());
 
+	    tbvDonnees.setItems(listeDonnees);
 	}
+
+
 	/**
 	 * Methode 	: trtAffichageDonnees
 	 * Description 	: Methode gerant l'affichage et le reaffichage de la TableView
 	 */
 	private void  trtAffichageDonnees() {
-
+	
 	}
 	/**
 	 * Méthode permettant de gérer les zones de saisie 
 	 * @param civility [Civility]	: Civiliy a afficher, si null les zones sont Raz
 	 */
 	private void trtAffichageZones(Civility civility) {
-
+		
+		//Affichage de l'identifiant de la civilité selectionnée
+		lblCivilityIdt.setText(String.valueOf(civility.getCivilityIdt()));
+		
+		//TODO Completer pour le lbl et lbc
 	}
 	/**
 	 * Méthode permettant de supprimer le contour en erreur
@@ -66,7 +84,9 @@ public class CivilityAdminController extends AdministrationManagementController 
 	 * @return	[boolean]	: indicateur si présence d'erreurs dans les zones
 	 */
 	private boolean trtControlesZones() {
+		return false;
 	}
+	
 	@Override
 	public void evtOnMouseClickedBtnModifier() {
 	}
@@ -75,9 +95,20 @@ public class CivilityAdminController extends AdministrationManagementController 
 	}
 	@Override
 	public void evtOnMouseClickedBtnSupprimer() {
+		deleteCivility(civilitySelected.getCivilityIdt());
 	}
+	
 	@Override
 	public void evtOnMousePressedTbvDonnees(MouseEvent event) {
+		if(event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+			civilitySelected = tbvDonnees.getSelectionModel().getSelectedItem();
+			if(civilitySelected != null) {
+				trtAffichageZones(civilitySelected);
+				btnAjouter.setDisable(false);
+				btnModifier.setDisable(false);
+				btnSupprimer.setDisable(false);
+			}
+		}
 	}
 	/**
 	 * Méthode permettant de gérer l'activité des boutons

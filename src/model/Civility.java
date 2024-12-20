@@ -1,5 +1,8 @@
 package model;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 public class Civility {
 
 	/**
@@ -8,8 +11,8 @@ public class Civility {
 	 * civilityLbc	[String]	: Libellé court
 	 */
 	private int		civilityIdt;
-	private String	civilityLbl;
-	private String	civilityLbc;
+	private StringProperty	civilityLbl;
+	private StringProperty	civilityLbc;
 	/**
 	 * @param newCivilityIdt
 	 * @param newCivilityLbl
@@ -18,8 +21,9 @@ public class Civility {
 	public Civility(int newCivilityIdt, String newCivilityLbl, String newCivilityLbc) {
 		super();
 		this.civilityIdt = newCivilityIdt;
-		this.civilityLbl = newCivilityLbl;
-		this.civilityLbc = newCivilityLbc;
+		this.civilityLbl = new SimpleStringProperty(newCivilityLbl);
+		this.civilityLbc = new SimpleStringProperty(newCivilityLbc);
+		
 	}
 	public int getCivilityIdt() {
 		return civilityIdt;
@@ -27,22 +31,27 @@ public class Civility {
 	public void setCivilityIdt(int civilityIdt) {
 		this.civilityIdt = civilityIdt;
 	}
-	public String getCivilityLbl() {
+	public StringProperty getCivilityLbl() {
 		return civilityLbl;
 	}
-	public void setCivilityLbl(String civilityLbl) {
+	public void setCivilityLbl(StringProperty civilityLbl) {
 		this.civilityLbl = civilityLbl;
 	}
-	public String getCivilityLbc() {
+	public StringProperty getCivilityLbc() {
 		return civilityLbc;
 	}
-	public void setCivilityLbc(String civilityLbc) {
+	public void setCivilityLbc(StringProperty civilityLbc) {
 		this.civilityLbc = civilityLbc;
 	}
+	
 	@Override
 	public String toString() {
-	    return civilityLbc; 
+		return "Civility [civilityIdt=" + civilityIdt + ", civilityLbl=" + civilityLbl + ", civilityLbc=" + civilityLbc
+				+ "]";
 	}
+	
+	
+	
 	
 	
 }

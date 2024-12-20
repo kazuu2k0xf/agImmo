@@ -32,10 +32,13 @@ public class TypeAgentAdminController extends AdministrationManagementController
 	@FXML private Label								lblTypeAgentIdt;
 	@FXML private Label								lblMessage;
 	@FXML private TableView<TypeAgent>				tbvDonnees;
+	@FXML private Label								lblTitre;
 	@FXML private TableColumn<TypeAgent, String>	tbcTypeAgentLbl;
 	@FXML private TableColumn<TypeAgent, String>	tbcTypeAgentLbc;
 	@Override
 	public void initialize() {
+		lblTitre.setText("Gestion des types d'agents");
+
 	}
 	/**
 	 * Methode 	: trtAffichageDonnees

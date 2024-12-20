@@ -13,6 +13,8 @@ import java.sql.Statement;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Civility;
+import model.InfoEntete;
+import model.Sessions;
 
 /** ***********************************************************************************************
  * CLASSE : CivilityBdd
@@ -93,6 +95,133 @@ public class CivilityBdd extends ConnexionBdd {
 		}
 		return civility;	
 	}
+	
+	
+	/** *********************************************************************************
+	 * Sélectionne le nombre de civilités correspondant à un identifiant donné.
+	 * **********************************************************************************
+	 * @param civilityIdt L'identifiant de la civilité à rechercher.
+	 * @return Un objet Civility contenant le nombre de civilités trouvées, ou null si aucune n'est trouvée.
+	 */	
+	public static Civility selectNbreCivility(int civilityIdt) {
+		/** Déclaration des variables **/
+		Civility civility						= null;	
+		/** Initialisation de la requête **/
+		String SQL		 = "SELECT COUNT(*) FROM Civility WHERE civilityIdt = ?";
+		/** Connexion à la base de données **/
+		Connection connexion = trtConnexionBdd();
+		/** Traitements SQL */
+		try {
+			PreparedStatement preparedStatement  = initialisationRequete(connexion, SQL, false, civilityIdt);
+			ResultSet resultSet  = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				civility = map(resultSet);
+			}	
+		} catch (SQLException e) {
+			/**
+			 * L'utilisation de Class.getEnclosingMethod() de la classe Dummy (classe interne anonyme) renvoie un objet 
+			 * java.lang.reflect.Method qui contient des informations sur la méthode immédiatement englobante.
+			 */
+			class Dummy {};
+			String methodeName 	= Dummy.class.getEnclosingMethod().getName();
+			gestionDesExceptionsStates(e, SQL, classeName, methodeName);
+		}
+		return civility;	
+	}
+	
+	/** *********************************************************************************
+	 * Méthode permettant de supprimer une civilité à partir de son identifiant
+	 * **********************************************************************************
+	 * @param civilityIdt	[int]		: identifiant de la civilité
+	 * @return				[Civility]	: instance Civility supprimer
+	 */
+	public static Civility deleteCivility(int civilityIdt) {
+	    // Déclaration des variables
+		Civility civility						= null;	
+	    // Initialisation de la requête
+		String SQL		 = "DELETE FROM Civility WHERE civilityIdt LIKE ? ";
+	    // Connexion à la base de données
+	    Connection connexion = trtConnexionBdd();
+	   
+	        try {
+	            PreparedStatement preparedStatement = initialisationRequete(connexion, SQL, false, civilityIdt);
+	            int resultSet = preparedStatement.executeUpdate();
+	     
+	        } catch (SQLException e) {
+				/**
+				 * L'utilisation de Class.getEnclosingMethod() de la classe Dummy (classe interne anonyme) renvoie un objet 
+				 * java.lang.reflect.Method qui contient des informations sur la méthode immédiatement englobante.
+				 */
+				class Dummy {};
+				String methodeName 	= Dummy.class.getEnclosingMethod().getName();
+				gestionDesExceptionsStates(e, SQL, classeName, methodeName);
+			}
+	    
+	    return civility;
+	}
+	
+	
+	/** **********************************************************************************
+	 * Met à jour les informations d'une civilité dans la base de données.
+	 * **********************************************************************************
+	 * @param civility L'objet Civility contenant les nouvelles informations à mettre à jour.
+	 * @return Le nombre d'enregistrements mis à jour (normalement 1 si la mise à jour a réussi, 0 sinon).
+	 */
+	public static int updateCivility(Civility civility) {
+		/** Déclaration des variables */
+		int nbreEnreg	= 0;
+		/** Initialisation de la requête */
+	    String SQL = "UPDATE Civility SET civilityLbl = ?, civilityLbc = ? WHERE civilityIdt = ?";
+		/** Connexion à la base de données **/
+		Connection connexion = trtConnexionBdd();
+		/** Traitements SQL */
+		try {
+			PreparedStatement preparedStatement = initialisationRequete(connexion, SQL, false
+												,civility.getCivilityLbl()
+												,civility.getCivilityLbc()
+												);
+			nbreEnreg							= preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			class Dummy {};
+			String methodeName 	= Dummy.class.getEnclosingMethod().getName();
+			gestionDesExceptionsStates(e, SQL, classeName, methodeName);
+		}
+		return nbreEnreg;
+	}	
+	
+	
+	/** **********************************************************************************
+	 * Insère une nouvelle civilité dans la base de données.
+	 * **********************************************************************************
+	 * @param civility L'objet Civility contenant les informations de la nouvelle civilité à insérer.
+	 * @return Le nombre d'enregistrements insérés (normalement 1 si l'insertion a réussi, 0 sinon).
+	 */
+	public static int insertCivility(Civility civility) {
+		/** Déclaration des variables */
+		int nbreEnreg	= 0;
+		/** Initialisation de la requête */
+		String SQL = "INSERT INTO Civility (civilityLbl, civilityLbc) VALUES (?, ?, ?)";
+		/** Connexion à la base de données **/
+		Connection connexion = trtConnexionBdd();
+		/** Traitements SQL */
+		try {
+			PreparedStatement preparedStatement = initialisationRequete(connexion, SQL, false
+												,civility.getCivilityLbl()
+												,civility.getCivilityLbc()
+												);
+			nbreEnreg							= preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			/**
+			 * L'utilisation de Class.getEnclosingMethod() de la classe Dummy (classe interne anonyme) renvoie un objet 
+			 * java.lang.reflect.Method qui contient des informations sur la méthode immédiatement englobante.
+			 */
+			class Dummy {};
+			String methodeName 	= Dummy.class.getEnclosingMethod().getName();
+			gestionDesExceptionsStates(e, SQL, classeName, methodeName);
+		}
+		return nbreEnreg;
+	}
+	
 	/** *********************************************************************************
 	 * Méthode permettant de créer un objet de type [Civility] à partir 
 	 * d'un enregistrement de la base de données

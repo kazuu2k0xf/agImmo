@@ -44,6 +44,7 @@ public class InfoEnteteAdminController extends AdministrationManagementControlle
 	@FXML private Label								lblInfoEnteteIdt;
 	@FXML private Label								lblMessage;
 	@FXML private Label								lblTotalLignesDetail;
+	@FXML private Label								lblTitre;
 	@FXML private Spinner<Integer> 					spiInfoEnteteNbreLigneMax;
 	@FXML private TableView<InfoEntete>				tbvDonnees;
 	@FXML private TableColumn<InfoEntete, String>	tbcInfoEnteteKey;
@@ -52,6 +53,8 @@ public class InfoEnteteAdminController extends AdministrationManagementControlle
 
 	@Override
 	public void initialize() {
+		lblTitre.setText("Gestion des entêtes d'info");
+
 	}
 	/**
 	 * Methode 	: trtAffichageDonnees
