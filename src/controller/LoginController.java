@@ -3,6 +3,7 @@ package controller;
 import static bdd.AgentBdd.selectAgentByLoginPwd;
 import static bdd.ConnexionsBdd.insertConnexions;
 import static bdd.ConnexionsBdd.deleteConnexions;
+import static bdd.InfoDetailBdd.selectOneInfoDetailDescription;
 
 import static batch.TraitementsBatch.traitementChiffrementDonneesPersonnelles;
 import static bdd.FenetresBdd.selectOneFenetre;
@@ -10,6 +11,7 @@ import static utilities.UtilitiesFermeture.fenetreFermeture;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+
 
 import static utilities.UtilitiesBlowFish.encrypt;
 
@@ -33,6 +35,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.Agent;
 import model.Fenetres;
+import model.InfoDetail;
 import model.InfoEntete;
 import model.LoaderFXML;
 import model.Sessions;
@@ -64,6 +67,9 @@ public class LoginController {
 	private boolean compteBloque = false;
 	private String sessionUUID;
 	public Sessions sessions = null;
+	InfoDetail nbreErreursConnexions = selectOneInfoDetailDescription(Cstes.DEFAULT, Cstes.NBRERREURSLOGIN);
+	InfoDetail dureeBlqLogin = selectOneInfoDetailDescription(Cstes.DEFAULT, Cstes.DUREEBLQLOGIN);
+
 
 
 
@@ -76,6 +82,7 @@ public class LoginController {
 		//Initialise les labels non visible
 		lblErreur.setVisible(false);
 		lblDepassement.setVisible(false);
+		System.out.println(dureeBlqLogin.getInfoDetailValueInt());
 		
 
 		//Appel de la méthode traitement chiffrement données personnelles
@@ -133,6 +140,8 @@ public class LoginController {
 	    String pwd = pwfPwd.getText();
 	    
 	    Agent agent = selectAgentByLoginPwd(login);
+	    
+	   
 
 	    if (agent == null || (agent != null && !BCrypt.verifyer().verify(pwd.toCharArray(), agent.getAgentPwd()).verified)) {
 	        tentativeConnexion++;
@@ -141,13 +150,14 @@ public class LoginController {
 	        lblErreur.setVisible(true);
 	        insertConnexions(sessionUUID);
 
-	        if (tentativeConnexion >= 3) {
+	       
+	        if (tentativeConnexion > nbreErreursConnexions.getInfoDetailValueInt()) {
 	            compteBloque = true;
 	            btnLogin.setDisable(true);
 	            btnQuitter.setDisable(true);
 
 	            Timeline timeline = new Timeline();
-	            final int[] countdownStarter = {30};
+	            final int[] countdownStarter = {dureeBlqLogin.getInfoDetailValueInt() * 60};
 
 	            timeline.getKeyFrames().add(
 	                new KeyFrame(Duration.seconds(1),
@@ -156,7 +166,7 @@ public class LoginController {
 	                        public void handle(ActionEvent event) {
 	                            countdownStarter[0]--;
 	                            lblDepassement.setVisible(true);
-	                            lblDepassement.setText("Le compte est bloqué pendant encore " + countdownStarter[0] + " seconde(s)");
+	                            lblDepassement.setText("Le compte est bloqué pendant encore " + countdownStarter[0] % 60 + " seconde(s)");
 
 	                            if (countdownStarter[0] <= 0) {
 	                                btnLogin.setDisable(false);
@@ -201,7 +211,9 @@ public class LoginController {
 	 
 	/** Fermeture de la page en cliquant sur le bouton quitter**/
 	@FXML public void evtMouseClickedBtnQuitter() {
-			this.dialogStage.close();
+	    deleteConnexions(sessionUUID);
+		this.dialogStage.close();
+			
 			
 	}
 }
