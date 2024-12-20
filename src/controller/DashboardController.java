@@ -49,7 +49,6 @@ public class DashboardController {
 		gestionEtatsDesLieux();
 
 		lblVersion.setText(Cstes.VERSIONAPPLICATION);
-		System.out.println(selectOneFenetre(Cstes.ADMINISTRATION));
 	}
 	/**
 	 * Méthode servant à définir le stage pour pouvoir fermer la fenêtre
