@@ -107,7 +107,7 @@ public class CivilityBdd extends ConnexionBdd {
 		/** Déclaration des variables **/
 		Civility civility						= null;	
 		/** Initialisation de la requête **/
-		String SQL		 = "SELECT COUNT(*) FROM Civility WHERE civilityIdt = ?";
+		   String SQL = "SELECT COUNT(*) FROM Agent WHERE agentCivility = ?";
 		/** Connexion à la base de données **/
 		Connection connexion = trtConnexionBdd();
 		/** Traitements SQL */
@@ -200,7 +200,7 @@ public class CivilityBdd extends ConnexionBdd {
 		/** Déclaration des variables */
 		int nbreEnreg	= 0;
 		/** Initialisation de la requête */
-		String SQL = "INSERT INTO Civility (civilityLbl, civilityLbc) VALUES (?, ?, ?)";
+		String SQL = "INSERT INTO Civility (civilityLbl, civilityLbc) VALUES (?, ?)";
 		/** Connexion à la base de données **/
 		Connection connexion = trtConnexionBdd();
 		/** Traitements SQL */

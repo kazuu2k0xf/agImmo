@@ -56,6 +56,13 @@ public class CivilityAdminController extends AdministrationManagementController 
 	 * Description 	: Methode gerant l'affichage et le reaffichage de la TableView
 	 */
 	private void  trtAffichageDonnees() {
+		tbvDonnees.getItems().clear();
+		listeDonnees.clear();
+		
+		listeDonnees.addAll(selectAllCivility());
+		
+		tbvDonnees.setItems(listeDonnees);
+		
 	
 	}
 	/**
@@ -65,10 +72,23 @@ public class CivilityAdminController extends AdministrationManagementController 
 	private void trtAffichageZones(Civility civility) {
 		
 		//Affichage de l'identifiant de la civilité selectionnée
-		lblCivilityIdt.setText(String.valueOf(civility.getCivilityIdt()));
 		
-		//TODO Completer pour le lbl et lbc
+		if (civility == null) {
+			lblCivilityIdt.setText("");
+			txfCivilityLbc.setText("");
+			txfCivilityLbl.setText("");
+			lblMessage.setText("");
+		} 
+		else
+			
+		lblCivilityIdt.setText(String.valueOf(civility.getCivilityIdt()));
+		txfCivilityLbl.setText(civility.getCivilityLbl().getValue());
+        txfCivilityLbc.setText(civility.getCivilityLbc().getValue());
+        lblMessage.setText("");
+		
 	}
+	
+	
 	/**
 	 * Méthode permettant de supprimer le contour en erreur
 	 * @param textField	[TextField]
@@ -84,18 +104,40 @@ public class CivilityAdminController extends AdministrationManagementController 
 	 * @return	[boolean]	: indicateur si présence d'erreurs dans les zones
 	 */
 	private boolean trtControlesZones() {
-		return false;
+	    if (!isTextFieldEmpty(txfCivilityLbl) && !isTextFieldEmpty(txfCivilityLbc)) {
+	        return true;
+	    } else {
+	        return false;
+	    }
 	}
+
 	
 	@Override
 	public void evtOnMouseClickedBtnModifier() {
+		if(trtControlesZones()) {
+			
+		}
+		
 	}
 	@Override
 	public void evtOnMouseClickedBtnAjouter() {
+		if(trtControlesZones()) {
+		Civility civilite = new Civility(0, txfCivilityLbl.getText() , txfCivilityLbc.getText());
+		insertCivility(civilite);
+		trtAffichageDonnees();
+		trtAffichageZones(civilite);
+		gestionBtn(true, true, false);
+		}
 	}
 	@Override
 	public void evtOnMouseClickedBtnSupprimer() {
+		if(selectNbreCivility(civilitySelected.getCivilityIdt()) == null) {
 		deleteCivility(civilitySelected.getCivilityIdt());
+		trtAffichageDonnees();
+		trtAffichageZones(civilitySelected);
+		gestionBtn(true, true, false);
+		lblMessage.setText("la civilité ne peut etre supprimée, elle est utilisée !! ");
+		}
 	}
 	
 	@Override
@@ -104,9 +146,7 @@ public class CivilityAdminController extends AdministrationManagementController 
 			civilitySelected = tbvDonnees.getSelectionModel().getSelectedItem();
 			if(civilitySelected != null) {
 				trtAffichageZones(civilitySelected);
-				btnAjouter.setDisable(false);
-				btnModifier.setDisable(false);
-				btnSupprimer.setDisable(false);
+				gestionBtn(false, false, false);
 			}
 		}
 	}
@@ -117,5 +157,15 @@ public class CivilityAdminController extends AdministrationManagementController 
 	 * @param supprimer	[boolean]
 	 */
 	private void gestionBtn(boolean ajouter, boolean modifier, boolean supprimer) {
+	    if (selectNbreCivility(civilitySelected.getCivilityIdt()) != null) {
+	        btnAjouter.setDisable(!ajouter);
+	        btnModifier.setDisable(!modifier);
+	        btnSupprimer.setDisable(!supprimer);
+	    } else {
+	        btnAjouter.setDisable(ajouter);
+	        btnModifier.setDisable(modifier);
+	        btnSupprimer.setDisable(supprimer);
+	    }
 	}
+
 }

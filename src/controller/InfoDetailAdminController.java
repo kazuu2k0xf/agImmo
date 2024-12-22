@@ -83,6 +83,7 @@ public class InfoDetailAdminController extends AdministrationManagementControlle
 	 * @return	[boolean]	: indicateur si présence d'erreurs dans les zones
 	 */
 	private boolean trtControlesZones() {
+		
 	}
 	@Override
 	public void evtOnMouseClickedBtnModifier() {
