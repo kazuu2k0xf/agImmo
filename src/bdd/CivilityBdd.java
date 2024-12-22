@@ -159,10 +159,10 @@ public class CivilityBdd extends ConnexionBdd {
 
 
 	/** **********************************************************************************
-	 * Met à jour les informations d'une civilité dans la base de données.
+	 * Méthode permettant de mofifier une civility
 	 * **********************************************************************************
-	 * @param civility L'objet Civility contenant les nouvelles informations à mettre à jour.
-	 * @return Le nombre d'enregistrements mis à jour (normalement 1 si la mise à jour a réussi, 0 sinon).
+	 * @param civility 	[Civility]  	: Civility à modifier
+	 * @return 			[int]			: nombre d'enregistrement supprimés
 	 */
 	public static int updateCivility(Civility civility) {
 		/** Déclaration des variables */
@@ -174,8 +174,9 @@ public class CivilityBdd extends ConnexionBdd {
 		/** Traitements SQL */
 		try {
 			PreparedStatement preparedStatement = initialisationRequete(connexion, SQL, false
-					,civility.getCivilityLbl().get()
-					,civility.getCivilityLbc().get()
+					,civility.getCivilityLbl()
+					,civility.getCivilityLbc()
+					,civility.getCivilityIdt()
 					);
 			nbreEnreg							= preparedStatement.executeUpdate();
 		} catch (SQLException e) {
@@ -188,10 +189,10 @@ public class CivilityBdd extends ConnexionBdd {
 
 
 	/** **********************************************************************************
-	 * Insère une nouvelle civilité dans la base de données.
+	 * Méthode permettant d'insérer une civility
 	 * **********************************************************************************
-	 * @param civility L'objet Civility contenant les informations de la nouvelle civilité à insérer.
-	 * @return Le nombre d'enregistrements insérés (normalement 1 si l'insertion a réussi, 0 sinon).
+	 * @param civility 	[Civility] 	: Civility à modifier
+	 * @return 			[int] 		: nombre d'enregistrements supprimés
 	 */
 	public static int insertCivility(Civility civility) {
 		/** Déclaration des variables */
@@ -203,8 +204,8 @@ public class CivilityBdd extends ConnexionBdd {
 		/** Traitements SQL */
 		try {
 			PreparedStatement preparedStatement = initialisationRequete(connexion, SQL, false
-					,civility.getCivilityLbl().get()
-					,civility.getCivilityLbc().get()
+					,civility.getCivilityLbl()
+					,civility.getCivilityLbc()
 					);
 			nbreEnreg							= preparedStatement.executeUpdate();
 		} catch (SQLException e) {

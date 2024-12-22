@@ -44,16 +44,16 @@ public class CivilityAdminController extends AdministrationManagementController 
 
 		listeDonnees.addAll(selectAllCivility());
 
-		tbcCivilityLbc.setCellValueFactory(cellDataFeatures -> cellDataFeatures.getValue().getCivilityLbc());
-		tbcCivilityLbl.setCellValueFactory(cellDataFeatures -> cellDataFeatures.getValue().getCivilityLbl());
+		tbcCivilityLbc.setCellValueFactory(cellDataFeatures -> cellDataFeatures.getValue().getCivilityLbcProperty());
+		tbcCivilityLbl.setCellValueFactory(cellDataFeatures -> cellDataFeatures.getValue().getCivilityLblProperty());
 
 		tbvDonnees.setItems(listeDonnees);
 
 		lblCivilityIdt.setText("");
 		lblMessage.setText("");
 		
-		btnModifier.setDisable(true);
-		btnSupprimer.setDisable(true);
+		
+		gestionBtn(true, true, false);
 	}
 
 
@@ -84,12 +84,13 @@ public class CivilityAdminController extends AdministrationManagementController 
 			txfCivilityLbc.setText("");
 			txfCivilityLbl.setText("");
 			lblMessage.setText("");
+			gestionBtn(true, true,false);
 			
 		} else {
 			
 			lblCivilityIdt.setText(String.valueOf(civility.getCivilityIdt()));
-			txfCivilityLbl.setText(civility.getCivilityLbl().getValue());
-			txfCivilityLbc.setText(civility.getCivilityLbc().getValue());
+			txfCivilityLbl.setText(civility.getCivilityLbl());
+			txfCivilityLbc.setText(civility.getCivilityLbc());
 			lblMessage.setText("");
 		}
 	}
@@ -120,8 +121,19 @@ public class CivilityAdminController extends AdministrationManagementController 
 
 	@Override
 	public void evtOnMouseClickedBtnModifier() {
+		
 		if(trtControlesZones()) {
-
+			
+			civilitySelected.setCivilityLbc(txfCivilityLbc.getText());
+			civilitySelected.setCivilityLbl(txfCivilityLbl.getText());
+			civilitySelected.setCivilityIdt(Integer.parseInt(lblCivilityIdt.getText()));
+			
+			updateCivility(civilitySelected);
+			trtAffichageDonnees();
+			
+			civilitySelected = null;
+			trtAffichageZones(civilitySelected);
+			
 		}
 
 	}
@@ -144,7 +156,7 @@ public class CivilityAdminController extends AdministrationManagementController 
 		if(selectNbreCivility(civilitySelected.getCivilityIdt()) == 0) {
 
 			//Affichage de la dialogBox lors de la suppression 
-			DialogBox dialogBox = new DialogBox("Suppression de la civilisation " + civilitySelected.getCivilityLbl().get(), "", "Voulez-vous la supprimer", AlertType.CONFIRMATION, ButtonType.CANCEL);
+			DialogBox dialogBox = new DialogBox("Suppression de la civilisation " + civilitySelected.getCivilityLbl(), "", "Voulez-vous la supprimer", AlertType.CONFIRMATION, ButtonType.CANCEL);
 			ButtonType reponse = dialogBox.showDialogConfirmation();
 
 			if(reponse == ButtonType.OK) {
