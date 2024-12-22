@@ -177,8 +177,8 @@ public class CivilityBdd extends ConnexionBdd {
 		/** Traitements SQL */
 		try {
 			PreparedStatement preparedStatement = initialisationRequete(connexion, SQL, false
-												,civility.getCivilityLbl()
-												,civility.getCivilityLbc()
+												,civility.getCivilityLbl().get()
+												,civility.getCivilityLbc().get()
 												);
 			nbreEnreg							= preparedStatement.executeUpdate();
 		} catch (SQLException e) {
@@ -206,8 +206,8 @@ public class CivilityBdd extends ConnexionBdd {
 		/** Traitements SQL */
 		try {
 			PreparedStatement preparedStatement = initialisationRequete(connexion, SQL, false
-												,civility.getCivilityLbl()
-												,civility.getCivilityLbc()
+												,civility.getCivilityLbl().get()
+												,civility.getCivilityLbc().get()
 												);
 			nbreEnreg							= preparedStatement.executeUpdate();
 		} catch (SQLException e) {
