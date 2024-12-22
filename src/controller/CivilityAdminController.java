@@ -43,16 +43,17 @@ public class CivilityAdminController extends AdministrationManagementController 
 		lblTitre.setText("Gestion des Civilités");
 
 		listeDonnees.addAll(selectAllCivility());
-
+		
 		tbcCivilityLbc.setCellValueFactory(cellDataFeatures -> cellDataFeatures.getValue().getCivilityLbcProperty());
 		tbcCivilityLbl.setCellValueFactory(cellDataFeatures -> cellDataFeatures.getValue().getCivilityLblProperty());
 
+		//Ajout des civilité de la TableView
 		tbvDonnees.setItems(listeDonnees);
 
 		lblCivilityIdt.setText("");
 		lblMessage.setText("");
 		
-		
+		//Initilisation des bouton
 		gestionBtn(true, true, false);
 	}
 
@@ -156,7 +157,7 @@ public class CivilityAdminController extends AdministrationManagementController 
 		if(selectNbreCivility(civilitySelected.getCivilityIdt()) == 0) {
 
 			//Affichage de la dialogBox lors de la suppression 
-			DialogBox dialogBox = new DialogBox("Suppression de la civilisation " + civilitySelected.getCivilityLbl(), "", "Voulez-vous la supprimer", AlertType.CONFIRMATION, ButtonType.CANCEL);
+			DialogBox dialogBox = new DialogBox("Suppression de la civilité " + civilitySelected.getCivilityLbl(), "", "Voulez-vous la supprimer", AlertType.CONFIRMATION, ButtonType.CANCEL);
 			ButtonType reponse = dialogBox.showDialogConfirmation();
 
 			if(reponse == ButtonType.OK) {
