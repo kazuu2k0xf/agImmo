@@ -95,28 +95,27 @@ public class CivilityBdd extends ConnexionBdd {
 		}
 		return civility;	
 	}
-	
-	
+
+
 	/** *********************************************************************************
-	 * Sélectionne le nombre de civilités correspondant à un identifiant donné.
+	 * Méthode permentant de contôler si la civilité est utilisée
 	 * **********************************************************************************
-	 * @param civilityIdt L'identifiant de la civilité à rechercher.
-	 * @return Un objet Civility contenant le nombre de civilités trouvées, ou null si aucune n'est trouvée.
+	 * @return 		[int]   : Nombre d'enregistrement trouvée
 	 */	
-	public static Civility selectNbreCivility(int civilityIdt) {
+	public static int selectNbreCivility(int civilityIdt) {
 		/** Déclaration des variables **/
-		Civility civility						= null;	
+		int civility							= 0;	
 		/** Initialisation de la requête **/
-		   String SQL = "SELECT COUNT(*) FROM Agent WHERE agentCivility = ?";
+		String SQL = "SELECT COUNT(*) FROM Agent WHERE agentCivility = ?";
 		/** Connexion à la base de données **/
 		Connection connexion = trtConnexionBdd();
 		/** Traitements SQL */
-		try {
-			PreparedStatement preparedStatement  = initialisationRequete(connexion, SQL, false, civilityIdt);
-			ResultSet resultSet  = preparedStatement.executeQuery();
-			while (resultSet.next()) {
-				civility = map(resultSet);
-			}	
+		try (   PreparedStatement preparedStatement = initialisationRequete(connexion, SQL, false, civilityIdt);
+				ResultSet resultSet = preparedStatement.executeQuery()) {
+
+			if (resultSet.next()) {
+				civility = resultSet.getInt(1);
+			}
 		} catch (SQLException e) {
 			/**
 			 * L'utilisation de Class.getEnclosingMethod() de la classe Dummy (classe interne anonyme) renvoie un objet 
@@ -128,39 +127,37 @@ public class CivilityBdd extends ConnexionBdd {
 		}
 		return civility;	
 	}
-	
+
 	/** *********************************************************************************
-	 * Méthode permettant de supprimer une civilité à partir de son identifiant
+	 * Méthode permettant de supprimer une civility
 	 * **********************************************************************************
-	 * @param civilityIdt	[int]		: identifiant de la civilité
-	 * @return				[Civility]	: instance Civility supprimer
+	 * @param civility		[Civility]	: Civility à supprimer
+	 * @return				[int]		: nombre d'enregistrement supprimés 
 	 */
-	public static Civility deleteCivility(int civilityIdt) {
-	    // Déclaration des variables
-		Civility civility						= null;	
-	    // Initialisation de la requête
-		String SQL		 = "DELETE FROM Civility WHERE civilityIdt LIKE ? ";
-	    // Connexion à la base de données
-	    Connection connexion = trtConnexionBdd();
-	   
-	        try {
-	            PreparedStatement preparedStatement = initialisationRequete(connexion, SQL, false, civilityIdt);
-	            int resultSet = preparedStatement.executeUpdate();
-	     
-	        } catch (SQLException e) {
-				/**
-				 * L'utilisation de Class.getEnclosingMethod() de la classe Dummy (classe interne anonyme) renvoie un objet 
-				 * java.lang.reflect.Method qui contient des informations sur la méthode immédiatement englobante.
-				 */
-				class Dummy {};
-				String methodeName 	= Dummy.class.getEnclosingMethod().getName();
-				gestionDesExceptionsStates(e, SQL, classeName, methodeName);
-			}
-	    
-	    return civility;
+	public static int deleteCivility(Civility civility) {
+		/** Déclaration des variables */
+		int nbreEnreg	= 0;
+		// Initialisation de la requête
+		String SQL		 = "DELETE FROM Civility WHERE civilityIdt = ?";
+		// Connexion à la base de données
+		Connection connexion = trtConnexionBdd();
+		try (
+				PreparedStatement preparedStatement = initialisationRequete(connexion, SQL, false, civility.getCivilityIdt())) {
+			 	preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			/**
+			 * L'utilisation de Class.getEnclosingMethod() de la classe Dummy (classe interne anonyme) renvoie un objet 
+			 * java.lang.reflect.Method qui contient des informations sur la méthode immédiatement englobante.
+			 */
+			class Dummy {};
+			String methodeName 	= Dummy.class.getEnclosingMethod().getName();
+			gestionDesExceptionsStates(e, SQL, classeName, methodeName);
+		}
+
+		return nbreEnreg;
 	}
-	
-	
+
+
 	/** **********************************************************************************
 	 * Met à jour les informations d'une civilité dans la base de données.
 	 * **********************************************************************************
@@ -171,15 +168,15 @@ public class CivilityBdd extends ConnexionBdd {
 		/** Déclaration des variables */
 		int nbreEnreg	= 0;
 		/** Initialisation de la requête */
-	    String SQL = "UPDATE Civility SET civilityLbl = ?, civilityLbc = ? WHERE civilityIdt = ?";
+		String SQL = "UPDATE Civility SET civilityLbl = ?, civilityLbc = ? WHERE civilityIdt = ?";
 		/** Connexion à la base de données **/
 		Connection connexion = trtConnexionBdd();
 		/** Traitements SQL */
 		try {
 			PreparedStatement preparedStatement = initialisationRequete(connexion, SQL, false
-												,civility.getCivilityLbl().get()
-												,civility.getCivilityLbc().get()
-												);
+					,civility.getCivilityLbl().get()
+					,civility.getCivilityLbc().get()
+					);
 			nbreEnreg							= preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			class Dummy {};
@@ -188,8 +185,8 @@ public class CivilityBdd extends ConnexionBdd {
 		}
 		return nbreEnreg;
 	}	
-	
-	
+
+
 	/** **********************************************************************************
 	 * Insère une nouvelle civilité dans la base de données.
 	 * **********************************************************************************
@@ -206,9 +203,9 @@ public class CivilityBdd extends ConnexionBdd {
 		/** Traitements SQL */
 		try {
 			PreparedStatement preparedStatement = initialisationRequete(connexion, SQL, false
-												,civility.getCivilityLbl().get()
-												,civility.getCivilityLbc().get()
-												);
+					,civility.getCivilityLbl().get()
+					,civility.getCivilityLbc().get()
+					);
 			nbreEnreg							= preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			/**
@@ -221,7 +218,7 @@ public class CivilityBdd extends ConnexionBdd {
 		}
 		return nbreEnreg;
 	}
-	
+
 	/** *********************************************************************************
 	 * Méthode permettant de créer un objet de type [Civility] à partir 
 	 * d'un enregistrement de la base de données
@@ -233,11 +230,11 @@ public class CivilityBdd extends ConnexionBdd {
 		/** Déclaration du nouvel objet **/
 		Civility civility 			= null;
 		try {
-		int civilityIdt = resultset.getInt("civilityIdt");
-		String civilityLbl = resultset.getString("civilityLbl");
-		String civilityLbc = resultset.getString("civilityLbc");
-		civility = new Civility(civilityIdt, civilityLbl, civilityLbc);
-		
+			int civilityIdt = resultset.getInt("civilityIdt");
+			String civilityLbl = resultset.getString("civilityLbl");
+			String civilityLbc = resultset.getString("civilityLbc");
+			civility = new Civility(civilityIdt, civilityLbl, civilityLbc);
+
 		} catch (SQLException e) {
 			/**
 			 * L'utilisation de Class.getEnclosingMethod() de la classe Dummy (classe interne anonyme) renvoie un objet 
