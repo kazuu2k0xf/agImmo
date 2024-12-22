@@ -49,7 +49,7 @@ public class CivilityAdminController extends AdministrationManagementController 
 
 		tbvDonnees.setItems(listeDonnees);
 
-		lblTitre.setText("");
+		lblCivilityIdt.setText("");
 		lblMessage.setText("");
 		
 		btnModifier.setDisable(true);
@@ -122,20 +122,20 @@ public class CivilityAdminController extends AdministrationManagementController 
 	public void evtOnMouseClickedBtnModifier() {
 		if(trtControlesZones()) {
 
-
-
-
 		}
 
 	}
 	@Override
 	public void evtOnMouseClickedBtnAjouter() {
-		if(trtControlesZones()) {
+		
+		 if(trtControlesZones()) {
+			 
+			//Creation de l'objet 
 			Civility civilite = new Civility(0, txfCivilityLbl.getText() , txfCivilityLbc.getText());
-			insertCivility(civilite);
+			insertCivility(civilite);			
 			trtAffichageDonnees();
+			civilite = null;
 			trtAffichageZones(civilite);
-			gestionBtn(true, true, false);
 		}
 	}
 	
