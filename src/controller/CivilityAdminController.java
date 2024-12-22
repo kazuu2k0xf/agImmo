@@ -43,7 +43,7 @@ public class CivilityAdminController extends AdministrationManagementController 
 		lblTitre.setText("Gestion des Civilités");
 
 		listeDonnees.addAll(selectAllCivility());
-		
+
 		tbcCivilityLbc.setCellValueFactory(cellDataFeatures -> cellDataFeatures.getValue().getCivilityLbcProperty());
 		tbcCivilityLbl.setCellValueFactory(cellDataFeatures -> cellDataFeatures.getValue().getCivilityLblProperty());
 
@@ -52,7 +52,7 @@ public class CivilityAdminController extends AdministrationManagementController 
 
 		lblCivilityIdt.setText("");
 		lblMessage.setText("");
-		
+
 		//Initilisation des bouton
 		gestionBtn(true, true, false);
 	}
@@ -80,15 +80,15 @@ public class CivilityAdminController extends AdministrationManagementController 
 
 		//Affichage de l'identifiant de la civilité selectionnée
 		if (civility == null) {
-			
+
 			lblCivilityIdt.setText("");
 			txfCivilityLbc.setText("");
 			txfCivilityLbl.setText("");
 			lblMessage.setText("");
 			gestionBtn(true, true,false);
-			
+
 		} else {
-			
+
 			lblCivilityIdt.setText(String.valueOf(civility.getCivilityIdt()));
 			txfCivilityLbl.setText(civility.getCivilityLbl());
 			txfCivilityLbc.setText(civility.getCivilityLbc());
@@ -122,27 +122,27 @@ public class CivilityAdminController extends AdministrationManagementController 
 
 	@Override
 	public void evtOnMouseClickedBtnModifier() {
-		
+
 		if(trtControlesZones()) {
-			
+
 			civilitySelected.setCivilityLbc(txfCivilityLbc.getText());
 			civilitySelected.setCivilityLbl(txfCivilityLbl.getText());
 			civilitySelected.setCivilityIdt(Integer.parseInt(lblCivilityIdt.getText()));
-			
+
 			updateCivility(civilitySelected);
 			trtAffichageDonnees();
-			
+
 			civilitySelected = null;
 			trtAffichageZones(civilitySelected);
-			
+
 		}
 
 	}
 	@Override
 	public void evtOnMouseClickedBtnAjouter() {
-		
-		 if(trtControlesZones()) {
-			 
+
+		if(trtControlesZones()) {
+
 			//Creation de l'objet 
 			Civility civilite = new Civility(0, txfCivilityLbl.getText() , txfCivilityLbc.getText());
 			insertCivility(civilite);			
@@ -151,7 +151,7 @@ public class CivilityAdminController extends AdministrationManagementController 
 			trtAffichageZones(civilite);
 		}
 	}
-	
+
 	@Override
 	public void evtOnMouseClickedBtnSupprimer() {
 		if(selectNbreCivility(civilitySelected.getCivilityIdt()) == 0) {
@@ -182,7 +182,7 @@ public class CivilityAdminController extends AdministrationManagementController 
 
 				if (selectNbreCivility(civilitySelected.getCivilityIdt()) != 0) {
 					gestionBtn(true, true, false);
-					lblMessage.setText("le type d'agent ne peut pas être supprimé, il est utilisé !!");
+					lblMessage.setText("Le type d'agent ne peut pas être supprimé, il est utilisé !!");
 				} else {
 					gestionBtn(true, true, true);
 				}
