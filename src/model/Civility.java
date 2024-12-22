@@ -46,12 +46,6 @@ public class Civility {
 	
 	@Override
 	public String toString() {
-		return "Civility [civilityIdt=" + civilityIdt + ", civilityLbl=" + civilityLbl + ", civilityLbc=" + civilityLbc
-				+ "]";
+	    return civilityLbl.get();
 	}
-	
-	
-	
-	
-	
 }
