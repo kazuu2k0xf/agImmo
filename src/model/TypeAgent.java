@@ -39,10 +39,10 @@ public class TypeAgent {
 	}
 	
 
-	public void setTypeAgentLblProperty(String typeAgentLbl) {
+	public void setTypeAgentLbl(String typeAgentLbl) {
 		this.typeAgentLbl = new SimpleStringProperty(typeAgentLbl);
 	}
-	public void setTypeAgentLbl(StringProperty typeAgentLbl) {
+	public void setTypeAgentLblProperty(StringProperty typeAgentLbl) {
 		this.typeAgentLbl = typeAgentLbl;
 	}
 	
@@ -58,8 +58,9 @@ public class TypeAgent {
 		this.typeAgentLbc = new SimpleStringProperty(typeAgentLbc);
 	}
 	public void setTypeAgentLbcProperty(StringProperty typeAgentLbc) {
-		this.typeAgentLbc = (typeAgentLbc);
+		this.typeAgentLbc = typeAgentLbc;
 	}
+	
 	
 	
 	@Override
