@@ -41,7 +41,7 @@ public class TypeAgentBdd extends ConnexionBdd {
 		ObservableList<TypeAgent> listeDonnees 	= FXCollections.observableArrayList();
 		TypeAgent typeAgent						= null;	
 		/** Initialisation de la requête **/
-		String SQL		 = "SELECT typeAgentIdt, typeAgentLbl, typeAgentLbc FROM TypeAgent ORDER BY typeAgentLbl ";
+		String SQL		 = "SELECT typeAgentIdt, typeAgentLbl, typeAgentLbc FROM TypeAgent ORDER BY typeAgentLbl";
 		/** Connexion à la base de données **/
 		Connection connexion = trtConnexionBdd();
 		/** Traitements SQL */
