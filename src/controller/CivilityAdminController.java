@@ -181,7 +181,7 @@ public class CivilityAdminController extends AdministrationManagementController 
 				trtAffichageZones(civilitySelected);
 
 				if (selectNbreCivility(civilitySelected.getCivilityIdt()) != 0) {
-					gestionBtn(true, true, false);
+					gestionBtn(false, true, false);
 					lblMessage.setText("Le type d'agent ne peut pas être supprimé, il est utilisé !!");
 				} else {
 					gestionBtn(true, true, true);
