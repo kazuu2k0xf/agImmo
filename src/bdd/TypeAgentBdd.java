@@ -173,9 +173,9 @@ public class TypeAgentBdd extends ConnexionBdd {
 		/** Traitements SQL */
 		try {
 			PreparedStatement preparedStatement = initialisationRequete(connexion, SQL, false
-					,typeAgent.getTypeAgentIdt()
 					,typeAgent.getTypeAgentLbl()
 					,typeAgent.getTypeAgentLbc()
+					,typeAgent.getTypeAgentIdt()
 					);
 			nbreEnreg							= preparedStatement.executeUpdate();
 		} catch (SQLException e) {
