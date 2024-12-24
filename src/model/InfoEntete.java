@@ -39,15 +39,27 @@ public class InfoEntete {
 	public void setInfoEnteteIdt(int infoEnteteIdt) {
 		this.infoEnteteIdt = infoEnteteIdt;
 	}
+	
 	public String getInfoEnteteKey() {
 		return infoEnteteKey.get();
 	}
+	public StringProperty getInfoEnteteKeyProperty() {
+		return infoEnteteKey;
+	}
+	
 	public void setInfoEnteteKey(String infoEnteteKey) {
 		this.infoEnteteKey = new SimpleStringProperty(infoEnteteKey);
 	}
+	
+	
 	public String getInfoEnteteDescription() {
 		return infoEnteteDescription.get();
 	}
+	public StringProperty getInfoEnteteDescriptionProperty() {
+		return infoEnteteDescription;
+	}
+	
+	
 	public void setInfoEnteteDescription(String infoEnteteDescription) {
 		this.infoEnteteDescription = new SimpleStringProperty(infoEnteteDescription);
 	}
