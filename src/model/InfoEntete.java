@@ -1,5 +1,8 @@
 package model;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 public class InfoEntete {
 
 	/**
@@ -10,8 +13,8 @@ public class InfoEntete {
 	 * infoEnteteNbreDetailMax	[int]		: Nombre de lignes de détail de l'information (facultatif)
 	 */
 	private int 	infoEnteteIdt;
-	private String	infoEnteteKey;
-	private String  infoEnteteDescription;
+	private StringProperty	infoEnteteKey;
+	private StringProperty  infoEnteteDescription;
 	private String  infoEnteteCbx;
 	private int 	infoEnteteNbreDetailMax;
 	/**
@@ -25,8 +28,8 @@ public class InfoEntete {
 			int newInfoEnteteNbreDetailMax) {
 		super();
 		this.infoEnteteIdt 				= newInfoEnteteIdt;
-		this.infoEnteteKey 				= newInfoEnteteKey;
-		this.infoEnteteDescription 		= newInfoEnteteDescription;
+		this.infoEnteteKey 				= new SimpleStringProperty(newInfoEnteteKey);
+		this.infoEnteteDescription 		= new SimpleStringProperty(newInfoEnteteDescription);
 		this.infoEnteteCbx 				= newInfoEnteteCbx;
 		this.infoEnteteNbreDetailMax 	= newInfoEnteteNbreDetailMax;
 	}
@@ -37,16 +40,16 @@ public class InfoEntete {
 		this.infoEnteteIdt = infoEnteteIdt;
 	}
 	public String getInfoEnteteKey() {
-		return infoEnteteKey;
+		return infoEnteteKey.get();
 	}
 	public void setInfoEnteteKey(String infoEnteteKey) {
-		this.infoEnteteKey = infoEnteteKey;
+		this.infoEnteteKey = new SimpleStringProperty(infoEnteteKey);
 	}
 	public String getInfoEnteteDescription() {
-		return infoEnteteDescription;
+		return infoEnteteDescription.get();
 	}
 	public void setInfoEnteteDescription(String infoEnteteDescription) {
-		this.infoEnteteDescription = infoEnteteDescription;
+		this.infoEnteteDescription = new SimpleStringProperty(infoEnteteDescription);
 	}
 	public String getInfoEnteteCbx() {
 		return infoEnteteCbx;
