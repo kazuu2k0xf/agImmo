@@ -130,6 +130,37 @@ public class InfoEnteteBdd extends ConnexionBdd {
 	}
 	
 	/** *********************************************************************************
+	 * Méthode permentant de contôler si l'entête est utilisée
+	 * **********************************************************************************
+	 * @return 		[int]   : Nombre d'enregistrement trouvés
+	 */	
+	public static int selectNbreInfoDetail(int infoEnteteIdt) {
+		/** Déclaration des variables **/
+		int infoEntete							= 0;	
+		/** Initialisation de la requête **/
+		String SQL = "SELECT COUNT(*) FROM infoDetail WHERE infoEnteteIdt = ?";
+		/** Connexion à la base de données **/
+		Connection connexion = trtConnexionBdd();
+		/** Traitements SQL */
+		try (   PreparedStatement preparedStatement = initialisationRequete(connexion, SQL, false, infoEnteteIdt);
+				ResultSet resultSet = preparedStatement.executeQuery()) {
+
+			if (resultSet.next()) {
+				infoEntete = resultSet.getInt(1);
+			}
+		} catch (SQLException e) {
+			/**
+			 * L'utilisation de Class.getEnclosingMethod() de la classe Dummy (classe interne anonyme) renvoie un objet 
+			 * java.lang.reflect.Method qui contient des informations sur la méthode immédiatement englobante.
+			 */
+			class Dummy {};
+			String methodeName 	= Dummy.class.getEnclosingMethod().getName();
+			gestionDesExceptionsStates(e, SQL, classeName, methodeName);
+		}
+		return infoEntete;	
+	}
+	
+	/** *********************************************************************************
 	 * Supprime une entrée InfoEntete de la base de données.
 	 *  *********************************************************************************
 	 * @param key L'objet InfoEntete à supprimer.
@@ -161,6 +192,71 @@ public class InfoEnteteBdd extends ConnexionBdd {
 	    return infoEntete;
 	}
 	
+	
+	/** **********************************************************************************
+	 * Méthode permettant d'insérer une entête
+	 * **********************************************************************************
+	 * @param infoEntete 	[InfoEntete] 	: InfoEntete à modifier
+	 * @return 				[int] 			: nombre d'enregistrements supprimés
+	 */
+	public static int insertInfoEntete(InfoEntete infoEntete) {
+		/** Déclaration des variables */
+		int nbreEnreg	= 0;
+		/** Initialisation de la requête */
+		String SQL = "INSERT INTO InfoEntete (infoEnteteKey, infoEnteteDescription, infoEnteteCbx, infoEnteteNbreDetailMax) VALUES (?, ?, ?, ?)";
+		/** Connexion à la base de données **/
+		Connection connexion = trtConnexionBdd();
+		/** Traitements SQL */
+		try {
+			PreparedStatement preparedStatement = initialisationRequete(connexion, SQL, false
+					,infoEntete.getInfoEnteteKey()
+					,infoEntete.getInfoEnteteDescription()
+					,infoEntete.getInfoEnteteCbx()
+					,infoEntete.getInfoEnteteNbreDetailMax()
+					);
+			nbreEnreg							= preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			/**
+			 * L'utilisation de Class.getEnclosingMethod() de la classe Dummy (classe interne anonyme) renvoie un objet 
+			 * java.lang.reflect.Method qui contient des informations sur la méthode immédiatement englobante.
+			 */
+			class Dummy {};
+			String methodeName 	= Dummy.class.getEnclosingMethod().getName();
+			gestionDesExceptionsStates(e, SQL, classeName, methodeName);
+		}
+		return nbreEnreg;
+	}
+	
+	/** **********************************************************************************
+	 * Méthode permettant de mofifier une entête
+	 * **********************************************************************************
+	 * @param infoEntete 	[InfoEntete]  	: InfoEntete à modifier
+	 * @return 				[int]			: nombre d'enregistrement supprimés
+	 */
+	public static int updateInfoEntete(InfoEntete infoEntete) {
+		/** Déclaration des variables */
+		int nbreEnreg	= 0;
+		/** Initialisation de la requête */
+		String SQL = "UPDATE InfoEntete SET infoEnteteKey = ?, infoEnteteDescription = ?, infoEnteteCbx = ?, infoEnteteNbreDetailMax = ?  WHERE infoEnteteIdt = ?";
+		/** Connexion à la base de données **/
+		Connection connexion = trtConnexionBdd();
+		/** Traitements SQL */
+		try {
+			PreparedStatement preparedStatement = initialisationRequete(connexion, SQL, false
+					,infoEntete.getInfoEnteteKey()
+					,infoEntete.getInfoEnteteDescription()
+					,infoEntete.getInfoEnteteCbx()
+					,infoEntete.getInfoEnteteNbreDetailMax()
+					,infoEntete.getInfoEnteteIdt()
+					);
+			nbreEnreg							= preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			class Dummy {};
+			String methodeName 	= Dummy.class.getEnclosingMethod().getName();
+			gestionDesExceptionsStates(e, SQL, classeName, methodeName);
+		}
+		return nbreEnreg;
+	}	
 	
 	/** *********************************************************************************
 	 * Méthode permettant de créer un objet de type [InfoEntete] à partir 
