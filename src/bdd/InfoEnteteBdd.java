@@ -40,7 +40,7 @@ public class InfoEnteteBdd extends ConnexionBdd {
 		ObservableList<InfoEntete> listeDonnees 	= FXCollections.observableArrayList();
 		InfoEntete infoEntete						= null;	
 		/** Initialisation de la requête **/
-		String SQL		= "";
+		String SQL		= "SELECT * FROM InfoEntete";
 		/** Connexion à la base de données **/
 		Connection connexion = trtConnexionBdd();
 		/** Traitements SQL */
