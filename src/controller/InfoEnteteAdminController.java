@@ -55,18 +55,67 @@ public class InfoEnteteAdminController extends AdministrationManagementControlle
 	public void initialize() {
 		lblTitre.setText("Gestion des entêtes d'info");
 
+		listeDonnees.addAll(selectAllInfoEntete());
+
+		tbcInfoEnteteKey.setCellValueFactory(cellDataFeatures -> cellDataFeatures.getValue().getInfoEnteteKeyProperty());
+		tbcInfoEnteteDescription.setCellValueFactory(cellDataFeatures -> cellDataFeatures.getValue().getInfoEnteteDescriptionProperty());
+
+		//Ajout des civilité de la TableView
+		tbvDonnees.setItems(listeDonnees);
+
+		lblInfoEnteteIdt.setText("");
+		lblMessage.setText("");
+		
+		//Initilisation du spinner
+		for(int i=1; i<=100; i++)listeDetailMax.add(i);
+		valueFactoryDetailMax = new SpinnerValueFactory.ListSpinnerValueFactory<Integer>(listeDetailMax); 
+		spiInfoEnteteNbreLigneMax.setValueFactory(valueFactoryDetailMax); 
+
+
+		//Initilisation des bouton
+		gestionBtn(true, true, false);
+
 	}
 	/**
 	 * Methode 	: trtAffichageDonnees
 	 * Description 	: Methode gerant l'affichage et le reaffichage de la TableView
 	 */
 	private void  trtAffichageDonnees() {
+		tbvDonnees.getItems().clear();
+		listeDonnees.clear();
+
+		listeDonnees.addAll(selectAllInfoEntete());
+
+		tbvDonnees.setItems(listeDonnees);
 	}
 	/**
 	 * Méthode permettant de gérer les zones de saisie 
 	 * @param infoEntete [InfoEntete]	: InfoEntete a afficher, si null les zones sont Raz
 	 */
 	private void trtAffichageZones(InfoEntete infoEntete) {
+
+		//Affichage de l'identifiant de l'entête selectionnée
+		if (infoEntete == null) {
+
+			lblInfoEnteteIdt.setText("");
+			txfInfoEnteteKey.setText("");
+			txfInfoEnteteDescription.setText("");
+			txfInfoEnteteCbx.setText("");
+			spiInfoEnteteNbreLigneMax.setValueFactory(valueFactoryDetailMax);
+			lblMessage.setText("");
+			gestionBtn(true, true,false);
+
+		} else {
+
+			lblInfoEnteteIdt.setText(String.valueOf(infoEntete.getInfoEnteteIdt()));
+			txfInfoEnteteKey.setText(infoEntete.getInfoEnteteKey());
+			txfInfoEnteteDescription.setText(infoEntete.getInfoEnteteDescription());
+			txfInfoEnteteCbx.setText(infoEntete.getInfoEnteteCbx());
+			valueFactoryDetailMax.setValue(infoEntete.getInfoEnteteNbreDetailMax()); 
+			spiInfoEnteteNbreLigneMax.setValueFactory(valueFactoryDetailMax); 
+			lblTotalLignesDetail.setText(" Nombre de ligne(s) de détail : " + selectNbreInfoDetail(infoEnteteSelected.getInfoEnteteIdt()));
+			lblMessage.setText("");
+		}
 	}
 	/**
 	 * Méthode permettant de supprimer le contour en erreur
@@ -99,7 +148,25 @@ public class InfoEnteteAdminController extends AdministrationManagementControlle
 
 	@Override
 	public void evtOnMousePressedTbvDonnees(MouseEvent event) {
+
+		if(event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+
+			infoEnteteSelected = tbvDonnees.getSelectionModel().getSelectedItem();
+
+			if(infoEnteteSelected != null) {
+				trtAffichageZones(infoEnteteSelected);
+
+				if (selectNbreInfoDetail(infoEnteteSelected.getInfoEnteteIdt()) != 0) {
+					gestionBtn(false, true, false);
+					lblMessage.setText("L'entête ne peut pas être supprimé, il a des lignes détail !!");
+				} else {
+					gestionBtn(true, true, true);
+				}
+			}
+		}
 	}
+
+
 	@FXML private void evtOnMouseClickedImvInfoEnteteDetail() {
 		Fenetres fenetre	  = selectOneFenetre(Cstes.DETAILINFO);
 		if(fenetre!=null) {
@@ -123,5 +190,8 @@ public class InfoEnteteAdminController extends AdministrationManagementControlle
 	 * @param supprimer	[boolean]
 	 */
 	private void gestionBtn(boolean ajouter, boolean modifier, boolean supprimer) {
+		btnAjouter.setDisable(!ajouter);
+		btnModifier.setDisable(!modifier);
+		btnSupprimer.setDisable(!supprimer);
 	}
 }
