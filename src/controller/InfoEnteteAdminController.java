@@ -1,5 +1,7 @@
 package controller;
 
+import static bdd.CivilityBdd.insertCivility;
+import static bdd.CivilityBdd.updateCivility;
 import static bdd.FenetresBdd.selectOneFenetre;
 import static bdd.InfoEnteteBdd.deleteInfoEntete;
 import static bdd.InfoEnteteBdd.insertInfoEntete;
@@ -23,6 +25,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import model.Civility;
 import model.Fenetres;
 import model.InfoEntete;
 import model.LoaderFXML;
@@ -65,7 +68,7 @@ public class InfoEnteteAdminController extends AdministrationManagementControlle
 
 		lblInfoEnteteIdt.setText("");
 		lblMessage.setText("");
-		
+
 		//Initilisation du spinner
 		for(int i=1; i<=100; i++)listeDetailMax.add(i);
 		valueFactoryDetailMax = new SpinnerValueFactory.ListSpinnerValueFactory<Integer>(listeDetailMax); 
@@ -127,6 +130,7 @@ public class InfoEnteteAdminController extends AdministrationManagementControlle
 		/** Retrait de la classe erreur **/
 		textField.getStyleClass().remove(classeErreur);
 	}
+	
 	/**
 	 * Méthodes permettant de contrôler les différentes zones de saisie
 	 * @return	[boolean]	: indicateur si présence d'erreurs dans les zones
@@ -141,12 +145,36 @@ public class InfoEnteteAdminController extends AdministrationManagementControlle
 
 	@Override
 	public void evtOnMouseClickedBtnModifier() {
-		
+		if(trtControlesZones("Modifier")) {
+
+			infoEnteteSelected.setInfoEnteteKey(txfInfoEnteteKey.getText());
+			infoEnteteSelected.setInfoEnteteDescription(txfInfoEnteteDescription.getText());
+			infoEnteteSelected.setInfoEnteteCbx(txfInfoEnteteCbx.getText());
+			infoEnteteSelected.setInfoEnteteNbreDetailMax(spiInfoEnteteNbreLigneMax.getValue());
+
+			updateInfoEntete(infoEnteteSelected);
+			trtAffichageDonnees();
+
+			infoEnteteSelected = null;
+			trtAffichageZones(infoEnteteSelected);
+
+		}
+
 	}
 
 	@Override
 	public void evtOnMouseClickedBtnAjouter() {
+		if (trtControlesZones("ajouter")) { 
+			InfoEntete infoEntete = new InfoEntete(0, txfInfoEnteteKey.getText(), txfInfoEnteteDescription.getText(), txfInfoEnteteCbx.getText(), spiInfoEnteteNbreLigneMax.getValue()
+					);
+
+			insertInfoEntete(infoEntete);			
+			trtAffichageDonnees();
+			infoEntete = null;
+			trtAffichageZones(infoEntete);
+		}
 	}
+
 
 	@Override
 	public void evtOnMouseClickedBtnSupprimer() {
