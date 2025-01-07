@@ -132,10 +132,16 @@ public class InfoEnteteAdminController extends AdministrationManagementControlle
 	 * @return	[boolean]	: indicateur si présence d'erreurs dans les zones
 	 */
 	private boolean trtControlesZones(String traitement) {
+		if (!isTextFieldEmpty(txfInfoEnteteKey) && !isTextFieldEmpty(txfInfoEnteteDescription) && !isTextFieldEmpty(txfInfoEnteteCbx)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override
 	public void evtOnMouseClickedBtnModifier() {
+		
 	}
 
 	@Override
@@ -144,6 +150,20 @@ public class InfoEnteteAdminController extends AdministrationManagementControlle
 
 	@Override
 	public void evtOnMouseClickedBtnSupprimer() {
+		if(selectNbreInfoDetail(infoEnteteSelected.getInfoEnteteIdt()) == 0) {
+
+			//Affichage de la dialogBox lors de la suppression 
+			DialogBox dialogBox = new DialogBox("Suppression de l'info entete " + infoEnteteSelected.getInfoEnteteKey(), "", "Voulez-vous la supprimer", AlertType.CONFIRMATION, ButtonType.CANCEL);
+			ButtonType reponse = dialogBox.showDialogConfirmation();
+
+			if(reponse == ButtonType.OK) {
+				deleteInfoEntete(infoEnteteSelected);
+				trtAffichageDonnees();
+				infoEnteteSelected = null;
+				trtAffichageZones(infoEnteteSelected);
+				gestionBtn(true, true, false);
+			}	
+		}
 	}
 
 	@Override
