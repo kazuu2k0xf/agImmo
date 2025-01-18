@@ -12,6 +12,7 @@ import java.sql.Statement;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import model.Civility;
 import model.InfoDetail;
 import model.InfoEntete;
 
@@ -136,6 +137,111 @@ public class InfoDetailBdd extends ConnexionBdd {
 		}
 		return infoDetail;			
 	}
+	
+	/** *********************************************************************************
+	 * Méthode permettant de supprimer un détail
+	 * **********************************************************************************
+	 * @param infodDetail		[InfoDetail]	: InfoDetail à supprimer
+	 * @return					[int]			: nombre d'enregistrement supprimés 
+	 */
+	public static int deleteInfoDetail(InfoDetail infodDetail) {
+		/** Déclaration des variables */
+		int nbreEnreg	= 0;
+		// Initialisation de la requête
+		String SQL		 = "DELETE FROM InfoDetail WHERE infoEnteteIdt = ?";
+		// Connexion à la base de données
+		Connection connexion = trtConnexionBdd();
+		try (
+				PreparedStatement preparedStatement = initialisationRequete(connexion, SQL, false, infodDetail.getInfoDetailIdt())) {
+			 	preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			/**
+			 * L'utilisation de Class.getEnclosingMethod() de la classe Dummy (classe interne anonyme) renvoie un objet 
+			 * java.lang.reflect.Method qui contient des informations sur la méthode immédiatement englobante.
+			 */
+			class Dummy {};
+			String methodeName 	= Dummy.class.getEnclosingMethod().getName();
+			gestionDesExceptionsStates(e, SQL, classeName, methodeName);
+		}
+
+		return nbreEnreg;
+	}
+
+
+	/** **********************************************************************************
+	 * Méthode permettant de mofifier une détail
+	 * **********************************************************************************
+	 * @param infodDetail 	[InfoDetail]  	: InfoDetail à modifier
+	 * @return 				[int]			: nombre d'enregistrement supprimés
+	 */
+	public static int updateInfoDetail(InfoDetail infodDetail) {
+		/** Déclaration des variables */
+		int nbreEnreg	= 0;
+		/** Initialisation de la requête */
+		String SQL = "UPDATE InfoDetail SET infoDetailDescription = ?, infoDetailLbl = ?, infoDetailLbc = ?, infoDetailValueInt = ?, infoDetailValueDouble = ?, infoDetailTri = ?, infoDetailDefault = ?";
+		/** Connexion à la base de données **/
+		Connection connexion = trtConnexionBdd();
+		/** Traitements SQL */
+		try {
+			PreparedStatement preparedStatement = initialisationRequete(connexion, SQL, false
+					,infodDetail.getInfoDetailDescription()
+					,infodDetail.getInfoDetailLbl()
+					,infodDetail.getInfoDetailLbc()
+					,infodDetail.getInfoDetailValueInt()
+					,infodDetail.getInfoDetailValueDouble()
+					,infodDetail.getInfoDetailTri()
+					,infodDetail.isInfoDetailDefault()
+					);
+			nbreEnreg							= preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			class Dummy {};
+			String methodeName 	= Dummy.class.getEnclosingMethod().getName();
+			gestionDesExceptionsStates(e, SQL, classeName, methodeName);
+		}
+		return nbreEnreg;
+	}	
+
+	
+
+	/** **********************************************************************************
+	 * Méthode permettant d'insérer un détail
+	 * **********************************************************************************
+	 * @param infodDetail 	[InfoDetail] 	: InfoDetail à modifier
+	 * @return 				[int] 			: nombre d'enregistrements supprimés
+	 */
+	public static int insertInfoDetail(InfoDetail infodDetail) {
+		/** Déclaration des variables */
+		int nbreEnreg	= 0;
+		/** Initialisation de la requête */
+		String SQL = "INSERT INTO InfoDetail (infoDetailDescription, infoDetailLbl, infoDetailLbc, infoDetailValueInt, infoDetailValueDouble, infoDetailTri, infoDetailDefault) VALUES (?, ?, ?, ?, ?, ?, ?)";
+		/** Connexion à la base de données **/
+		Connection connexion = trtConnexionBdd();
+		/** Traitements SQL */
+		try {
+			PreparedStatement preparedStatement = initialisationRequete(connexion, SQL, false
+					,infodDetail.getInfoDetailDescription()
+					,infodDetail.getInfoDetailLbl()
+					,infodDetail.getInfoDetailLbc()
+					,infodDetail.getInfoDetailValueInt()
+					,infodDetail.getInfoDetailValueDouble()
+					,infodDetail.getInfoDetailTri()
+					,infodDetail.isInfoDetailDefault()
+					);
+			nbreEnreg							= preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			/**
+			 * L'utilisation de Class.getEnclosingMethod() de la classe Dummy (classe interne anonyme) renvoie un objet 
+			 * java.lang.reflect.Method qui contient des informations sur la méthode immédiatement englobante.
+			 */
+			class Dummy {};
+			String methodeName 	= Dummy.class.getEnclosingMethod().getName();
+			gestionDesExceptionsStates(e, SQL, classeName, methodeName);
+		}
+		return nbreEnreg;
+	}
+
+	
+	
 	/** *********************************************************************************
 	 * Méthode permettant de créer un objet de type [InfoDetail] à partir 
 	 * d'un enregistrement de la base de données
