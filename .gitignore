@@ -3,3 +3,6 @@
 #Ignorer le fichier conf.properties
 
 conf.properties
+
+#Ignorer les fichier .sql
+.sql
