@@ -182,4 +182,33 @@ public class UtilitiesControls {
 		}
 		return textFieldNumeric;
 	}
+	/**
+	 * Méthode contrôlant une clé de chiffrement
+	 *  (?=.*\\d)    		:   doit contenir un chiffre entre 0 et 9
+	 *  (?=.*[a-z]) 		:   doit contenir une lettre en minuscule
+	 *  (?=.*[A-Z]) 		:   doit contenir une lettre en majuscule
+	 *  (?=.*[-+!*$@%_])	:   doit contenir un  des caracteres speciaux
+	 *  {8,20}				:   La longueur doit etre de 12
+	 * @param   textField		[TextField]
+	 * @param 	pwd				[String]
+	 * @return					[boolean]
+	 */
+	public static boolean validateKey(TextField textField){
+		/** Initialisation des variables **/
+		boolean keyFormat	= true;
+		String classeErreur = "zoneEnErreur";
+		String pwd			= textField.getText();	
+		/** Contrôle **/
+		Pattern pPwd 		= Pattern.compile("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[-+!*$@%_])([-+!*$@%_\\w]{12})$");
+		Matcher mPwd 		= pPwd.matcher(pwd);
+		keyFormat			= mPwd.matches();
+		/** Retrait de la classe erreur **/
+		textField.getStyleClass().remove(classeErreur);
+		/** Contrôle du format **/
+		if(!keyFormat) {
+			keyFormat	= false;
+			textField.getStyleClass().add(classeErreur);
+		}    	
+		return keyFormat;
+	}
 }

@@ -1,0 +1,127 @@
+package bdd;
+import static utilities.GestionExceptions.gestionDesExceptionsStates;
+import static utilities.UtilitiesJdbc.initialisationRequete;
+import static bdd.TownBdd.selectOneTown;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import model.Address;
+import model.Town;
+
+/**
+ * Cette classe contient les methodes CRUD de l'entite [Address]. 
+ * Elle herite de la Classe ConnexionBdd qui gere le driver et la connexion a la base de donnees
+ * 
+ * @author 		Alain CASARA
+ * @version		1.0
+ * Date			Juillet 2023
+ */
+
+public class AddressBdd extends ConnexionBdd {
+	/** Attributs de la classe **/
+	private static String classeName	= AddressBdd.class.getSimpleName();
+	/**
+	 * Description 			: Methode permettant de recuperer une adresse à partir de son identifiant
+	 * @param addressIdt	[int]		: Identifiant de l'adresse
+	 * @return				[Address]	: Instance de l'adresse
+	 */
+	public static Address selectOneAdresse(int addressIdt) {
+		/** Initialisation des variables **/
+		Address address	= null;
+		/** Initialisation de la requete **/
+		String SQL		= "";
+		/** Connexion a la base de donnees **/
+		Connection connexion = trtConnexionBdd();
+		if(connexion!=null) {
+			/** Traitements SQL */
+		}
+		return address;
+	}
+	/**
+	 * Description 					: Methode permettant de recuperer l'identifiant d'une adresse a partir de sa cle de generation
+	 * @param	addressGenerateKey	[String] 	: Cle de recherche
+	 * @return  					[int]		: Identifiant de l'adresse	            
+	 */
+	public static int selectOneAdresseByKey(String addressGenerateKey) {
+		/** Initialisation des variables **/
+		int	addressIdt	= 0;
+		/** Initialisation de la requete **/
+		String SQL		= "";
+		/** Connexion a la base de donnees **/
+		Connection connexion = trtConnexionBdd();
+		if(connexion!=null) {
+			/** Traitements SQL */
+		}
+		return addressIdt;
+	}	
+	/**
+	 * Description 			: Methode permettant d'inserer une adresse dans la base de donnees avec une requete INSERT.
+	 * @param	address		[Address]   	
+	 * @return  			[int]		: nombre d'enregistrements inseres, permet de controler que l'insertion s'est bien effectuee	            
+	 */
+	public static int insertAddress(Address address) {
+		/** Initialisation des variables **/
+		int nbreEnreg 	= 0;
+		/** Initialisation de la requete **/
+		String SQL		= "";
+		/** Connexion a la base de donnees **/
+		Connection connexion = trtConnexionBdd();
+		if(connexion!=null) {
+			/** Traitements SQL */
+		}
+		return nbreEnreg;		
+	}
+	/**
+	 * Description 			: Methode permettant de modifier une adresse dans la base de donnees avec une requete UPDATE.
+	 * @param	address		[Address]   	
+	 * @return  			[int]		: nombre d'enregistrements modifies, permet de controler que la modification s'est bien effectuee	            
+	 */
+	public static int updateAddress(Address address) {
+		/** Initialisation des variables **/
+		int nbreEnreg 	= 0;
+		/** Initialisation de la requete **/
+		String SQL		= "";
+		/** Connexion a la base de donnees **/
+		Connection connexion = trtConnexionBdd();
+		if(connexion!=null) {
+			/** Traitements SQL */
+		}
+		return nbreEnreg;	
+	}
+	/**
+	 * Description 			: Methode permettant de supprimer une adresse dans la base de donnees avec une requete DELETE.
+	 * @param	addressIdt	[int]   	
+	 * @return  			[int]	: nombre d'enregistrements supprimes, permet de controler que la suppression s'est bien effectuee	            
+	 */
+	public static int deleteAddress(int addressIdt) {
+		/** Initialisation des variables **/
+		int nbreEnreg 	= 0;
+		/** Initialisation de la requete **/
+		String SQL		= "";
+		/** Connexion a la base de donnees **/
+		Connection connexion = trtConnexionBdd();
+		if(connexion!=null) {
+			/** Traitements SQL */
+		}
+		return nbreEnreg;			
+	}
+	/**
+	 * Description 			: Methode permettant de d'instancier un objet [Address] a partir d'un enregistrement
+	 *                		  de la base de donnees.
+	 * @param 	resultset	[Resultset]	: resultat de la requete
+	 * @return				[Address]	: instance d'address creee
+	 */
+	private static Address map(ResultSet resultset) throws SQLException {
+		/** Initialisation des variables **/
+		Address address					= null;
+		try {
+		} catch (SQLException e) {
+			System.out.println("Erreur lors de la lecture des donnees de l'address : " + e);
+			e.printStackTrace();
+		}
+		return address;
+	}
+}
