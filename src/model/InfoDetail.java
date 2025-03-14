@@ -1,5 +1,8 @@
 package model;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 public class InfoDetail {
 	/**
 	 * infoDetailIdt			[int]		: Identifiant du détail de l'informatio
@@ -17,7 +20,7 @@ public class InfoDetail {
 	private int 			infoDetailIdt;
 	private int 			infoEnteteIdt;		
 	private int 			infoDetailKeyIdt;
-	private String			infoDetailDescription;
+	private String  		infoDetailDescription;
 	private String 			infoDetailLbl;
 	private String 			infoDetailLbc;
 	private int				infoDetailValueInt;
@@ -53,82 +56,132 @@ public class InfoDetail {
 		this.infoDetailDefault 		= newInfoDetailDefault;
 		this.infoEntete				= newInfoEntete;
 	}
+	/**
+	 * @return the infoDetailIdt
+	 */
 	public int getInfoDetailIdt() {
 		return infoDetailIdt;
 	}
-	public void setInfoDetailIdt(int infoDetailIdt) {
-		this.infoDetailIdt = infoDetailIdt;
-	}
+	/**
+	 * @return the infoEnteteIdt
+	 */
 	public int getInfoEnteteIdt() {
 		return infoEnteteIdt;
 	}
-	public void setInfoEnteteIdt(int infoEnteteIdt) {
-		this.infoEnteteIdt = infoEnteteIdt;
-	}
+	/**
+	 * @return the infoDetailKeyIdt
+	 */
 	public int getInfoDetailKeyIdt() {
 		return infoDetailKeyIdt;
 	}
-	public void setInfoDetailKeyIdt(int infoDetailKeyIdt) {
-		this.infoDetailKeyIdt = infoDetailKeyIdt;
-	}
+	/**
+	 * @return the infoDetailDescription
+	 */
 	public String getInfoDetailDescription() {
 		return infoDetailDescription;
 	}
-	public void setInfoDetailDescription(String infoDetailDescription) {
-		this.infoDetailDescription = infoDetailDescription;
+	public StringProperty getInfoDetailDescriptionProperty() {
+		return new SimpleStringProperty(infoDetailDescription);
 	}
+	/**
+	 * @return the infoDetailLbl
+	 */
 	public String getInfoDetailLbl() {
 		return infoDetailLbl;
 	}
-	public void setInfoDetailLbl(String infoDetailLbl) {
-		this.infoDetailLbl = infoDetailLbl;
-	}
+	/**
+	 * @return the infoDetailLbc
+	 */
 	public String getInfoDetailLbc() {
 		return infoDetailLbc;
 	}
-	public void setInfoDetailLbc(String infoDetailLbc) {
-		this.infoDetailLbc = infoDetailLbc;
-	}
+	/**
+	 * @return the infoDetailValueInt
+	 */
 	public int getInfoDetailValueInt() {
 		return infoDetailValueInt;
 	}
-	public void setInfoDetailValueInt(int infoDetailValueInt) {
-		this.infoDetailValueInt = infoDetailValueInt;
-	}
+	/**
+	 * @return the infoDetailValueDouble
+	 */
 	public double getInfoDetailValueDouble() {
 		return infoDetailValueDouble;
 	}
-	public void setInfoDetailValueDouble(double infoDetailValueDouble) {
-		this.infoDetailValueDouble = infoDetailValueDouble;
-	}
+	/**
+	 * @return the infoDetailTri
+	 */
 	public int getInfoDetailTri() {
 		return infoDetailTri;
 	}
-	public void setInfoDetailTri(int infoDetailTri) {
-		this.infoDetailTri = infoDetailTri;
-	}
+	/**
+	 * @return the infoDetailDefault
+	 */
 	public boolean isInfoDetailDefault() {
 		return infoDetailDefault;
 	}
-	public void setInfoDetailDefault(boolean infoDetailDefault) {
-		this.infoDetailDefault = infoDetailDefault;
-	}
+	/**
+	 * @return the infoEntete
+	 */
 	public InfoEntete getInfoEntete() {
 		return infoEntete;
 	}
+	/**
+	 * @param infoDetailDescription the infoDetailDescription to set
+	 */
+	public void setInfoDetailDescription(String infoDetailDescription) {
+		this.infoDetailDescription = infoDetailDescription;
+	}
+	/**
+	 * @param infoDetailLbl the infoDetailLbl to set
+	 */
+	public void setInfoDetailLbl(String infoDetailLbl) {
+		this.infoDetailLbl = infoDetailLbl;
+	}
+	/**
+	 * @param infoDetailLbc the infoDetailLbc to set
+	 */
+	public void setInfoDetailLbc(String infoDetailLbc) {
+		this.infoDetailLbc = infoDetailLbc;
+	}
+	/**
+	 * @param infoDetailValueInt the infoDetailValueInt to set
+	 */
+	public void setInfoDetailValueInt(int infoDetailValueInt) {
+		this.infoDetailValueInt = infoDetailValueInt;
+	}
+	/**
+	 * @param infoDetailValueDouble the infoDetailValueDouble to set
+	 */
+	public void setInfoDetailValueDouble(double infoDetailValueDouble) {
+		this.infoDetailValueDouble = infoDetailValueDouble;
+	}
+	/**
+	 * @param infoDetailTri the infoDetailTri to set
+	 */
+	public void setInfoDetailTri(int infoDetailTri) {
+		this.infoDetailTri = infoDetailTri;
+	}
+	/**
+	 * @param infoDetailDefault the infoDetailDefault to set
+	 */
+	public void setInfoDetailDefault(boolean infoDetailDefault) {
+		this.infoDetailDefault = infoDetailDefault;
+	}
+	/**
+	 * @param infoEntete the infoEntete to set
+	 */
 	public void setInfoEntete(InfoEntete infoEntete) {
 		this.infoEntete = infoEntete;
 	}
-	
 	@Override
 	public String toString() {
+		return infoDetailLbl;
+	}
+	public String affichage() {
 		return "InfoDetail [infoDetailIdt=" + infoDetailIdt + ", infoEnteteIdt=" + infoEnteteIdt + ", infoDetailKeyIdt="
 				+ infoDetailKeyIdt + ", infoDetailDescription=" + infoDetailDescription + ", infoDetailLbl="
 				+ infoDetailLbl + ", infoDetailLbc=" + infoDetailLbc + ", infoDetailValueInt=" + infoDetailValueInt
 				+ ", infoDetailValueDouble=" + infoDetailValueDouble + ", infoDetailTri=" + infoDetailTri
-				+ ", infoDetailDefault=" + infoDetailDefault + ", infoEntete=" + infoEntete + "]";
+				+ ", infoDetailDefault=" + infoDetailDefault + "]";
 	}
-	
-	
-
 }

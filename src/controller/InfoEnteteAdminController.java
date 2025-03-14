@@ -74,6 +74,7 @@ public class InfoEnteteAdminController extends AdministrationManagementControlle
 		valueFactoryDetailMax = new SpinnerValueFactory.ListSpinnerValueFactory<Integer>(listeDetailMax); 
 		spiInfoEnteteNbreLigneMax.setValueFactory(valueFactoryDetailMax); 
 
+		imvInfoEnteteDetail.setDisable(true);
 
 		//Initilisation des bouton
 		gestionBtn(true, true, false);
@@ -203,6 +204,7 @@ public class InfoEnteteAdminController extends AdministrationManagementControlle
 
 			if(infoEnteteSelected != null) {
 				trtAffichageZones(infoEnteteSelected);
+				imvInfoEnteteDetail.setDisable(false);
 
 				if (selectNbreInfoDetail(infoEnteteSelected.getInfoEnteteIdt()) != 0) {
 					gestionBtn(false, true, false);

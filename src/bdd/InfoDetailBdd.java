@@ -8,11 +8,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import model.Civility;
 import model.InfoDetail;
 import model.InfoEntete;
 
@@ -44,13 +42,19 @@ public class InfoDetailBdd extends ConnexionBdd {
 		ObservableList<InfoDetail> listeDonnees = FXCollections.observableArrayList();
 		InfoDetail infoDetail 				  	= null;
 		/** Initialisation de la requête **/
-		String SQL		= "SELECT * FROM InfoDetail WHERE infoEnteteIdt LIKE ?";
+		String SQL		= "";
+		SQL			    += "SELECT infoDetailIdt, d.infoEnteteIdt, infoDetailKeyIdt, infoDetailDescription, infoDetailLbl, infoDetailLbc, infoDetailValueInt, infoDetailValueDouble, infoDetailTri, infoDetailDefault";
+		SQL			    += " FROM dbo.InfoDetail d";
+		SQL			    += " INNER JOIN dbo.InfoEntete e";
+		SQL			    += " ON e.infoEnteteIdt = d.infoEnteteIdt";
+		SQL			    += " WHERE e.infoEnteteKey LIKE ?";
+		SQL			    += " ORDER BY d.infoDetailTri";
 		/** Connexion à la base de données **/
 		Connection connexion = trtConnexionBdd();
 		/** Traitements SQL */
 		try {
-			PreparedStatement preparedStatement  = initialisationRequete(connexion, SQL, false, key);
-			ResultSet resultSet  = preparedStatement.executeQuery();
+			PreparedStatement preparedStatement = initialisationRequete(connexion, SQL, false, key);
+			ResultSet resultSet   				= preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				infoDetail = map(resultSet);
 				if(infoDetail!=null) listeDonnees.add(infoDetail);
@@ -79,12 +83,18 @@ public class InfoDetailBdd extends ConnexionBdd {
 		InfoDetail infoDetail 				  	= null;
 		/** Initialisation de la requête **/
 		String SQL		= "";
+		SQL			    += "SELECT infoDetailIdt, d.infoEnteteIdt, infoDetailKeyIdt, infoDetailDescription, infoDetailLbl, infoDetailLbc, infoDetailValueInt, infoDetailValueDouble, infoDetailTri, infoDetailDefault";
+		SQL			    += " FROM dbo.InfoDetail d";
+		SQL			    += " INNER JOIN dbo.InfoEntete e";
+		SQL			    += " ON e.infoEnteteIdt = d.infoEnteteIdt";
+		SQL			    += " WHERE e.infoEnteteCbx LIKE ?";
+		SQL			    += " ORDER BY d.infoDetailTri";
 		/** Connexion à la base de données **/
 		Connection connexion = trtConnexionBdd();
 		/** Traitements SQL */
 		try {
-			Statement statement  = connexion.createStatement();
-			ResultSet resultSet  = statement.executeQuery(SQL);
+			PreparedStatement preparedStatement = initialisationRequete(connexion, SQL, false, cbxName);
+			ResultSet resultSet   				= preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				infoDetail = map(resultSet);
 				if(infoDetail!=null) listeDonnees.add(infoDetail);
@@ -112,16 +122,20 @@ public class InfoDetailBdd extends ConnexionBdd {
 		/** Déclaration des variables **/
 		InfoDetail infoDetail 				  	= null;
 		/** Initialisation de la requete **/
-		String SQL = "SELECT * FROM InfoDetail "
-                + "INNER JOIN infoEntete ON InfoDetail.infoEnteteIdt = infoEntete.infoEnteteIdt "
-                + "WHERE InfoEntete.infoEnteteKey LIKE ? AND InfoDetail.infoDetailDescription LIKE ?";
+		String SQL		= "";
+		SQL			    += "SELECT infoDetailIdt, d.infoEnteteIdt, infoDetailKeyIdt, infoDetailDescription, infoDetailLbl, infoDetailLbc, infoDetailValueInt, infoDetailValueDouble, infoDetailTri, infoDetailDefault";
+		SQL			    += " FROM dbo.InfoDetail d";
+		SQL			    += " INNER JOIN dbo.InfoEntete e";
+		SQL			    += " ON e.infoEnteteIdt = d.infoEnteteIdt";
+		SQL			    += " WHERE e.infoEnteteKey LIKE ?";
+		SQL			    += " AND   d.infoDetailDescription LIKE ?";
 		/** Connexion a la base de donnees **/
 		Connection connexion = trtConnexionBdd();
 		if(connexion!=null) {
 			/** Traitements SQL */
 			try {
-				PreparedStatement preparedStatement  = initialisationRequete(connexion, SQL, false, key, description);
-				ResultSet resultSet  = preparedStatement.executeQuery();
+				PreparedStatement preparedStatement = initialisationRequete(connexion, SQL, false, key, description);
+				ResultSet resultSet   				= preparedStatement.executeQuery();
 				while (resultSet.next()) {
 					infoDetail = map(resultSet);
 				}	
@@ -137,111 +151,122 @@ public class InfoDetailBdd extends ConnexionBdd {
 		}
 		return infoDetail;			
 	}
-	
-	/** *********************************************************************************
-	 * Méthode permettant de supprimer un détail
-	 * **********************************************************************************
-	 * @param infodDetail		[InfoDetail]	: InfoDetail à supprimer
-	 * @return					[int]			: nombre d'enregistrement supprimés 
+	/**
+	 * Méthode permettant d'insérer un détail
+	 * @param infoDetail	[InfoDetail]: InfoDetail à insérer
+	 * @return				[int]		: nombre d'enregistrements supprimés
 	 */
-	public static int deleteInfoDetail(InfoDetail infodDetail) {
-		/** Déclaration des variables */
-		int nbreEnreg	= 0;
-		// Initialisation de la requête
-		String SQL		 = "DELETE FROM InfoDetail WHERE infoEnteteIdt = ?";
-		// Connexion à la base de données
-		Connection connexion = trtConnexionBdd();
-		try (
-				PreparedStatement preparedStatement = initialisationRequete(connexion, SQL, false, infodDetail.getInfoDetailIdt())) {
-			 	preparedStatement.executeUpdate();
-		} catch (SQLException e) {
-			/**
-			 * L'utilisation de Class.getEnclosingMethod() de la classe Dummy (classe interne anonyme) renvoie un objet 
-			 * java.lang.reflect.Method qui contient des informations sur la méthode immédiatement englobante.
-			 */
-			class Dummy {};
-			String methodeName 	= Dummy.class.getEnclosingMethod().getName();
-			gestionDesExceptionsStates(e, SQL, classeName, methodeName);
-		}
-
-		return nbreEnreg;
-	}
-
-
-	/** **********************************************************************************
-	 * Méthode permettant de mofifier une détail
-	 * **********************************************************************************
-	 * @param infodDetail 	[InfoDetail]  	: InfoDetail à modifier
-	 * @return 				[int]			: nombre d'enregistrement supprimés
-	 */
-	public static int updateInfoDetail(InfoDetail infodDetail) {
-		/** Déclaration des variables */
-		int nbreEnreg	= 0;
-		/** Initialisation de la requête */
-		String SQL = "UPDATE InfoDetail SET infoDetailDescription = ?, infoDetailLbl = ?, infoDetailLbc = ?, infoDetailValueInt = ?, infoDetailValueDouble = ?, infoDetailTri = ?, infoDetailDefault = ?";
+	public static int insertInfoDetail(InfoDetail infoDetail) {
+		/** Initialisation des variables **/
+		int nbreEnreg = 0;
+		/** Initialisation de la requête **/
+		String SQL		 = "";
+		SQL				+= "INSERT INTO [dbo].[InfoDetail]";
+		SQL				+= " ([infoEnteteIdt]";
+		SQL				+= " ,[infoDetailKeyIdt]";
+		SQL				+= " ,[infoDetailDescription]";
+		SQL				+= " ,[infoDetailLbl]";
+		SQL				+= " ,[infoDetailLbc]";
+		SQL				+= " ,[infoDetailValueInt]";
+		SQL				+= " ,[infoDetailValueDouble]";
+		SQL				+= " ,[infoDetailTri]";
+		SQL				+= " ,[infoDetailDefault])";
+		SQL				+= " VALUES(?,?,?,?,?,?,?,?,?)";
 		/** Connexion à la base de données **/
 		Connection connexion = trtConnexionBdd();
 		/** Traitements SQL */
 		try {
-			PreparedStatement preparedStatement = initialisationRequete(connexion, SQL, false
-					,infodDetail.getInfoDetailDescription()
-					,infodDetail.getInfoDetailLbl()
-					,infodDetail.getInfoDetailLbc()
-					,infodDetail.getInfoDetailValueInt()
-					,infodDetail.getInfoDetailValueDouble()
-					,infodDetail.getInfoDetailTri()
-					,infodDetail.isInfoDetailDefault()
-					);
-			nbreEnreg							= preparedStatement.executeUpdate();
+			PreparedStatement preparedstatement = initialisationRequete(connexion,SQL,false
+					,infoDetail.getInfoEnteteIdt()
+					,infoDetail.getInfoDetailKeyIdt()
+					,infoDetail.getInfoDetailDescription()
+					,infoDetail.getInfoDetailLbl()
+					,infoDetail.getInfoDetailLbc()
+					,infoDetail.getInfoDetailValueInt()
+					,infoDetail.getInfoDetailValueDouble()
+					,infoDetail.getInfoDetailTri()
+					,(byte)(infoDetail.isInfoDetailDefault()?1:0)
+					); 
+			nbreEnreg 			 				= preparedstatement.executeUpdate();
 		} catch (SQLException e) {
 			class Dummy {};
 			String methodeName 	= Dummy.class.getEnclosingMethod().getName();
 			gestionDesExceptionsStates(e, SQL, classeName, methodeName);
-		}
+		}		
+		return nbreEnreg;
+	}
+	/**
+	 * Méthode permettant de modifier un détail
+	 * @param infoDetail	[InfoDetail]: InfoDetail à modifier
+	 * @return				[int]		: nombre d'enregistrements supprimés
+	 */
+	public static int updateInfoDetail(InfoDetail infoDetail) {
+		/** Initialisation des variables **/
+		int nbreEnreg = 0;
+		/** Initialisation de la requête **/
+		String SQL		 = "";
+		SQL				+= "UPDATE [dbo].[InfoDetail]";
+		SQL				+= "  SET [infoEnteteIdt] = ?";
+		SQL				+= "  ,[infoDetailKeyIdt] = ?";
+		SQL				+= "  ,[infoDetailDescription] = ?";
+		SQL				+= "  ,[infoDetailLbl] = ?";
+		SQL				+= "  ,[infoDetailLbc] = ?";
+		SQL				+= "  ,[infoDetailValueInt] = ?";
+		SQL				+= "  ,[infoDetailValueDouble] = ?";
+		SQL				+= "  ,[infoDetailTri] = ?";
+		SQL				+= "  ,[infoDetailDefault] = ?";
+		SQL				+= " WHERE [infoDetailIdt] = ?";
+		/** Connexion à la base de données **/
+		Connection connexion = trtConnexionBdd();
+		/** Traitements SQL */
+		try {
+			PreparedStatement preparedstatement = initialisationRequete(connexion,SQL,false
+					,infoDetail.getInfoEnteteIdt()
+					,infoDetail.getInfoDetailKeyIdt()
+					,infoDetail.getInfoDetailDescription()
+					,infoDetail.getInfoDetailLbl()
+					,infoDetail.getInfoDetailLbc()
+					,infoDetail.getInfoDetailValueInt()
+					,infoDetail.getInfoDetailValueDouble()
+					,infoDetail.getInfoDetailTri()
+					,(byte)(infoDetail.isInfoDetailDefault()?1:0)
+					,infoDetail.getInfoDetailIdt()
+					); 
+			nbreEnreg 			 				= preparedstatement.executeUpdate();
+		} catch (SQLException e) {
+			class Dummy {};
+			String methodeName 	= Dummy.class.getEnclosingMethod().getName();
+			gestionDesExceptionsStates(e, SQL, classeName, methodeName);
+		}		
 		return nbreEnreg;
 	}	
-
-	
-
-	/** **********************************************************************************
-	 * Méthode permettant d'insérer un détail
-	 * **********************************************************************************
-	 * @param infodDetail 	[InfoDetail] 	: InfoDetail à modifier
-	 * @return 				[int] 			: nombre d'enregistrements supprimés
+	/**
+	 * Méthode permettant de supprimer un détail
+	 * @param infoDetail	[InfoDetail]: InfoDetail à supprimer
+	 * @return				[int]		: nombre d'enregistrements supprimés
 	 */
-	public static int insertInfoDetail(InfoDetail infodDetail) {
-		/** Déclaration des variables */
-		int nbreEnreg	= 0;
-		/** Initialisation de la requête */
-		String SQL = "INSERT INTO InfoDetail (infoDetailDescription, infoDetailLbl, infoDetailLbc, infoDetailValueInt, infoDetailValueDouble, infoDetailTri, infoDetailDefault) VALUES (?, ?, ?, ?, ?, ?, ?)";
+	public static int deleteInfoDetail(InfoDetail infoDetail) {
+		/** Initialisation des variables **/
+		int nbreEnreg = 0;
+		/** Initialisation de la requête **/
+		String SQL		 = "";
+		SQL				+= "DELETE FROM [dbo].[InfoDetail]";
+		SQL				+= " WHERE [infoDetailIdt] = ?";
 		/** Connexion à la base de données **/
 		Connection connexion = trtConnexionBdd();
 		/** Traitements SQL */
 		try {
-			PreparedStatement preparedStatement = initialisationRequete(connexion, SQL, false
-					,infodDetail.getInfoDetailDescription()
-					,infodDetail.getInfoDetailLbl()
-					,infodDetail.getInfoDetailLbc()
-					,infodDetail.getInfoDetailValueInt()
-					,infodDetail.getInfoDetailValueDouble()
-					,infodDetail.getInfoDetailTri()
-					,infodDetail.isInfoDetailDefault()
-					);
-			nbreEnreg							= preparedStatement.executeUpdate();
+			PreparedStatement preparedstatement = initialisationRequete(connexion,SQL,false
+					,infoDetail.getInfoDetailIdt()
+					); 
+			nbreEnreg 			 				= preparedstatement.executeUpdate();
 		} catch (SQLException e) {
-			/**
-			 * L'utilisation de Class.getEnclosingMethod() de la classe Dummy (classe interne anonyme) renvoie un objet 
-			 * java.lang.reflect.Method qui contient des informations sur la méthode immédiatement englobante.
-			 */
 			class Dummy {};
 			String methodeName 	= Dummy.class.getEnclosingMethod().getName();
 			gestionDesExceptionsStates(e, SQL, classeName, methodeName);
-		}
+		}		
 		return nbreEnreg;
 	}
-
-	
-	
 	/** *********************************************************************************
 	 * Méthode permettant de créer un objet de type [InfoDetail] à partir 
 	 * d'un enregistrement de la base de données
@@ -253,21 +278,18 @@ public class InfoDetailBdd extends ConnexionBdd {
 		/** Déclaration du détail **/
 		InfoDetail infoDetail 					= null;
 		try {
-			int             infoDetailIdt = resultset.getInt("infoDetailIdt");
-			int             infoEnteteIdt = resultset.getInt("infoEnteteIdt");
-			int             infoDetailKeyIdt = resultset.getInt("infoDetailKeyIdt");
-			String            infoDetailDescription = resultset.getString("infoDetailDescription");
-			String             infoDetailLbl = resultset.getString("infoDetailLbl");
-			String             infoDetailLbc = resultset.getString("infoDetailLbc");
-			int                infoDetailValueInt = resultset.getInt("infoDetailValueInt");
-			double            infoDetailValueDouble = resultset.getDouble("infoDetailValueDouble");
-			int             infoDetailTri = resultset.getInt("infoDetailTri");
-			boolean         infoDetailDefault = resultset.getBoolean("infoDetailDefault");
-			InfoEntete        infoEntete = selectOneInfoEntete(infoEnteteIdt);
-
-			infoDetail = new InfoDetail(infoDetailIdt, infoEnteteIdt, infoDetailKeyIdt, infoDetailDescription,
-					infoDetailLbl, infoDetailLbc, infoDetailValueInt, infoDetailValueDouble, infoDetailTri, 
-					infoDetailDefault, infoEntete);
+			int 		infoDetailIdt			= resultset.getInt("infoDetailIdt");
+			int 		infoEnteteIdt			= resultset.getInt("infoEnteteIdt");
+			int 		infoDetailKeyIdt		= resultset.getInt("infoDetailKeyIdt");
+			String  	infoDetailDescription	= resultset.getString("infoDetailDescription");
+			String 		infoDetailLbl			= resultset.getString("infoDetailLbl");
+			String 		infoDetailLbc			= resultset.getString("infoDetailLbc");
+			int			infoDetailValueInt		= resultset.getInt("infoDetailValueInt");
+			double		infoDetailValueDouble	= resultset.getDouble("infoDetailValueDouble");
+			int 		infoDetailTri			= resultset.getInt("infoDetailTri");
+			boolean 	infoDetailDefault 		= (resultset.getByte("infoDetailDefault")==1);
+			InfoEntete	infoEntete				= selectOneInfoEntete(infoEnteteIdt);
+			infoDetail							= new InfoDetail(infoDetailIdt, infoEnteteIdt, infoDetailKeyIdt, infoDetailDescription, infoDetailLbl, infoDetailLbc, infoDetailValueInt, infoDetailValueDouble, infoDetailTri, infoDetailDefault, infoEntete);
 		} catch (SQLException e) {
 			/**
 			 * L'utilisation de Class.getEnclosingMethod() de la classe Dummy (classe interne anonyme) renvoie un objet 
