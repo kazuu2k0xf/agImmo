@@ -96,7 +96,7 @@ public class DashboardController {
 
 	}
 
-	/**
+	/**+
 	 * Méthode gérant et affichant le nombre de Rdv en cours
 	 */
 	public void gestionRendezVous() {
@@ -134,6 +134,18 @@ public class DashboardController {
 	@FXML public void evtOnMouseClickedImvCtrlEndLease() {}
 
 
+	@FXML public void evtOnActionMnuAgences() {
+		Fenetres fenetre 								  = selectOneFenetre(Cstes.AGENCESMANAGEMENT);
+
+		if (fenetre != null) {
+			LoaderFXML loaderFxml 						  = new LoaderFXML(fenetre);
+			Stage primaryStage 							  = loaderFxml.createLoaderBorderPane();
+			CompanyManagementController controler = loaderFxml.getLoader().getController();
+			controler.setDialogStage(primaryStage);
+			primaryStage.show();
+		}
+	}
+
 	/** Choix modification des données de l'agent **/
 	@FXML
 	public void evtOnMouseClickedImvParametresAgent() {
@@ -153,17 +165,17 @@ public class DashboardController {
 
 	}
 
-	
-	@FXML public void evtOnActionMnuAdministration() {
-	    Fenetres fenetre 								  = selectOneFenetre(Cstes.ADMINISTRATION);
 
-	    if (fenetre != null) {
-	        LoaderFXML loaderFxml 						  = new LoaderFXML(fenetre);
-	        Stage primaryStage 							  = loaderFxml.createLoaderBorderPane();
-	        MenusAdministrationController controler = loaderFxml.getLoader().getController();
-	        controler.setDialogStage(primaryStage);
-	        primaryStage.show();
-	    }
+	@FXML public void evtOnActionMnuAdministration() {
+		Fenetres fenetre 								  = selectOneFenetre(Cstes.ADMINISTRATION);
+
+		if (fenetre != null) {
+			LoaderFXML loaderFxml 						  = new LoaderFXML(fenetre);
+			Stage primaryStage 							  = loaderFxml.createLoaderBorderPane();
+			MenusAdministrationController controler = loaderFxml.getLoader().getController();
+			controler.setDialogStage(primaryStage);
+			primaryStage.show();
+		}
 	}
 
 
