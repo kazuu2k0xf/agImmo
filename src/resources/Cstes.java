@@ -25,6 +25,8 @@ public class Cstes {
 	public final static int 	DEFAULTCIVILITE			= 1;
 	public final static String  NBRERREURSLOGIN  	 	= "NbreErreursConnexions"; 
 	public final static String  DUREEBLQLOGIN   		= "DureeBlqLogin";
+	public final static String DEFAULTLEGALREGIME 		="legalRegime"; 
+
 	
 	/** Dossiers **/
 	public final static String  DOSSIERPORTRAITS		= "Portraits";
@@ -43,6 +45,8 @@ public class Cstes {
 	public final static String  DETAILINFO				= "InfoDetailAdmin";
 	public final static String  ENTETEINFO				= "InfoEnteteAdmin";
 	public final static String  TYPEAGENT				= "TypeAgentAdmin";
+	public final static String AGENCESMANAGEMENT 		= "CompanyManagement"; 
+	public final static String AGENCEDEFINITION 		= "CompanyDefinition";
 	
 	/** Entetes informations **/
 	public final static String CHIFFREMENT 				= "Chiffrement";
@@ -51,7 +55,11 @@ public class Cstes {
 	public final static String KEYBF 					= "BlowFish";
 	public final static String TRTCHIFFREMENTAGENT 		= "chiffrementAgent";
 
+	/** Templates **/ 
+	public final static String WEBMAPS = "<!DOCTYPE html><html lang=\"fr\"><body ><iframe src=\"carte\" width=\"495\" height=\"500\"style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\"referrerpolicy=\"no-referrer-when-downgrade\"></iframe></body></html>";
+	
 	/** Version de l'application **/
 	public final static String  VERSIONAPPLICATION		= "V.02";
 
+	
 }

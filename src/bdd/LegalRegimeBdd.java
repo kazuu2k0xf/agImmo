@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.LegalRegime;
+import model.Town;
 
 /**
  * Cette classe contient les méthodes CRUD de l'entité [LegalRegime]. Elle hêrite de la Classe ConnexionBdd
@@ -30,11 +31,26 @@ public class LegalRegimeBdd extends ConnexionBdd {
 		ObservableList<LegalRegime> listeDonnees 	= FXCollections.observableArrayList();
 		LegalRegime legalRegime						= null;
 		/** Initialisation de la requête **/
-		String SQL		= "";
+		String SQL		= "Select * FROM LegalRegime ORDER BY legalRegimeLbl ASC";
 		/** Connexion a la base de donnees **/
 		Connection connexion = trtConnexionBdd();
 		if(connexion!=null) {
 			/** Traitements SQL */
+			try {
+				PreparedStatement preparedStatement  = initialisationRequete(connexion, SQL, false);
+				ResultSet resultSet  = preparedStatement.executeQuery();
+				while (resultSet.next()) {
+					legalRegime = map(resultSet);
+				}	
+			} catch (SQLException e) {
+				/**
+				 * L'utilisation de Class.getEnclosingMethod() de la classe Dummy (classe interne anonyme) renvoie un objet 
+				 * java.lang.reflect.Method qui contient des informations sur la méthode immédiatement englobante.
+				 */
+				class Dummy {};
+				String methodeName 	= Dummy.class.getEnclosingMethod().getName();
+				gestionDesExceptionsStates(e, SQL, classeName, methodeName);
+			}
 		}
 		return listeDonnees;			
 	}
@@ -46,11 +62,26 @@ public class LegalRegimeBdd extends ConnexionBdd {
 		/** Initialisation des variables **/
 		LegalRegime legalRegime						= null;
 		/** Initialisation de la requête **/
-		String SQL		= "";
+		String SQL		= "Select * FROM LegalRegime WHERE legalRegimeIdt = ?";
 		/** Connexion a la base de donnees **/
 		Connection connexion = trtConnexionBdd();
 		if(connexion!=null) {
 			/** Traitements SQL */
+			try {
+				PreparedStatement preparedStatement  = initialisationRequete(connexion, SQL, false, legalRegimeIdt);
+				ResultSet resultSet  = preparedStatement.executeQuery();
+				while (resultSet.next()) {
+					legalRegime = map(resultSet);
+				}	
+			} catch (SQLException e) {
+				/**
+				 * L'utilisation de Class.getEnclosingMethod() de la classe Dummy (classe interne anonyme) renvoie un objet 
+				 * java.lang.reflect.Method qui contient des informations sur la méthode immédiatement englobante.
+				 */
+				class Dummy {};
+				String methodeName 	= Dummy.class.getEnclosingMethod().getName();
+				gestionDesExceptionsStates(e, SQL, classeName, methodeName);
+			}
 		}
 		return legalRegime;			
 	}
@@ -64,6 +95,13 @@ public class LegalRegimeBdd extends ConnexionBdd {
 		/** Initialisation des variables **/
 		LegalRegime legalRegime	= null;
 		try {
+
+			int legalRegimeIdt = resultset.getInt("legalRegimeIdt");
+			String legalRegimeLbl = resultset.getString("legalRegimeLbl");
+			String legalRegimeLbc = resultset.getString("legalRegimeLbc");
+
+			legalRegime = new LegalRegime(legalRegimeIdt, legalRegimeLbl, legalRegimeLbc);
+
 		} catch (SQLException e) {
 			System.out.println("Erreur lors de la lecture des donnees du proprietaire : " + e);
 			e.printStackTrace();

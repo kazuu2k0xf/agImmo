@@ -31,11 +31,26 @@ public class CompanyBdd extends ConnexionBdd {
 		ObservableList<Company> listeDonnees 	= FXCollections.observableArrayList();
 		Company company							= null;
 		/** Initialisation de la requête **/
-		String SQL		= "";
+		String SQL		= "Select * From Company ORDER BY companyName ASC";
 		/** Connexion à la base de données **/
 		Connection connexion = trtConnexionBdd();
 		if(connexion!=null) {
 			/** Traitements SQL */
+			try {
+				PreparedStatement preparedStatement  = initialisationRequete(connexion, SQL, false);
+				ResultSet resultSet  = preparedStatement.executeQuery();
+				while (resultSet.next()) {
+					company = map(resultSet);
+				}	
+			} catch (SQLException e) {
+				/**
+				 * L'utilisation de Class.getEnclosingMethod() de la classe Dummy (classe interne anonyme) renvoie un objet 
+				 * java.lang.reflect.Method qui contient des informations sur la méthode immédiatement englobante.
+				 */
+				class Dummy {};
+				String methodeName 	= Dummy.class.getEnclosingMethod().getName();
+				gestionDesExceptionsStates(e, SQL, classeName, methodeName);
+			}
 		}
 		return listeDonnees;
 	}
@@ -47,11 +62,26 @@ public class CompanyBdd extends ConnexionBdd {
 		/** Initialisation des variables **/
 		Company company							= null;
 		/** Initialisation de la requête **/
-		String SQL		= "";
+		String SQL		= "SELECT * FROM company WHERE companyAdminSeat = 1";
 		/** Connexion à la base de données **/
 		Connection connexion = trtConnexionBdd();
 		if(connexion!=null) {
 			/** Traitements SQL */
+			try {
+				PreparedStatement preparedStatement  = initialisationRequete(connexion, SQL, false);
+				ResultSet resultSet  = preparedStatement.executeQuery();
+				while (resultSet.next()) {
+					company = map(resultSet);
+				}	
+			} catch (SQLException e) {
+				/**
+				 * L'utilisation de Class.getEnclosingMethod() de la classe Dummy (classe interne anonyme) renvoie un objet 
+				 * java.lang.reflect.Method qui contient des informations sur la méthode immédiatement englobante.
+				 */
+				class Dummy {};
+				String methodeName 	= Dummy.class.getEnclosingMethod().getName();
+				gestionDesExceptionsStates(e, SQL, classeName, methodeName);
+			}
 		}
 		return company;
 	}
@@ -84,11 +114,36 @@ public class CompanyBdd extends ConnexionBdd {
 		/** Initialisation des variables **/
 		int nbreEnreg = 0;
 		/** Initialisation de la requête **/
-		String SQL		 = "";
+		String SQL		 = "INSERT INTO Company (companyName, companyAddressIdt, companyTelephone, companyEmail, companyWebSite, companyLegalRegime, companyCreationDate, companySiren, companySiret, companyAdminSeat, companyMaps) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		/** Connexion à la base de données **/
 		Connection connexion = trtConnexionBdd();
 		if(connexion!=null) {
 			/** Traitements SQL */
+			try {
+				PreparedStatement preparedStatement = initialisationRequete(connexion, SQL, false
+						,company.getCompanyName()
+						,company.getCompanyAddressIdt()
+						,company.getCompanyTelephone()
+						,company.getCompanyEmail()
+						,company.getCompanyWebSite()
+						,company.getCompanyLegalRegime()
+						,company.getCompanyCreationDate()
+						,company.getCompanySiren()
+						,company.getCompanySiret()
+						,company.isCompanyAdminSeat()
+						,company.getCompanyMaps()
+						);
+									
+				nbreEnreg							= preparedStatement.executeUpdate();
+			} catch (SQLException e) {
+				/**
+				 * L'utilisation de Class.getEnclosingMethod() de la classe Dummy (classe interne anonyme) renvoie un objet 
+				 * java.lang.reflect.Method qui contient des informations sur la méthode immédiatement englobante.
+				 */
+				class Dummy {};
+				String methodeName 	= Dummy.class.getEnclosingMethod().getName();
+				gestionDesExceptionsStates(e, SQL, classeName, methodeName);			
+			}
 		}
 		return nbreEnreg;
 	}
@@ -101,11 +156,36 @@ public class CompanyBdd extends ConnexionBdd {
 		/** Initialisation des variables **/
 		int nbreEnreg = 0;
 		/** Initialisation de la requête **/
-		String SQL		 = "";
+		String SQL		 = "UPDATE Company SET companyName = ?, companyAddressIdt = ?, companyTelephone = ?, companyEmail = ?, companyWebSite = ?, companyLegalRegime = ?, companyCreationDate = ?, companySiren = ?, companySiret = ?, companyAdminSeat = ?, companyMaps = ? WHERE companyIdt = ?";
 		/** Connexion à la base de données **/
 		Connection connexion = trtConnexionBdd();
 		if(connexion!=null) {
 			/** Traitements SQL */
+			try {
+				PreparedStatement preparedStatement = initialisationRequete(connexion, SQL, false
+						,company.getCompanyName()
+						,company.getCompanyAddressIdt()
+						,company.getCompanyTelephone()
+						,company.getCompanyEmail()
+						,company.getCompanyWebSite()
+						,company.getCompanyLegalRegime()
+						,company.getCompanyCreationDate()
+						,company.getCompanySiren()
+						,company.getCompanySiret()
+						,company.isCompanyAdminSeat()
+						,company.getCompanyMaps()
+						,company.getCompanyIdt()
+						);
+				nbreEnreg							= preparedStatement.executeUpdate();
+			} catch (SQLException e) {
+				/**
+				 * L'utilisation de Class.getEnclosingMethod() de la classe Dummy (classe interne anonyme) renvoie un objet 
+				 * java.lang.reflect.Method qui contient des informations sur la méthode immédiatement englobante.
+				 */
+				class Dummy {};
+				String methodeName 	= Dummy.class.getEnclosingMethod().getName();
+				gestionDesExceptionsStates(e, SQL, classeName, methodeName);			
+			}
 		}
 		return nbreEnreg;
 	}	
@@ -118,11 +198,23 @@ public class CompanyBdd extends ConnexionBdd {
 		/** Initialisation des variables **/
 		int nbreEnreg = 0;
 		/** Initialisation de la requête **/
-		String SQL		 = "";
+		String SQL		 = "DELETE FROM Company WHERE companyIdt = ?";
 		/** Connexion à la base de données **/
 		Connection connexion = trtConnexionBdd();
 		if(connexion!=null) {
 			/** Traitements SQL */
+			try (
+					PreparedStatement preparedStatement = initialisationRequete(connexion, SQL, false, company)) {
+				preparedStatement.executeUpdate();
+			} catch (SQLException e) {
+				/**
+				 * L'utilisation de Class.getEnclosingMethod() de la classe Dummy (classe interne anonyme) renvoie un objet 
+				 * java.lang.reflect.Method qui contient des informations sur la méthode immédiatement englobante.
+				 */
+				class Dummy {};
+				String methodeName 	= Dummy.class.getEnclosingMethod().getName();
+				gestionDesExceptionsStates(e, SQL, classeName, methodeName);
+			}
 		}
 		return nbreEnreg;
 	}
@@ -135,7 +227,22 @@ public class CompanyBdd extends ConnexionBdd {
 		/** Attributs de la classe **/
 		Company company 					= null;
 		try {
-		} catch (SQLException e) {
+			int companyIdt = resultset.getInt("CompanyIdt");
+			String companyName = resultset.getString("companyName");
+			int companyAddressIdt = resultset.getInt("companyAddressIdt");
+			String companyTelephone = resultset.getString("CompanyTelephone");
+			String companyEmail = resultset.getString("companyEmail");
+			String companyWebSite = resultset.getString("companyWebSite");
+			int companyLegalRegime = resultset.getInt("companyLegalRegime");
+			LocalDate companyCreationDate = resultset.getDate("CompanyCreationDate").toLocalDate();
+			String companySiren = resultset.getString("companySiren");
+			String companySiret = resultset.getString("companySiret");
+			int companyAdminSeat = resultset.getInt("companyAdminSeat");
+			String companyMaps = resultset.getString("companyMaps");
+			
+			company = new Company(companyIdt, companyName, companyAddressIdt, companyTelephone, companyEmail, companyWebSite, companyLegalRegime, companyCreationDate, companySiren, companySiret, false, null, null, companyMaps);
+			
+		} catch (SQLException e) {			
 			class Dummy {};
 			String methodeName 	= Dummy.class.getEnclosingMethod().getName();
 			System.out.println("Classe  : " + classeName);

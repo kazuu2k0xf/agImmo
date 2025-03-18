@@ -3,7 +3,7 @@ package model;
  * Classe	: Address
  * Cette classe contient les attributs, constructeur, Accesseurs et methodes permettant
  * d'instancier des objets de Type [Address].
-  * 
+ * 
  * @author 	Alain CASARA
  * @version	1.0
  */
@@ -56,7 +56,7 @@ public class Address {
 		this.town					= newTown;
 		this.addressGenerationKey 	= newAddressGenerationKey;
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -105,7 +105,7 @@ public class Address {
 	public Town getTown() {
 		return town;
 	}
-	
+
 	/**
 	 * @return the adressComplete
 	 */
@@ -124,7 +124,7 @@ public class Address {
 	public String getAddressGenerationKey() {
 		return addressGenerationKey;
 	}
-	
+
 	/**
 	 * @param addressIdt the addressIdt to set
 	 */

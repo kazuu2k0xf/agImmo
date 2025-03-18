@@ -31,11 +31,26 @@ public class TownBdd extends ConnexionBdd {
 		ObservableList<Town> listeDonnees 	= FXCollections.observableArrayList();
 		Town town							= null;
 		/** Initialisation de la requete **/
-		String SQL		= "";
+		String SQL		= "Select * FROM Town ORDER BY townName ASC";
 		/** Connexion a la base de donnees **/
 		Connection connexion = trtConnexionBdd();
 		if(connexion!=null) {
 			/** Traitements SQL */
+			try {
+				PreparedStatement preparedStatement  = initialisationRequete(connexion, SQL, false);
+				ResultSet resultSet  = preparedStatement.executeQuery();
+				while (resultSet.next()) {
+					town = map(resultSet);
+				}	
+			} catch (SQLException e) {
+				/**
+				 * L'utilisation de Class.getEnclosingMethod() de la classe Dummy (classe interne anonyme) renvoie un objet 
+				 * java.lang.reflect.Method qui contient des informations sur la méthode immédiatement englobante.
+				 */
+				class Dummy {};
+				String methodeName 	= Dummy.class.getEnclosingMethod().getName();
+				gestionDesExceptionsStates(e, SQL, classeName, methodeName);
+			}
 		}
 		return listeDonnees;			
 	}
@@ -47,13 +62,29 @@ public class TownBdd extends ConnexionBdd {
 		/** Initialisation des variables **/
 		Town town							= null;
 		/** Initialisation de la requete **/
-		String SQL		= "";
+		String SQL		= "Select * FROM Town WHERE townId = ?";
 		/** Connexion a la base de donnees **/
 		Connection connexion = trtConnexionBdd();
 		if(connexion!=null) {
 			/** Traitements SQL */
+			try {
+				PreparedStatement preparedStatement  = initialisationRequete(connexion, SQL, false, townIdt);
+				ResultSet resultSet  = preparedStatement.executeQuery();
+				while (resultSet.next()) {
+					town = map(resultSet);
+				}	
+			} catch (SQLException e) {
+				/**
+				 * L'utilisation de Class.getEnclosingMethod() de la classe Dummy (classe interne anonyme) renvoie un objet 
+				 * java.lang.reflect.Method qui contient des informations sur la méthode immédiatement englobante.
+				 */
+				class Dummy {};
+				String methodeName 	= Dummy.class.getEnclosingMethod().getName();
+				gestionDesExceptionsStates(e, SQL, classeName, methodeName);
+			}
 		}
-		return town;			
+
+		return town;		
 	}
 	/**
 	 * Methode 	: map
@@ -66,6 +97,12 @@ public class TownBdd extends ConnexionBdd {
 		/** Initialisation des variables **/
 		Town town				= null;
 		try {
+			int townIdt = resultset.getInt("townInt");
+			String townName = resultset.getString("townName");
+			String townPostCode = resultset.getString("townPostCode");
+
+			town = new Town(townIdt, townName, townPostCode);
+
 		} catch (SQLException e) {
 			System.out.println("Erreur lors de la lecture de la ville : " + e);
 			e.printStackTrace();

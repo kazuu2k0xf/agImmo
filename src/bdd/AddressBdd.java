@@ -32,11 +32,26 @@ public class AddressBdd extends ConnexionBdd {
 		/** Initialisation des variables **/
 		Address address	= null;
 		/** Initialisation de la requete **/
-		String SQL		= "";
+		String SQL		= "Select * From Address WHERE addressIdt = ?";
 		/** Connexion a la base de donnees **/
 		Connection connexion = trtConnexionBdd();
 		if(connexion!=null) {
 			/** Traitements SQL */
+			try {
+				PreparedStatement preparedStatement  = initialisationRequete(connexion, SQL, false, addressIdt);
+				ResultSet resultSet  = preparedStatement.executeQuery();
+				while (resultSet.next()) {
+					address = map(resultSet);
+				}	
+			} catch (SQLException e) {
+				/**
+				 * L'utilisation de Class.getEnclosingMethod() de la classe Dummy (classe interne anonyme) renvoie un objet 
+				 * java.lang.reflect.Method qui contient des informations sur la méthode immédiatement englobante.
+				 */
+				class Dummy {};
+				String methodeName 	= Dummy.class.getEnclosingMethod().getName();
+				gestionDesExceptionsStates(e, SQL, classeName, methodeName);
+			}
 		}
 		return address;
 	}
@@ -66,11 +81,30 @@ public class AddressBdd extends ConnexionBdd {
 		/** Initialisation des variables **/
 		int nbreEnreg 	= 0;
 		/** Initialisation de la requete **/
-		String SQL		= "";
+		String SQL		= "INSERT INTO Address (addressDeliveryPoint, addressNumber, addressPortLabel, addressNext, addressTownIdt, addressGenerationKey) VALUES (?, ?, ?, ?, ?, ?)";
 		/** Connexion a la base de donnees **/
 		Connection connexion = trtConnexionBdd();
 		if(connexion!=null) {
 			/** Traitements SQL */
+			try {
+				PreparedStatement preparedStatement = initialisationRequete(connexion, SQL, false
+						,address.getAddressDeliveryPoint()
+						,address.getAddressNumber()
+						,address.getAddressPortLabel()
+						,address.getAddressNext()
+						,address.getAddressTownIdt()
+						,address.getAddressGenerationKey()
+						);
+				nbreEnreg							= preparedStatement.executeUpdate();
+			} catch (SQLException e) {
+				/**
+				 * L'utilisation de Class.getEnclosingMethod() de la classe Dummy (classe interne anonyme) renvoie un objet 
+				 * java.lang.reflect.Method qui contient des informations sur la méthode immédiatement englobante.
+				 */
+				class Dummy {};
+				String methodeName 	= Dummy.class.getEnclosingMethod().getName();
+				gestionDesExceptionsStates(e, SQL, classeName, methodeName);			
+			}
 		}
 		return nbreEnreg;		
 	}
@@ -83,11 +117,27 @@ public class AddressBdd extends ConnexionBdd {
 		/** Initialisation des variables **/
 		int nbreEnreg 	= 0;
 		/** Initialisation de la requete **/
-		String SQL		= "";
+		String SQL		= "UPDATE Address SET addressDeliveryPoint = ?, addressNumber = ?, addressPortLabel = ?, addressNext = ?, addressTownIdt = ?, addressGenerationKey = ? WHERE addressIdt = ?";
 		/** Connexion a la base de donnees **/
 		Connection connexion = trtConnexionBdd();
 		if(connexion!=null) {
 			/** Traitements SQL */
+			try {
+				PreparedStatement preparedStatement = initialisationRequete(connexion, SQL, false
+						,address.getAddressDeliveryPoint()
+						,address.getAddressNumber()
+						,address.getAddressPortLabel()
+						,address.getAddressNext()
+						,address.getAddressTownIdt()
+						,address.getAddressGenerationKey()
+						,address.getAddressIdt()
+						);
+				nbreEnreg							= preparedStatement.executeUpdate();
+			} catch (SQLException e) {
+				class Dummy {};
+				String methodeName 	= Dummy.class.getEnclosingMethod().getName();
+				gestionDesExceptionsStates(e, SQL, classeName, methodeName);
+			}
 		}
 		return nbreEnreg;	
 	}
@@ -100,11 +150,23 @@ public class AddressBdd extends ConnexionBdd {
 		/** Initialisation des variables **/
 		int nbreEnreg 	= 0;
 		/** Initialisation de la requete **/
-		String SQL		= "";
+		String SQL		= "DELETE FROM Address WHERE addressIdt = ?";
 		/** Connexion a la base de donnees **/
 		Connection connexion = trtConnexionBdd();
 		if(connexion!=null) {
 			/** Traitements SQL */
+			try (
+					PreparedStatement preparedStatement = initialisationRequete(connexion, SQL, false, addressIdt)) {
+				preparedStatement.executeUpdate();
+			} catch (SQLException e) {
+				/**
+				 * L'utilisation de Class.getEnclosingMethod() de la classe Dummy (classe interne anonyme) renvoie un objet 
+				 * java.lang.reflect.Method qui contient des informations sur la méthode immédiatement englobante.
+				 */
+				class Dummy {};
+				String methodeName 	= Dummy.class.getEnclosingMethod().getName();
+				gestionDesExceptionsStates(e, SQL, classeName, methodeName);
+			}
 		}
 		return nbreEnreg;			
 	}
@@ -118,6 +180,16 @@ public class AddressBdd extends ConnexionBdd {
 		/** Initialisation des variables **/
 		Address address					= null;
 		try {
+			int addressIdt = resultset.getInt("addressIdt");
+			String addressDeliveryPoint = resultset.getString("addressDeliveryPoint");
+			String addressNumber = resultset.getString("addressNumber");
+			String addressPortLaber = resultset.getString("addressPortLabel");
+			String addressNext = resultset.getString("addressNext");
+			int addressTownIdt = resultset.getInt("addressTownIdt");
+			String addressGenerationKey = resultset.getString("addressGenerationKey");
+			
+			address = new Address(addressIdt, addressDeliveryPoint, addressNumber, addressPortLaber, addressNext, addressTownIdt, null, addressGenerationKey);
+			
 		} catch (SQLException e) {
 			System.out.println("Erreur lors de la lecture des donnees de l'address : " + e);
 			e.printStackTrace();

@@ -143,7 +143,7 @@ public class CivilityBdd extends ConnexionBdd {
 		Connection connexion = trtConnexionBdd();
 		try (
 				PreparedStatement preparedStatement = initialisationRequete(connexion, SQL, false, civility.getCivilityIdt())) {
-			 	preparedStatement.executeUpdate();
+			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			/**
 			 * L'utilisation de Class.getEnclosingMethod() de la classe Dummy (classe interne anonyme) renvoie un objet 
