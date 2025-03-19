@@ -31,7 +31,7 @@ public class CompanyBdd extends ConnexionBdd {
 		ObservableList<Company> listeDonnees 	= FXCollections.observableArrayList();
 		Company company							= null;
 		/** Initialisation de la requête **/
-		String SQL		= "Select * From Company ORDER BY companyName ASC";
+		String SQL		= "Select * From Company, LegalRegime, Address, Town WHERE companyLegalRegime = legalRegimeIdt AND  companyAddressIdt = addressIdt AND addressTownIdt = townIdt ORDER BY companyName ASC";
 		/** Connexion à la base de données **/
 		Connection connexion = trtConnexionBdd();
 		if(connexion!=null) {
@@ -41,6 +41,7 @@ public class CompanyBdd extends ConnexionBdd {
 				ResultSet resultSet  = preparedStatement.executeQuery();
 				while (resultSet.next()) {
 					company = map(resultSet);
+					listeDonnees.add(company);
 				}	
 			} catch (SQLException e) {
 				/**

@@ -41,6 +41,7 @@ public class LegalRegimeBdd extends ConnexionBdd {
 				ResultSet resultSet  = preparedStatement.executeQuery();
 				while (resultSet.next()) {
 					legalRegime = map(resultSet);
+					listeDonnees.add(legalRegime);
 				}	
 			} catch (SQLException e) {
 				/**

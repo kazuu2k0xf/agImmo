@@ -42,6 +42,7 @@ public class AddressBdd extends ConnexionBdd {
 				ResultSet resultSet  = preparedStatement.executeQuery();
 				while (resultSet.next()) {
 					address = map(resultSet);
+					
 				}	
 			} catch (SQLException e) {
 				/**

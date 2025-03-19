@@ -41,6 +41,7 @@ public class TownBdd extends ConnexionBdd {
 				ResultSet resultSet  = preparedStatement.executeQuery();
 				while (resultSet.next()) {
 					town = map(resultSet);
+					listeDonnees.add(town);
 				}	
 			} catch (SQLException e) {
 				/**

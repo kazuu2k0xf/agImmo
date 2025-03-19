@@ -142,6 +142,7 @@ public class DashboardController {
 			Stage primaryStage 							  = loaderFxml.createLoaderBorderPane();
 			CompanyManagementController controler = loaderFxml.getLoader().getController();
 			controler.setDialogStage(primaryStage);
+			controler.setAgent(agent);
 			primaryStage.show();
 		}
 	}
