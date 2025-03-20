@@ -112,9 +112,9 @@ public class Address {
 	public StringProperty getAdressCompleteProperty() {
 		StringProperty adressNumber 	= new SimpleStringProperty(this.addressNumber);
 		StringProperty addressPortLabel = new SimpleStringProperty(this.addressPortLabel);
-		StringProperty addressNext 		= new SimpleStringProperty(this.addressNext);
+		//StringProperty addressNext 		= new SimpleStringProperty(this.addressNext);
 		StringProperty addressComplete	= new SimpleStringProperty("");
-		addressComplete.bind(Bindings.concat(adressNumber," ",addressPortLabel," ",addressNext));
+		addressComplete.bind(Bindings.concat(adressNumber," ",addressPortLabel));
 		return addressComplete;
 	}
 

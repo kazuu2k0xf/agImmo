@@ -63,7 +63,7 @@ public class TownBdd extends ConnexionBdd {
 		/** Initialisation des variables **/
 		Town town							= null;
 		/** Initialisation de la requete **/
-		String SQL		= "Select * FROM Town WHERE townId = ?";
+		String SQL		= "Select * FROM Town WHERE townIdt = ?";
 		/** Connexion a la base de donnees **/
 		Connection connexion = trtConnexionBdd();
 		if(connexion!=null) {

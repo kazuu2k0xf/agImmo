@@ -4,6 +4,7 @@ import static utilities.GestionExceptions.gestionDesExceptionsStates;
 import static utilities.UtilitiesJdbc.initialisationRequete;
 import static bdd.AddressBdd.selectOneAdresse;
 import static bdd.LegalRegimeBdd.selectOneLegalRegime;
+import static bdd.TownBdd.selectOneTown;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,6 +19,7 @@ import javafx.collections.ObservableList;
 import model.Address;
 import model.Company;
 import model.LegalRegime;
+import model.Town;
 
 public class CompanyBdd extends ConnexionBdd {
 	/** Attributs de la classe **/
@@ -31,7 +33,7 @@ public class CompanyBdd extends ConnexionBdd {
 		ObservableList<Company> listeDonnees 	= FXCollections.observableArrayList();
 		Company company							= null;
 		/** Initialisation de la requête **/
-		String SQL		= "Select * From Company, LegalRegime, Address, Town WHERE companyLegalRegime = legalRegimeIdt AND  companyAddressIdt = addressIdt AND addressTownIdt = townIdt ORDER BY companyName ASC";
+		String SQL		= "Select * From Company, Address, Town WHERE companyAddressIdt = addressIdt AND addressTownIdt = townIdt ORDER BY companyName ASC";
 		/** Connexion à la base de données **/
 		Connection connexion = trtConnexionBdd();
 		if(connexion!=null) {
@@ -225,31 +227,33 @@ public class CompanyBdd extends ConnexionBdd {
 	 * @return				[Company]		: instance Company créée
 	 */
 	private static Company map(ResultSet resultset) {
-		/** Attributs de la classe **/
-		Company company 					= null;
-		try {
-			int companyIdt = resultset.getInt("CompanyIdt");
-			String companyName = resultset.getString("companyName");
-			int companyAddressIdt = resultset.getInt("companyAddressIdt");
-			String companyTelephone = resultset.getString("CompanyTelephone");
-			String companyEmail = resultset.getString("companyEmail");
-			String companyWebSite = resultset.getString("companyWebSite");
-			int companyLegalRegime = resultset.getInt("companyLegalRegime");
-			LocalDate companyCreationDate = resultset.getDate("CompanyCreationDate").toLocalDate();
-			String companySiren = resultset.getString("companySiren");
-			String companySiret = resultset.getString("companySiret");
-			int companyAdminSeat = resultset.getInt("companyAdminSeat");
-			String companyMaps = resultset.getString("companyMaps");
-			
-			company = new Company(companyIdt, companyName, companyAddressIdt, companyTelephone, companyEmail, companyWebSite, companyLegalRegime, companyCreationDate, companySiren, companySiret, false, null, null, companyMaps);
-			
-		} catch (SQLException e) {			
-			class Dummy {};
-			String methodeName 	= Dummy.class.getEnclosingMethod().getName();
-			System.out.println("Classe  : " + classeName);
-			System.out.println("Méthode : " + methodeName);
-			System.out.println("Erreur lors de la lecture de la compagnie : " + e);
-		}		
-		return company;
+	    Company company = null;
+	    try {
+	        int companyIdt = resultset.getInt("CompanyIdt");
+	        String companyName = resultset.getString("companyName");
+	        int companyAddressIdt = resultset.getInt("companyAddressIdt");
+	        String companyTelephone = resultset.getString("CompanyTelephone");
+	        String companyEmail = resultset.getString("companyEmail");
+	        String companyWebSite = resultset.getString("companyWebSite");
+	        int companyLegalRegime = resultset.getInt("companyLegalRegime");
+	        LocalDate companyCreationDate = resultset.getDate("CompanyCreationDate").toLocalDate();
+	        String companySiren = resultset.getString("companySiren");
+	        String companySiret = resultset.getString("companySiret");
+	        int companyAdminSeat = resultset.getInt("companyAdminSeat");
+	        String companyMaps = resultset.getString("companyMaps");
+
+	        Address address = selectOneAdresse(companyAddressIdt);
+	      
+	        company = new Company(companyIdt, companyName, companyAddressIdt, companyTelephone, companyEmail, companyWebSite, companyLegalRegime, companyCreationDate, companySiren, companySiret, false, address, null, companyMaps);
+
+	    } catch (SQLException e) {
+	        class Dummy {};
+	        String methodeName = Dummy.class.getEnclosingMethod().getName();
+	        System.out.println("Classe  : " + classeName);
+	        System.out.println("Méthode : " + methodeName);
+	        System.out.println("Erreur lors de la lecture de la compagnie : " + e);
+	    }
+	    return company;
 	}
+
 }

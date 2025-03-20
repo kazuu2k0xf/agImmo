@@ -21,6 +21,7 @@ import static bdd.AddressBdd.deleteAddress;
 import static bdd.CompanyBdd.*;
 import static bdd.FenetresBdd.selectOneFenetre;
 import static bdd.TypeAgentBdd.selectOneTypeAgent;
+import static bdd.AddressBdd.selectOneAdresse;
 
 import utilities.DialogBox;
 
@@ -54,11 +55,13 @@ public class CompanyManagementController extends GeneralManagementController {
 		tbcCompanyName.setCellValueFactory(cellDataFeatures -> cellDataFeatures.getValue().getCompanyNameProperty());
 		tbcCompanyTelephone.setCellValueFactory(cellDataFeatures -> cellDataFeatures.getValue().getCompanyTelephoneProperty());
 		tbcCompanyEmail.setCellValueFactory(cellDataFeatures -> cellDataFeatures.getValue().getCompanyEmailProperty());
-		//tbcCompanyAddress.setCellValueFactory(cellDataFeatures -> cellDataFeatures.getValue().getAdress().getAdressCompleteProperty());
-		//tbcCompanyTown.setCellValueFactory(cellDataFeatures -> cellDataFeatures.getValue().getAdress().getTown().getTownCompleteProperty());
+		tbcCompanyAddress.setCellValueFactory(cellDataFeatures -> cellDataFeatures.getValue().getAdress().getAdressCompleteProperty());
+		tbcCompanyTown.setCellValueFactory(cellDataFeatures -> cellDataFeatures.getValue().getAdress().getTown().getTownCompleteProperty());
 
-		tbvDonnees.setItems(listeDonnees);
+	
 		
+		
+		tbvDonnees.setItems(listeDonnees);
 		
 	}
 	/**
