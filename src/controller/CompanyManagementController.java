@@ -31,6 +31,7 @@ public class CompanyManagementController extends GeneralManagementController {
 	 * **************************************************************/
 	ObservableList<Company> listeDonnees 	= FXCollections.observableArrayList();
 	Agent agent								= null;
+	Company companySelected = null;
 	/** *************************************************************
 	 * Déclaration des contrôles du fichier fxml
 	 * **************************************************************/
@@ -96,6 +97,11 @@ public class CompanyManagementController extends GeneralManagementController {
 					CompanyDefinitionController controler = loaderFxml.getLoader().getController();
 					controler.setDialogStage(primaryStage);
 					controler.setAction("update");
+					
+					companySelected = tbvDonnees.getSelectionModel().getSelectedItem();
+					controler.setCompany(companySelected);
+					
+					
 					primaryStage.showAndWait();
 				} 
 		  }		

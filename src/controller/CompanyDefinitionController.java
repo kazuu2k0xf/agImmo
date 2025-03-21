@@ -193,6 +193,36 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 	 * @param company	[Company]
 	 */
 	public void setCompany(Company company) {
+		this.company = company;
+		
+		int companyIdt = this.company.getCompanyIdt();
+		String companyName = this.company.getCompanyName();
+		int companyAddressIdt = this.company.getCompanyAddressIdt();
+		String companyTelephone = this.company.getCompanyTelephone();
+		String companyEmail = this.company.getCompanyEmail();
+		String companyWebSite = this.company.getCompanyWebSite();
+		LegalRegime companyLegalRegime = this.company.getLegalRegime();
+		LocalDate companyCreationDate = this.company.getCompanyCreationDate();
+		String companySiren = this.company.getCompanySiren();
+		String companySiret = this.company.getCompanySiret();
+		boolean companyAdminSeat = this.company.isCompanyAdminSeat();
+		String companyMaps = this.company.getCompanyMaps();
+		
+		txfCompanyIdt.setText(String.valueOf(companyIdt));
+		txfCompanyName.setText(companyName);
+		txfCompanyTelephone.setText(companyTelephone);
+		txfCompanyEmail.setText(companyEmail);
+		txfCompanyWebSite.setText(companyWebSite);
+		txfCompanySiren.setText(companySiren);
+		txfCompanySiret.setText(companySiret);
+		cbxCompanyLegalRegime.setValue(companyLegalRegime);
+		dapCompanyCreationDate.setValue(companyCreationDate);
+		chkCompanyAdminSeat.setSelected(companyAdminSeat);
+		txfCompanyMaps.setText(companyMaps);
+		
+		
+
+
 	}
 	/**
 	 * Description 	: Cette methode appelee lors de la creation du FXMLLoader permet de definir l'action CRU en cours
