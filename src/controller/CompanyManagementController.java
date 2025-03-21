@@ -74,7 +74,6 @@ public class CompanyManagementController extends GeneralManagementController {
 		listeDonnees	= selectAllCompany();
 		tbvDonnees.getItems().addAll(listeDonnees);
 	}
-	
 
 	@Override
 	public void evtOnMouseClickedImvSelection() {
@@ -97,8 +96,8 @@ public class CompanyManagementController extends GeneralManagementController {
 					controler.setDialogStage(primaryStage);
 					controler.setAction("update");
 					primaryStage.showAndWait();
-				} 
-		  }		
+				}
+		  }
 	}
 	/**
 	 * Méthode permettant d'appeler la fenêtre de définition d'une agence en ajout
@@ -114,7 +113,7 @@ public class CompanyManagementController extends GeneralManagementController {
 					controler.setDialogStage(primaryStage);
 					controler.setAction("create");
 					primaryStage.showAndWait();
-				} 
+				}
 		  }		
 	}
 	/**
@@ -124,7 +123,9 @@ public class CompanyManagementController extends GeneralManagementController {
 	 */
 	@Override
 	@FXML public void evtOnMouseClickedBtnSupprimer() {
-		
+		//Affichage de la dialogBox lors de la suppression 
+		DialogBox dialogBox = new DialogBox("Suppression d'une agence"," ","Voulez-vous la supprimer", AlertType.CONFIRMATION, ButtonType.CANCEL);
+		ButtonType reponse = dialogBox.showDialogConfirmation();
 	}
 	/**
 	 * Description	: Methode gérant le double clic sur la liste, elle correspond à  l'action Modifier.
