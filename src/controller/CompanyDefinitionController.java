@@ -177,12 +177,36 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 			 ** *************************************************************************************************************/ 
 			/** Le traitement se fait selon le code action **/
 			if(codeAction.equals("create")) {
+				address.setAddressDeliveryPoint(txfAddressDeliveryPoint.getText());
+				address.setAddressNumber(txfAddressNumber.getText());
+				address.setAddressPortLabel(txfAddressPortLabel.getText());
+				address.setAddressNext(txfAddressNext.getText());
+				int townIdt = Integer.parseInt(txfSelectTown.getText());
+				address.setAddressTownIdt(townIdt);
+				
+				insertAddress(address);
+				
+				
 			} else {
 			}
 			/** *************************************************************************************************************
 			 *  Mise a jour de l'objet company avec les donnees de la fenetre
 			 ** *************************************************************************************************************/ 
 			if(codeAction.equals("create")) {
+				int key = selectOneAdresseByKey(company.getAdress().getAddressGenerationKey());
+				System.out.println(key);
+				company.setCompanyAddressIdt(key);
+			    company.setCompanyName(txfCompanyName.getText());
+			    company.setCompanyTelephone(txfCompanyTelephone.getText());
+			    company.setCompanyEmail(txfCompanyEmail.getText());
+			    company.setCompanyWebSite(txfCompanyWebSite.getText());
+			    company.setCompanyLegalRegime(cbxCompanyLegalRegime.getValue().getLegalRegimeIdt());
+			    company.setCompanyCreationDate(dapCompanyCreationDate.getValue());
+			    company.setCompanySiren(txfCompanySiren.getText());
+			    company.setCompanySiret(txfCompanySiret.getText());
+			    company.setCompanyAdminSeat(chkCompanyAdminSeat.isSelected());
+			    company.setCompanyMaps(txfCompanyMaps.getText());
+			    insertCompany(company);
 			} else {
 			}
 		}
