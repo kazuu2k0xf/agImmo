@@ -187,8 +187,9 @@ public class AddressBdd extends ConnexionBdd {
 			String addressPortLabel = resultset.getString("addressPortLabel");
 			String addressNext = resultset.getString("addressNext");
 			int addressTownIdt = resultset.getInt("addressTownIdt");
-	        Town town = selectOneTown(addressTownIdt);
 			String addressGenerationKey = resultset.getString("addressGenerationKey");
+			
+		    Town town = selectOneTown(addressTownIdt);
 			
 	        address = new Address(addressIdt, addressDeliveryPoint, addressNumber, addressPortLabel, addressNext, addressTownIdt, town, addressGenerationKey);
 			

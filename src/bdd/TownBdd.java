@@ -98,10 +98,10 @@ public class TownBdd extends ConnexionBdd {
 		/** Initialisation des variables **/
 		Town town				= null;
 		try {
-			int townIdt = resultset.getInt("townInt");
+			int townIdt = resultset.getInt("townIdt");
 			String townName = resultset.getString("townName");
 			String townPostCode = resultset.getString("townPostCode");
-
+			
 			town = new Town(townIdt, townName, townPostCode);
 
 		} catch (SQLException e) {

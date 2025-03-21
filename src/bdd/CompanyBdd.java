@@ -136,7 +136,7 @@ public class CompanyBdd extends ConnexionBdd {
 						,company.isCompanyAdminSeat()
 						,company.getCompanyMaps()
 						);
-									
+
 				nbreEnreg							= preparedStatement.executeUpdate();
 			} catch (SQLException e) {
 				/**
@@ -227,33 +227,34 @@ public class CompanyBdd extends ConnexionBdd {
 	 * @return				[Company]		: instance Company créée
 	 */
 	private static Company map(ResultSet resultset) {
-	    Company company = null;
-	    try {
-	        int companyIdt = resultset.getInt("CompanyIdt");
-	        String companyName = resultset.getString("companyName");
-	        int companyAddressIdt = resultset.getInt("companyAddressIdt");
-	        String companyTelephone = resultset.getString("CompanyTelephone");
-	        String companyEmail = resultset.getString("companyEmail");
-	        String companyWebSite = resultset.getString("companyWebSite");
-	        int companyLegalRegime = resultset.getInt("companyLegalRegime");
-	        LocalDate companyCreationDate = resultset.getDate("CompanyCreationDate").toLocalDate();
-	        String companySiren = resultset.getString("companySiren");
-	        String companySiret = resultset.getString("companySiret");
-	        int companyAdminSeat = resultset.getInt("companyAdminSeat");
-	        String companyMaps = resultset.getString("companyMaps");
-
-	        Address address = selectOneAdresse(companyAddressIdt);
-	      
-	        company = new Company(companyIdt, companyName, companyAddressIdt, companyTelephone, companyEmail, companyWebSite, companyLegalRegime, companyCreationDate, companySiren, companySiret, false, address, null, companyMaps);
-
-	    } catch (SQLException e) {
-	        class Dummy {};
-	        String methodeName = Dummy.class.getEnclosingMethod().getName();
-	        System.out.println("Classe  : " + classeName);
-	        System.out.println("Méthode : " + methodeName);
-	        System.out.println("Erreur lors de la lecture de la compagnie : " + e);
-	    }
-	    return company;
+		Company company = null;
+		try {
+			int companyIdt = resultset.getInt("CompanyIdt");
+			String companyName = resultset.getString("companyName");
+			int companyAddressIdt = resultset.getInt("companyAddressIdt");
+			String companyTelephone = resultset.getString("CompanyTelephone");
+			String companyEmail = resultset.getString("companyEmail");
+			String companyWebSite = resultset.getString("companyWebSite");
+			int companyLegalRegime = resultset.getInt("companyLegalRegime");
+			LocalDate companyCreationDate = resultset.getDate("CompanyCreationDate").toLocalDate();
+			String companySiren = resultset.getString("companySiren");
+			String companySiret = resultset.getString("companySiret");
+			boolean companyAdminSeat = resultset.getBoolean("companyAdminSeat");
+			String companyMaps = resultset.getString("companyMaps");
+			
+			Address address = selectOneAdresse(companyAddressIdt);
+			LegalRegime newLegalRemine = selectOneLegalRegime(companyLegalRegime);
+			
+			company = new Company(companyIdt, companyName, companyAddressIdt, companyTelephone, companyEmail, companyWebSite, companyLegalRegime, companyCreationDate, companySiren, companySiret, companyAdminSeat, address, newLegalRemine, companyMaps);
+			
+		} catch (SQLException e) {
+			class Dummy {};
+			String methodeName = Dummy.class.getEnclosingMethod().getName();
+			System.out.println("Classe  : " + classeName);
+			System.out.println("Méthode : " + methodeName);
+			System.out.println("Erreur lors de la lecture de la compagnie : " + e);
+		}
+		return company;
 	}
 
 }

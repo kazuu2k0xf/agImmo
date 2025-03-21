@@ -58,9 +58,6 @@ public class CompanyManagementController extends GeneralManagementController {
 		tbcCompanyAddress.setCellValueFactory(cellDataFeatures -> cellDataFeatures.getValue().getAdress().getAdressCompleteProperty());
 		tbcCompanyTown.setCellValueFactory(cellDataFeatures -> cellDataFeatures.getValue().getAdress().getTown().getTownCompleteProperty());
 
-	
-		
-		
 		tbvDonnees.setItems(listeDonnees);
 		
 	}
@@ -127,6 +124,7 @@ public class CompanyManagementController extends GeneralManagementController {
 	 */
 	@Override
 	@FXML public void evtOnMouseClickedBtnSupprimer() {
+		
 	}
 	/**
 	 * Description	: Methode gérant le double clic sur la liste, elle correspond à  l'action Modifier.
