@@ -6,6 +6,7 @@ module AgImmo {
 	requires javafx.graphics;
 	requires bcrypt;
 	requires javafx.base;
+	requires javafx.web;
 	
 	opens controller to javafx.graphics, javafx.fxml;
 }
