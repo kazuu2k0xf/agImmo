@@ -194,6 +194,7 @@ public class InfoEnteteAdminController extends AdministrationManagementControlle
 			}	
 		}
 	}
+	
 
 	@Override
 	public void evtOnMousePressedTbvDonnees(MouseEvent event) {
