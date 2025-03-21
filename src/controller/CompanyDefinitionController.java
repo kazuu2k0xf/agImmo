@@ -207,6 +207,16 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 			 ** *************************************************************************************************************/ 
 			/** Le traitement se fait selon le code action **/
 			if(codeAction.equals("create")) {
+        
+				address.setAddressDeliveryPoint(txfAddressDeliveryPoint.getText());
+				address.setAddressNumber(txfAddressNumber.getText());
+				address.setAddressPortLabel(txfAddressPortLabel.getText());
+				address.setAddressNext(txfAddressNext.getText());
+				int townIdt = Integer.parseInt(txfSelectTown.getText());
+				address.setAddressTownIdt(townIdt);
+				
+				insertAddress(address);
+				
 				
 			} else {
 			}
@@ -215,6 +225,20 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 			 ** *************************************************************************************************************/ 
 			if(codeAction.equals("create")) {
 				
+				int key = selectOneAdresseByKey(company.getAdress().getAddressGenerationKey());
+				System.out.println(key);
+				company.setCompanyAddressIdt(key);
+			    company.setCompanyName(txfCompanyName.getText());
+			    company.setCompanyTelephone(txfCompanyTelephone.getText());
+			    company.setCompanyEmail(txfCompanyEmail.getText());
+			    company.setCompanyWebSite(txfCompanyWebSite.getText());
+			    company.setCompanyLegalRegime(cbxCompanyLegalRegime.getValue().getLegalRegimeIdt());
+			    company.setCompanyCreationDate(dapCompanyCreationDate.getValue());
+			    company.setCompanySiren(txfCompanySiren.getText());
+			    company.setCompanySiret(txfCompanySiret.getText());
+			    company.setCompanyAdminSeat(chkCompanyAdminSeat.isSelected());
+			    company.setCompanyMaps(txfCompanyMaps.getText());
+			    insertCompany(company);
 			} else {
 				
 			}
@@ -226,6 +250,36 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 	 * @param company	[Company]
 	 */
 	public void setCompany(Company company) {
+		this.company = company;
+		
+		int companyIdt = this.company.getCompanyIdt();
+		String companyName = this.company.getCompanyName();
+		int companyAddressIdt = this.company.getCompanyAddressIdt();
+		String companyTelephone = this.company.getCompanyTelephone();
+		String companyEmail = this.company.getCompanyEmail();
+		String companyWebSite = this.company.getCompanyWebSite();
+		LegalRegime companyLegalRegime = this.company.getLegalRegime();
+		LocalDate companyCreationDate = this.company.getCompanyCreationDate();
+		String companySiren = this.company.getCompanySiren();
+		String companySiret = this.company.getCompanySiret();
+		boolean companyAdminSeat = this.company.isCompanyAdminSeat();
+		String companyMaps = this.company.getCompanyMaps();
+		
+		txfCompanyIdt.setText(String.valueOf(companyIdt));
+		txfCompanyName.setText(companyName);
+		txfCompanyTelephone.setText(companyTelephone);
+		txfCompanyEmail.setText(companyEmail);
+		txfCompanyWebSite.setText(companyWebSite);
+		txfCompanySiren.setText(companySiren);
+		txfCompanySiret.setText(companySiret);
+		cbxCompanyLegalRegime.setValue(companyLegalRegime);
+		dapCompanyCreationDate.setValue(companyCreationDate);
+		chkCompanyAdminSeat.setSelected(companyAdminSeat);
+		txfCompanyMaps.setText(companyMaps);
+		
+		
+
+
 	}
 	/**
 	 * Description 	: Cette methode appelee lors de la creation du FXMLLoader permet de definir l'action CRU en cours
