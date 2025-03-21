@@ -42,6 +42,7 @@ public class AddressBdd extends ConnexionBdd {
 				ResultSet resultSet  = preparedStatement.executeQuery();
 				while (resultSet.next()) {
 					address = map(resultSet);
+					
 				}	
 			} catch (SQLException e) {
 				/**
@@ -183,12 +184,14 @@ public class AddressBdd extends ConnexionBdd {
 			int addressIdt = resultset.getInt("addressIdt");
 			String addressDeliveryPoint = resultset.getString("addressDeliveryPoint");
 			String addressNumber = resultset.getString("addressNumber");
-			String addressPortLaber = resultset.getString("addressPortLabel");
+			String addressPortLabel = resultset.getString("addressPortLabel");
 			String addressNext = resultset.getString("addressNext");
 			int addressTownIdt = resultset.getInt("addressTownIdt");
 			String addressGenerationKey = resultset.getString("addressGenerationKey");
 			
-			address = new Address(addressIdt, addressDeliveryPoint, addressNumber, addressPortLaber, addressNext, addressTownIdt, null, addressGenerationKey);
+		    Town town = selectOneTown(addressTownIdt);
+			
+	        address = new Address(addressIdt, addressDeliveryPoint, addressNumber, addressPortLabel, addressNext, addressTownIdt, town, addressGenerationKey);
 			
 		} catch (SQLException e) {
 			System.out.println("Erreur lors de la lecture des donnees de l'address : " + e);

@@ -41,6 +41,7 @@ public class TownBdd extends ConnexionBdd {
 				ResultSet resultSet  = preparedStatement.executeQuery();
 				while (resultSet.next()) {
 					town = map(resultSet);
+					listeDonnees.add(town);
 				}	
 			} catch (SQLException e) {
 				/**
@@ -62,7 +63,7 @@ public class TownBdd extends ConnexionBdd {
 		/** Initialisation des variables **/
 		Town town							= null;
 		/** Initialisation de la requete **/
-		String SQL		= "Select * FROM Town WHERE townId = ?";
+		String SQL		= "Select * FROM Town WHERE townIdt = ?";
 		/** Connexion a la base de donnees **/
 		Connection connexion = trtConnexionBdd();
 		if(connexion!=null) {
@@ -97,10 +98,10 @@ public class TownBdd extends ConnexionBdd {
 		/** Initialisation des variables **/
 		Town town				= null;
 		try {
-			int townIdt = resultset.getInt("townInt");
+			int townIdt = resultset.getInt("townIdt");
 			String townName = resultset.getString("townName");
 			String townPostCode = resultset.getString("townPostCode");
-
+			
 			town = new Town(townIdt, townName, townPostCode);
 
 		} catch (SQLException e) {

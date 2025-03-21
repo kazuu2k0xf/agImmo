@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Alert.AlertType;
@@ -20,6 +21,7 @@ import static bdd.AddressBdd.deleteAddress;
 import static bdd.CompanyBdd.*;
 import static bdd.FenetresBdd.selectOneFenetre;
 import static bdd.TypeAgentBdd.selectOneTypeAgent;
+import static bdd.AddressBdd.selectOneAdresse;
 
 import utilities.DialogBox;
 
@@ -33,6 +35,7 @@ public class CompanyManagementController extends GeneralManagementController {
 	 * Déclaration des contrôles du fichier fxml
 	 * **************************************************************/
 	@FXML private TableView<Company> tbvDonnees;
+	@FXML private Label							lblTitre;
 	@FXML private TableColumn<Company, String> 	tbcCompanyName;
 	@FXML private TableColumn<Company, String> 	tbcCompanyTelephone;
 	@FXML private TableColumn<Company, String> 	tbcCompanyEmail;
@@ -44,6 +47,19 @@ public class CompanyManagementController extends GeneralManagementController {
 	 */
 	@Override
 	public void initialize() {
+		
+		lblTitre.setText("Gestion des Agences");
+		
+		listeDonnees.addAll(selectAllCompany());
+		
+		tbcCompanyName.setCellValueFactory(cellDataFeatures -> cellDataFeatures.getValue().getCompanyNameProperty());
+		tbcCompanyTelephone.setCellValueFactory(cellDataFeatures -> cellDataFeatures.getValue().getCompanyTelephoneProperty());
+		tbcCompanyEmail.setCellValueFactory(cellDataFeatures -> cellDataFeatures.getValue().getCompanyEmailProperty());
+		tbcCompanyAddress.setCellValueFactory(cellDataFeatures -> cellDataFeatures.getValue().getAdress().getAdressCompleteProperty());
+		tbcCompanyTown.setCellValueFactory(cellDataFeatures -> cellDataFeatures.getValue().getAdress().getTown().getTownCompleteProperty());
+
+		tbvDonnees.setItems(listeDonnees);
+		
 	}
 	/**
 	 * Méthode permettant :
@@ -58,6 +74,7 @@ public class CompanyManagementController extends GeneralManagementController {
 		listeDonnees	= selectAllCompany();
 		tbvDonnees.getItems().addAll(listeDonnees);
 	}
+	
 
 	@Override
 	public void evtOnMouseClickedImvSelection() {
@@ -70,12 +87,35 @@ public class CompanyManagementController extends GeneralManagementController {
 	 */
 	@Override
 	public void evtOnMouseClickedBtnModifier() {
+		  if(agent.getAgentType() == 1) {
+			  Fenetres fenetre 								  = selectOneFenetre(Cstes.AGENCEDEFINITION);
+
+				if (fenetre != null) {
+					LoaderFXML loaderFxml 						  = new LoaderFXML(fenetre);
+					Stage primaryStage 							  = loaderFxml.createLoaderBorderPane();
+					CompanyDefinitionController controler = loaderFxml.getLoader().getController();
+					controler.setDialogStage(primaryStage);
+					controler.setAction("update");
+					primaryStage.showAndWait();
+				} 
+		  }		
 	}
 	/**
 	 * Méthode permettant d'appeler la fenêtre de définition d'une agence en ajout
 	 */
 	@Override
 	public void evtOnMouseClickedBtnAjouter() {
+		 if(agent.getAgentType() == 3) {
+			 Fenetres fenetre	  							= selectOneFenetre(Cstes.AGENCEDEFINITION);
+				if(fenetre!=null) {
+					LoaderFXML loaderFxml 					= new LoaderFXML(fenetre);
+					Stage primaryStage 	  					= loaderFxml.createLoaderBorderPane();
+					CompanyDefinitionController controler 	= loaderFxml.getLoader().getController();
+					controler.setDialogStage(primaryStage);
+					controler.setAction("create");
+					primaryStage.showAndWait();
+				} 
+		  }		
 	}
 	/**
 	 * Description 	: Methode abstraite devant etre obligatoirement initialisee dans la classe
@@ -84,6 +124,7 @@ public class CompanyManagementController extends GeneralManagementController {
 	 */
 	@Override
 	@FXML public void evtOnMouseClickedBtnSupprimer() {
+		
 	}
 	/**
 	 * Description	: Methode gérant le double clic sur la liste, elle correspond à  l'action Modifier.
@@ -101,5 +142,6 @@ public class CompanyManagementController extends GeneralManagementController {
 	 * @param agent	[Agent] : objet Agent correspondant à l'agent connecté.
 	 */
 	public void setAgent(Agent agent) {
+		this.agent = agent;
 	}
 }
