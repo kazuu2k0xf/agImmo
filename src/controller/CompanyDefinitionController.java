@@ -78,7 +78,7 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 	@FXML private DatePicker			dapCompanyCreationDate;
 	@FXML private CheckBox				chkCompanyAdminSeat;
 	@FXML private WebView				wbvMaps;	
-	
+
 	/**
 	 * Méthode lancée implicitement à la génération de la fenêtre fxml.
 	 * Elle permet d'initialiser les valeurs statiques de la fenêtre
@@ -86,29 +86,61 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 	@SuppressWarnings("unused")
 	@Override
 	public void initialize() {
-		// TODO Auto-generated method stub
 		/** Remplissage de la combobox sur les Regimes juridiques et initialisation avec la valeur par defaut
 		 * definie dans la table informations
 		 **/ 
+		listeLegalRegimes    = selectAllLegalRegime();
+		cbxCompanyLegalRegime.getItems().addAll(listeLegalRegimes);
+
 		/** Remplissage de la combobox sur les villes **/
 		listeTown			= selectAllTown();
 		cbxAddressTown.getItems().addAll(listeTown);
 		txfSelectTown.textProperty().addListener((observable, oldValue, newValue) -> {
-            List<Town> filteredTowns = listeTown.stream()
-                    .filter(town -> town.getTownName().toLowerCase().contains(newValue.toLowerCase())
-                            || town.getTownPostCode().contains(newValue))
-                    .collect(Collectors.toList());
-            cbxAddressTown.setItems(FXCollections.observableArrayList(filteredTowns));
-            if (!cbxAddressTown.isShowing()) {
-            	cbxAddressTown.show();
-            }
-        });
+			List<Town> filteredTowns = listeTown.stream()
+					.filter(town -> town.getTownName().toLowerCase().contains(newValue.toLowerCase())
+							|| town.getTownPostCode().contains(newValue))
+					.collect(Collectors.toList());
+			cbxAddressTown.setItems(FXCollections.observableArrayList(filteredTowns));
+			if (!cbxAddressTown.isShowing()) {
+				cbxAddressTown.show();
+			}
+		});
 		/** Initialisation des Tooltips **/
-	}
+		String infoTelephoneString  = "Le téléphone doit avoir le format suivant : XX-XX-XX-XX-XX ";
 
+		txfCompanyTelephone.setTooltip(new Tooltip(infoTelephoneString));
+
+		// ToolTip email
+		Tooltip tooltipEmail = new Tooltip("Le mail doit avoir le format suivant : XXXXXXX@YYYY.ZZZ");
+		txfCompanyEmail.setTooltip(tooltipEmail);
+
+		// ToolTip SIREN
+		Tooltip tooltipSiren = new Tooltip("Le SIREN doit faire 9 de long et ne contenir que des chiffres");
+		txfCompanySiren.setTooltip(tooltipSiren);
+
+		// ToolTip SIREN
+		Tooltip tooltipSiret = new Tooltip("Le SIRET doit faire 14 de long, ne contenir que des chiffres et contenir le SIREN sur les premiers caracteres");
+		txfCompanySiret.setTooltip(tooltipSiret);
+
+
+		/** Initialisation de la  carte google maps **/	
+		/*if (!company.getCompanyMaps().isEmpty()) {
+			String urlMaps = Cstes.WEBMAPS;
+
+			urlMaps.replace("{carte}", company.getCompanyMaps());
+
+			System.out.println(urlMaps);
+
+			WebEngine webEngine = wbvMaps.getEngine();
+			webEngine.loadContent(urlMaps);
+		}
+		 */
+	}
 	@Override
 	public void evtOnMouseClickedBtnValider() {
-		// TODO Auto-generated method stub
+		
+		/** Initialisation de la variable qui contiendra les messgaes d'erreurs **/
+		messageErreur = "";
 		/** Initialisation des variables **/
 		String messageErreur = "";
 		/** *************************************************************************************************************
@@ -116,28 +148,32 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 		 ** *************************************************************************************************************/  
 		/** controle de la zone obligatoire : nom **/
 		if (UtilitiesControls.isTextFieldEmpty(txfCompanyName)) {
-		    messageErreur += "Le nom est obligatoire " + Cstes.CR;
+			messageErreur += "Le nom est obligatoire " + Cstes.CR;
 		}
 		/** controle de la zone obligatoire : telephone  **/
 		if (UtilitiesControls.validatePhoneNumber(txfCompanyTelephone)) {
-		    messageErreur += "Le téléphone est obligatoire " + Cstes.CR;
+			messageErreur += "Le téléphone est obligatoire " + Cstes.CR;
 		}
 		/** controle de la zone obligatoire : email  **/
 		if (UtilitiesControls.isEmailAdress(txfCompanyEmail)) {
-		    messageErreur += "L'email est obligatoire " + Cstes.CR;
+			messageErreur += "L'email est obligatoire " + Cstes.CR;
 		}
 		/** contrôle de la date de création **/
-		/*if (UtilitiesControls.isTextFieldNumeric(dapCompanyCreationDate)) {
-		    messageErreur += "La datae de création est obligatoire " + Cstes.CR;
-		}
-		*/
+
 		/** contrôle du SIREN **/
-		if (UtilitiesControls.isTextFieldNumeric(txfCompanySiren)) {
-		    messageErreur += "Le SIREN est obligatoire " + Cstes.CR;
+		String siret = txfCompanySiret.getText();
+		//int companyIdt = this.company.getCompanyIdt();
+
+	/*	if (controleSiret(siret, companyIdt) > 0) {
+			messageErreur += "Le SIRET est déjà utilisé." + Cstes.CR;
+		}
+*/
+		if (UtilitiesControls.isTextFieldNumeric(txfCompanySiret)) {
+			messageErreur += "Le SIRET est obligatoire " + Cstes.CR;
 		}
 		/** contrôle du SIRET **/
 		if (UtilitiesControls.isTextFieldNumeric(txfCompanySiret)) {
-		    messageErreur += "Le SIRET est obligatoire " + Cstes.CR;
+			messageErreur += "Le SIRET est obligatoire " + Cstes.CR;
 		}
 
 		/** *************************************************************************************************************
@@ -145,18 +181,20 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 		 ** *************************************************************************************************************/  
 		/** controle du numéro **/
 		if (!UtilitiesControls.isTextFieldEmpty(txfAddressNumber)) {
-		    messageErreur += "Le numéro est obligatoire " + Cstes.CR;
+			messageErreur += "Le numéro est obligatoire " + Cstes.CR;
 		}
 		/** controle de la zone Libelle de la voie **/
 		if (!UtilitiesControls.isTextFieldEmpty(txfAddressPortLabel)) {
-		    messageErreur += "Le libelle de la voie est obligatoire " + Cstes.CR;
+			messageErreur += "Le libelle de la voie est obligatoire " + Cstes.CR;
 		}
 		/** controle de la ville **/
 		if (!UtilitiesControls.isTextFieldEmpty(txfSelectTown)) {
-		    messageErreur += "La ville est obligatoire " + Cstes.CR;
+			messageErreur += "La ville est obligatoire " + Cstes.CR;
 		}
 		/** S'il y a une erreur, on l'affiche dans un combobox **/
 		if(!messageErreur.isEmpty()) {
+	        DialogBox dialogbox = new DialogBox("Erreur", "Champs invalides ou manquants", messageErreur, AlertType.ERROR, null);
+	        dialogbox.showDialogError();
 		} else {
 			/**
 			 * Contrôle du siège
@@ -200,34 +238,37 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 				address = new Address();
 			}
 			/** Traitements de mise à  jour des informations de l'agence **/
+		
 			/** Initialisation des variables **/
 			int addressIdt 		= 0;
+			String key = generateKey();
 			/** *************************************************************************************************************
 			 *  Mise a jour de l'objet Address avec les donnees de la fenetre
 			 ** *************************************************************************************************************/ 
 			/** Le traitement se fait selon le code action **/
 			if(codeAction.equals("create")) {
-        
+				insertAddress(address);
+			} else {
 				address.setAddressDeliveryPoint(txfAddressDeliveryPoint.getText());
 				address.setAddressNumber(txfAddressNumber.getText());
 				address.setAddressPortLabel(txfAddressPortLabel.getText());
 				address.setAddressNext(txfAddressNext.getText());
-				int townIdt = Integer.parseInt(txfSelectTown.getText());
+				address.setAddressGenerationKey(key);
+				
+				Town townStringIdt = cbxAddressTown.getSelectionModel().getSelectedItem();
+				int townIdt = townStringIdt.getTownIdt();
 				address.setAddressTownIdt(townIdt);
 				
-				insertAddress(address);
-				
-				
-			} else {
+				updateAddress(address);			
 			}
 			/** *************************************************************************************************************
 			 *  Mise a jour de l'objet company avec les donnees de la fenetre
 			 ** *************************************************************************************************************/ 
 			if(codeAction.equals("create")) {
-				
-				int key = selectOneAdresseByKey(company.getAdress().getAddressGenerationKey());
-				System.out.println(key);
-				company.setCompanyAddressIdt(key);
+				insertCompany(company);
+			} else {
+				addressIdt = selectOneAdresseByKey(key);
+				company.setCompanyAddressIdt(addressIdt);
 			    company.setCompanyName(txfCompanyName.getText());
 			    company.setCompanyTelephone(txfCompanyTelephone.getText());
 			    company.setCompanyEmail(txfCompanyEmail.getText());
@@ -238,9 +279,8 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 			    company.setCompanySiret(txfCompanySiret.getText());
 			    company.setCompanyAdminSeat(chkCompanyAdminSeat.isSelected());
 			    company.setCompanyMaps(txfCompanyMaps.getText());
-			    insertCompany(company);
-			} else {
-				
+			    
+				updateCompany(company);
 			}
 		}
 	}
@@ -251,10 +291,9 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 	 */
 	public void setCompany(Company company) {
 		this.company = company;
-		
+
 		int companyIdt = this.company.getCompanyIdt();
 		String companyName = this.company.getCompanyName();
-		int companyAddressIdt = this.company.getCompanyAddressIdt();
 		String companyTelephone = this.company.getCompanyTelephone();
 		String companyEmail = this.company.getCompanyEmail();
 		String companyWebSite = this.company.getCompanyWebSite();
@@ -264,7 +303,11 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 		String companySiret = this.company.getCompanySiret();
 		boolean companyAdminSeat = this.company.isCompanyAdminSeat();
 		String companyMaps = this.company.getCompanyMaps();
-		
+		String addressPointDeLivraison = this.company.getAdress().getAddressDeliveryPoint();
+		String addressNumero = this.company.getAdress().getAddressNumber();
+		String addresseLibelle = this.company.getAdress().getAddressPortLabel();
+		String addressSuite = this.company.getAdress().getAddressNext();
+
 		txfCompanyIdt.setText(String.valueOf(companyIdt));
 		txfCompanyName.setText(companyName);
 		txfCompanyTelephone.setText(companyTelephone);
@@ -276,10 +319,10 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 		dapCompanyCreationDate.setValue(companyCreationDate);
 		chkCompanyAdminSeat.setSelected(companyAdminSeat);
 		txfCompanyMaps.setText(companyMaps);
-		
-		
-
-
+		txfAddressDeliveryPoint.setText(addressPointDeLivraison);
+		txfAddressNumber.setText(addressNumero);
+		txfAddressPortLabel.setText(addresseLibelle);
+		txfAddressNext.setText(addressSuite);
 	}
 	/**
 	 * Description 	: Cette methode appelee lors de la creation du FXMLLoader permet de definir l'action CRU en cours
@@ -310,9 +353,9 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 	 * Description 	: Cette Methode permet d'afficher dans la zone texte le code postal de la ville
 	 */
 	@FXML private void evtOnActionCbxAddressTown() {
-        Town selectedTown = cbxAddressTown.getSelectionModel().getSelectedItem();
-        if (selectedTown != null) {
-            txfTownPostCode.setText(selectedTown.getTownPostCode());
-        }
+		Town selectedTown = cbxAddressTown.getSelectionModel().getSelectedItem();
+		if (selectedTown != null) {
+			txfTownPostCode.setText(selectedTown.getTownPostCode());
+		}
 	}
 }
