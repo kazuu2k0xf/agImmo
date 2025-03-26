@@ -65,7 +65,7 @@ public class AddressBdd extends ConnexionBdd {
 		/** Initialisation des variables **/
 		int	addressIdt	= 0;
 		/** Initialisation de la requete **/
-		String SQL		= "SELECT * FROM Address WHERE addressGenerationKey = ?";
+		String SQL		= "SELECT addressIdt FROM Address WHERE addressGenerationKey = ?";
 		/** Connexion a la base de donnees **/
 		Connection connexion = trtConnexionBdd();
 		if(connexion!=null) {
@@ -75,8 +75,8 @@ public class AddressBdd extends ConnexionBdd {
 				ResultSet resultSet  = preparedStatement.executeQuery();
 				while (resultSet.next()) {
 					
-					Address result = map(resultSet);
-					addressIdt = result.getAddressIdt();
+					addressIdt = resultSet.getInt(1);
+
 					
 				}	
 			} catch (SQLException e) {

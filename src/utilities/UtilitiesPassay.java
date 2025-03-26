@@ -3,6 +3,7 @@ package utilities;
 import org.passay.CharacterRule;
 import org.passay.EnglishCharacterData;
 import org.passay.PasswordGenerator;
+
 /**
  * Classe	: UtilitiesPassay
  * Cette classe contient la methode permettant de gerer des cles.

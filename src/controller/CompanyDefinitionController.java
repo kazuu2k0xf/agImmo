@@ -42,7 +42,6 @@ import model.LegalRegime;
 import model.Town;
 import resources.Cstes;
 import utilities.DialogBox;
-import utilities.UtilitiesControls;
 
 public class CompanyDefinitionController extends GeneralDefinitionController {
 	/** *************************************************************
@@ -90,6 +89,8 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 		/** Remplissage de la combobox sur les Regimes juridiques et initialisation avec la valeur par defaut
 		 * definie dans la table informations
 		 **/ 
+		listeLegalRegimes    = selectAllLegalRegime();
+		cbxCompanyLegalRegime.getItems().addAll(listeLegalRegimes);
 		/** Remplissage de la combobox sur les villes **/
 		listeTown			= selectAllTown();
 		cbxAddressTown.getItems().addAll(listeTown);
@@ -108,54 +109,6 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 
 	@Override
 	public void evtOnMouseClickedBtnValider() {
-		// TODO Auto-generated method stub
-		/** Initialisation des variables **/
-		String messageErreur = "";
-		/** *************************************************************************************************************
-		 *  controle des zones de l'agence
-		 ** *************************************************************************************************************/  
-		/** controle de la zone obligatoire : nom **/
-		if (UtilitiesControls.isTextFieldEmpty(txfCompanyName)) {
-		    messageErreur += "Le nom est obligatoire " + Cstes.CR;
-		}
-		/** controle de la zone obligatoire : telephone  **/
-		if (UtilitiesControls.validatePhoneNumber(txfCompanyTelephone)) {
-		    messageErreur += "Le téléphone est obligatoire " + Cstes.CR;
-		}
-		/** controle de la zone obligatoire : email  **/
-		if (UtilitiesControls.isEmailAdress(txfCompanyEmail)) {
-		    messageErreur += "L'email est obligatoire " + Cstes.CR;
-		}
-		/** contrôle de la date de création **/
-		/*if (UtilitiesControls.isTextFieldNumeric(dapCompanyCreationDate)) {
-		    messageErreur += "La datae de création est obligatoire " + Cstes.CR;
-		}
-		*/
-		/** contrôle du SIREN **/
-		if (UtilitiesControls.isTextFieldNumeric(txfCompanySiren)) {
-		    messageErreur += "Le SIREN est obligatoire " + Cstes.CR;
-		}
-		/** contrôle du SIRET **/
-		if (UtilitiesControls.isTextFieldNumeric(txfCompanySiret)) {
-		    messageErreur += "Le SIRET est obligatoire " + Cstes.CR;
-		}
-
-		/** *************************************************************************************************************
-		 *  controle des zones Address
-		 ** *************************************************************************************************************/  
-		/** controle du numéro **/
-		if (!UtilitiesControls.isTextFieldEmpty(txfAddressNumber)) {
-		    messageErreur += "Le numéro est obligatoire " + Cstes.CR;
-		}
-		/** controle de la zone Libelle de la voie **/
-		if (!UtilitiesControls.isTextFieldEmpty(txfAddressPortLabel)) {
-		    messageErreur += "Le libelle de la voie est obligatoire " + Cstes.CR;
-		}
-		/** controle de la ville **/
-		if (!UtilitiesControls.isTextFieldEmpty(txfSelectTown)) {
-		    messageErreur += "La ville est obligatoire " + Cstes.CR;
-		}
-		/** S'il y a une erreur, on l'affiche dans un combobox **/
 		if(!messageErreur.isEmpty()) {
 		} else {
 			/**
@@ -202,17 +155,20 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 			/** Traitements de mise à  jour des informations de l'agence **/
 			/** Initialisation des variables **/
 			int addressIdt 		= 0;
+			String key = generateKey();
 			/** *************************************************************************************************************
 			 *  Mise a jour de l'objet Address avec les donnees de la fenetre
 			 ** *************************************************************************************************************/ 
 			/** Le traitement se fait selon le code action **/
 			if(codeAction.equals("create")) {
-        
 				address.setAddressDeliveryPoint(txfAddressDeliveryPoint.getText());
 				address.setAddressNumber(txfAddressNumber.getText());
 				address.setAddressPortLabel(txfAddressPortLabel.getText());
 				address.setAddressNext(txfAddressNext.getText());
-				int townIdt = Integer.parseInt(txfSelectTown.getText());
+				address.setAddressGenerationKey(key);
+				
+				Town townStringIdt = cbxAddressTown.getSelectionModel().getSelectedItem();
+				int townIdt = townStringIdt.getTownIdt();
 				address.setAddressTownIdt(townIdt);
 				
 				insertAddress(address);
@@ -224,10 +180,10 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 			 *  Mise a jour de l'objet company avec les donnees de la fenetre
 			 ** *************************************************************************************************************/ 
 			if(codeAction.equals("create")) {
-				
-				int key = selectOneAdresseByKey(company.getAdress().getAddressGenerationKey());
-				System.out.println(key);
-				company.setCompanyAddressIdt(key);
+
+
+				addressIdt = selectOneAdresseByKey(key);
+				company.setCompanyAddressIdt(addressIdt);
 			    company.setCompanyName(txfCompanyName.getText());
 			    company.setCompanyTelephone(txfCompanyTelephone.getText());
 			    company.setCompanyEmail(txfCompanyEmail.getText());
@@ -240,7 +196,6 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 			    company.setCompanyMaps(txfCompanyMaps.getText());
 			    insertCompany(company);
 			} else {
-				
 			}
 		}
 	}
