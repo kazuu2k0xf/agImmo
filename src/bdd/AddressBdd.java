@@ -136,7 +136,7 @@ public class AddressBdd extends ConnexionBdd {
 		/** Initialisation des variables **/
 		int nbreEnreg 	= 0;
 		/** Initialisation de la requete **/
-		String SQL		= "UPDATE Address SET addressDeliveryPoint = ?, addressNumber = ?, addressPortLabel = ?, addressNext = ?, addressTownIdt = ?, addressGenerationKey = ? WHERE addressIdt = ?";
+		String SQL		= "UPDATE Address SET addressDeliveryPoint = ?, addressNumber = ?, addressPortLabel = ?, addressNext = ?, addressTownIdt = ? WHERE addressIdt = ?";
 		/** Connexion a la base de donnees **/
 		Connection connexion = trtConnexionBdd();
 		if(connexion!=null) {
@@ -148,7 +148,6 @@ public class AddressBdd extends ConnexionBdd {
 						,address.getAddressPortLabel()
 						,address.getAddressNext()
 						,address.getAddressTownIdt()
-						,address.getAddressGenerationKey()
 						,address.getAddressIdt()
 						);
 				nbreEnreg							= preparedStatement.executeUpdate();

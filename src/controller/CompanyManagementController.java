@@ -102,6 +102,7 @@ public class CompanyManagementController extends GeneralManagementController {
 					
 					
 					primaryStage.showAndWait();
+					trtAffichage();
 				}
 		  }
 	}
@@ -119,6 +120,7 @@ public class CompanyManagementController extends GeneralManagementController {
 					controler.setDialogStage(primaryStage);
 					controler.setAction("create");
 					primaryStage.showAndWait();
+					trtAffichage();
 				}
 		  }		
 	}

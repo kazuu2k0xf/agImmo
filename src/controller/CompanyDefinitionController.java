@@ -53,6 +53,7 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 	private ObservableList<Town> 		listeTown			= FXCollections.observableArrayList();	
 	private Address address							= null;
 	private Company company							= null;
+	private Company companySelected 				= null;
 	int index										= 0;
 	FilteredList<Town> filteredTowns 				;
 	/** *************************************************************
@@ -77,7 +78,7 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 	@FXML private DatePicker			dapCompanyCreationDate;
 	@FXML private CheckBox				chkCompanyAdminSeat;
 	@FXML private WebView				wbvMaps;	
-	
+
 	/**
 	 * Méthode lancée implicitement à la génération de la fenêtre fxml.
 	 * Elle permet d'initialiser les valeurs statiques de la fenêtre
@@ -85,7 +86,6 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 	@SuppressWarnings("unused")
 	@Override
 	public void initialize() {
-		// TODO Auto-generated method stub
 		/** Remplissage de la combobox sur les Regimes juridiques et initialisation avec la valeur par defaut
 		 * definie dans la table informations
 		 **/ 
@@ -95,21 +95,50 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 		listeTown			= selectAllTown();
 		cbxAddressTown.getItems().addAll(listeTown);
 		txfSelectTown.textProperty().addListener((observable, oldValue, newValue) -> {
-            List<Town> filteredTowns = listeTown.stream()
-                    .filter(town -> town.getTownName().toLowerCase().contains(newValue.toLowerCase())
-                            || town.getTownPostCode().contains(newValue))
-                    .collect(Collectors.toList());
-            cbxAddressTown.setItems(FXCollections.observableArrayList(filteredTowns));
-            if (!cbxAddressTown.isShowing()) {
-            	cbxAddressTown.show();
-            }
-        });
+			List<Town> filteredTowns = listeTown.stream()
+					.filter(town -> town.getTownName().toLowerCase().contains(newValue.toLowerCase())
+							|| town.getTownPostCode().contains(newValue))
+					.collect(Collectors.toList());
+			cbxAddressTown.setItems(FXCollections.observableArrayList(filteredTowns));
+			if (!cbxAddressTown.isShowing()) {
+				cbxAddressTown.show();
+			}
+		});
 		/** Initialisation des Tooltips **/
-	}
+		String infoTelephoneString  = "Le téléphone doit avoir le format suivant : XX-XX-XX-XX-XX ";
 
+		txfCompanyTelephone.setTooltip(new Tooltip(infoTelephoneString));
+
+		// ToolTip email
+		Tooltip tooltipEmail = new Tooltip("Le mail doit avoir le format suivant : XXXXXXX@YYYY.ZZZ");
+		txfCompanyEmail.setTooltip(tooltipEmail);
+
+		// ToolTip SIREN
+		Tooltip tooltipSiren = new Tooltip("Le SIREN doit faire 9 de long et ne contenir que des chiffres");
+		txfCompanySiren.setTooltip(tooltipSiren);
+
+		// ToolTip SIREN
+		Tooltip tooltipSiret = new Tooltip("Le SIRET doit faire 14 de long, ne contenir que des chiffres et contenir le SIREN sur les premiers caracteres");
+		txfCompanySiret.setTooltip(tooltipSiret);
+
+
+		/** Initialisation de la  carte google maps **/	
+		/*if (!company.getCompanyMaps().isEmpty()) {
+			String urlMaps = Cstes.WEBMAPS;
+
+			urlMaps.replace("{carte}", company.getCompanyMaps());
+
+			System.out.println(urlMaps);
+
+			WebEngine webEngine = wbvMaps.getEngine();
+			webEngine.loadContent(urlMaps);
+		}
+		 */
+	}
 	@Override
 	public void evtOnMouseClickedBtnValider() {
 		if(!messageErreur.isEmpty()) {
+
 		} else {
 			/**
 			 * Contrôle du siège
@@ -153,6 +182,7 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 				address = new Address();
 			}
 			/** Traitements de mise à  jour des informations de l'agence **/
+
 			/** Initialisation des variables **/
 			int addressIdt 		= 0;
 			String key = generateKey();
@@ -172,16 +202,30 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 				address.setAddressTownIdt(townIdt);
 				
 				insertAddress(address);
-				
-				
 			} else {
+				address = new Address(
+						company.getAdress().getAddressIdt(),
+						txfAddressDeliveryPoint.getText(),
+					    txfAddressNumber.getText(),
+					    txfAddressPortLabel.getText(),
+					    txfAddressNext.getText(),
+					    cbxAddressTown.getValue().getTownIdt(), 
+					    cbxAddressTown.getValue(),               
+					    null
+					);
+
+						
+				
+
+
+				updateAddress(address);		
+				 
+
 			}
 			/** *************************************************************************************************************
 			 *  Mise a jour de l'objet company avec les donnees de la fenetre
 			 ** *************************************************************************************************************/ 
 			if(codeAction.equals("create")) {
-
-
 				addressIdt = selectOneAdresseByKey(key);
 				company.setCompanyAddressIdt(addressIdt);
 			    company.setCompanyName(txfCompanyName.getText());
@@ -195,9 +239,30 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 			    company.setCompanyAdminSeat(chkCompanyAdminSeat.isSelected());
 			    company.setCompanyMaps(txfCompanyMaps.getText());
 			    insertCompany(company);
+				 
 			} else {
+
+				company = new Company(
+					    Integer.parseInt(txfCompanyIdt.getText()),
+					    txfCompanyName.getText(),
+					    company.getAdress().getAddressIdt(),
+					    txfCompanyTelephone.getText(),
+					    txfCompanyEmail.getText(),
+					    txfCompanyWebSite.getText(),
+					    cbxCompanyLegalRegime.getValue().getLegalRegimeIdt(),
+					    dapCompanyCreationDate.getValue(),
+					    txfCompanySiren.getText(),
+					    txfCompanySiret.getText(),
+					    chkCompanyAdminSeat.isSelected(),
+					    null,
+					    null,
+					    txfCompanyMaps.getText()
+					);
+
+					updateCompany(company);
 			}
 		}
+		this.dialogStage.close();
 	}
 	/**
 	 * Description 	: Cette methode appelee lors de la creation du FXMLLoader permet de recuperer l'agence a modifier
@@ -206,10 +271,9 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 	 */
 	public void setCompany(Company company) {
 		this.company = company;
-		
+
 		int companyIdt = this.company.getCompanyIdt();
 		String companyName = this.company.getCompanyName();
-		int companyAddressIdt = this.company.getCompanyAddressIdt();
 		String companyTelephone = this.company.getCompanyTelephone();
 		String companyEmail = this.company.getCompanyEmail();
 		String companyWebSite = this.company.getCompanyWebSite();
@@ -219,7 +283,13 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 		String companySiret = this.company.getCompanySiret();
 		boolean companyAdminSeat = this.company.isCompanyAdminSeat();
 		String companyMaps = this.company.getCompanyMaps();
-		
+		String addressPointDeLivraison = this.company.getAdress().getAddressDeliveryPoint();
+		String addressNumero = this.company.getAdress().getAddressNumber();
+		String addresseLibelle = this.company.getAdress().getAddressPortLabel();
+		String addressSuite = this.company.getAdress().getAddressNext();
+		Town addressTown = this.company.getAdress().getTown();
+
+
 		txfCompanyIdt.setText(String.valueOf(companyIdt));
 		txfCompanyName.setText(companyName);
 		txfCompanyTelephone.setText(companyTelephone);
@@ -231,10 +301,12 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 		dapCompanyCreationDate.setValue(companyCreationDate);
 		chkCompanyAdminSeat.setSelected(companyAdminSeat);
 		txfCompanyMaps.setText(companyMaps);
+		txfAddressDeliveryPoint.setText(addressPointDeLivraison);
+		txfAddressNumber.setText(addressNumero);
+		txfAddressPortLabel.setText(addresseLibelle);
+		txfAddressNext.setText(addressSuite);
+		cbxAddressTown.setValue(addressTown);
 		
-		
-
-
 	}
 	/**
 	 * Description 	: Cette methode appelee lors de la creation du FXMLLoader permet de definir l'action CRU en cours
@@ -265,9 +337,9 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 	 * Description 	: Cette Methode permet d'afficher dans la zone texte le code postal de la ville
 	 */
 	@FXML private void evtOnActionCbxAddressTown() {
-        Town selectedTown = cbxAddressTown.getSelectionModel().getSelectedItem();
-        if (selectedTown != null) {
-            txfTownPostCode.setText(selectedTown.getTownPostCode());
-        }
+		Town selectedTown = cbxAddressTown.getSelectionModel().getSelectedItem();
+		if (selectedTown != null) {
+			txfTownPostCode.setText(selectedTown.getTownPostCode());
+		}
 	}
 }
