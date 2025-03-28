@@ -42,7 +42,6 @@ import model.LegalRegime;
 import model.Town;
 import resources.Cstes;
 import utilities.DialogBox;
-import utilities.UtilitiesControls;
 
 public class CompanyDefinitionController extends GeneralDefinitionController {
 	/** *************************************************************
@@ -92,7 +91,6 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 		 **/ 
 		listeLegalRegimes    = selectAllLegalRegime();
 		cbxCompanyLegalRegime.getItems().addAll(listeLegalRegimes);
-
 		/** Remplissage de la combobox sur les villes **/
 		listeTown			= selectAllTown();
 		cbxAddressTown.getItems().addAll(listeTown);
@@ -243,6 +241,7 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 			    insertCompany(company);
 				 
 			} else {
+
 				company = new Company(
 					    Integer.parseInt(txfCompanyIdt.getText()),
 					    txfCompanyName.getText(),
@@ -261,7 +260,6 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 					);
 
 					updateCompany(company);
-
 			}
 		}
 		this.dialogStage.close();
