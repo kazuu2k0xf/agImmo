@@ -193,77 +193,78 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 			 ** *************************************************************************************************************/ 
 			/** Le traitement se fait selon le code action **/
 			if(codeAction.equals("create")) {
-				/*
-				address.setAddressIdt(address.getAddressIdt());
-
-				String addressDeliveryPoint = txfAddressDeliveryPoint.getText();
-				String addressNumber 		= txfAddressNumber.getText();
-				String addressPortLabel 	= txfAddressPortLabel.getText();
-				String addressNext 			= txfAddressNext.getText();
-
-				Town addressTown 			= cbxAddressTown.getValue();
-
-
-				Address address = new Address(addressIdt, addressDeliveryPoint, addressNumber, addressPortLabel, addressNext, addressIdt, addressTown, addressNext);
-
-				insertAddress(address);
-				 */
-			} else {
-				
 				address.setAddressDeliveryPoint(txfAddressDeliveryPoint.getText());
 				address.setAddressNumber(txfAddressNumber.getText());
 				address.setAddressPortLabel(txfAddressPortLabel.getText());
 				address.setAddressNext(txfAddressNext.getText());
 				address.setAddressGenerationKey(key);
-
+				
 				Town townStringIdt = cbxAddressTown.getSelectionModel().getSelectedItem();
 				int townIdt = townStringIdt.getTownIdt();
 				address.setAddressTownIdt(townIdt);
+				
+				insertAddress(address);
+			} else {
+				address = new Address(
+						company.getAdress().getAddressIdt(),
+						txfAddressDeliveryPoint.getText(),
+					    txfAddressNumber.getText(),
+					    txfAddressPortLabel.getText(),
+					    txfAddressNext.getText(),
+					    cbxAddressTown.getValue().getTownIdt(), 
+					    cbxAddressTown.getValue(),               
+					    null
+					);
 
+						
+				
 
 
 				updateAddress(address);		
+				 
 
 			}
 			/** *************************************************************************************************************
 			 *  Mise a jour de l'objet company avec les donnees de la fenetre
 			 ** *************************************************************************************************************/ 
 			if(codeAction.equals("create")) {
-				/*	int companyIdt 				= company.getCompanyIdt();
-				String companyName 				= txfCompanyName.getText();
-				String companyTelephone    	 	= txfCompanyTelephone.getText();
-				String companyEmail 			= txfCompanyEmail.getText();
-				String companyWebSite 			= txfCompanyEmail.getText();
-				LegalRegime companyLegalRegime 	= cbxCompanyLegalRegime.getValue();
-				LocalDate companyCreationDate 	= dapCompanyCreationDate.getValue();
-				String companySiren 			= txfCompanySiren.getText();
-				String companySiret 			= txfCompanySiret.getText();
-				Boolean companyAdminSeatModif	= chkCompanyAdminSeat.isSelected();
-				String companyMaps 				= txfCompanyMaps.getText();
-
-				Company company = new Company(companyIdt, companyName, addressIdt, companyTelephone, companyEmail, companyWebSite, addressIdt, companyCreationDate, companySiren, companySiret, validerClicked, address, companyLegalRegime, companyMaps);
-
-
-				insertCompany(company);
-				 */
-			} else {
-
 				addressIdt = selectOneAdresseByKey(key);
 				company.setCompanyAddressIdt(addressIdt);
-				company.setCompanyName(txfCompanyName.getText());
-				company.setCompanyTelephone(txfCompanyTelephone.getText());
-				company.setCompanyEmail(txfCompanyEmail.getText());
-				company.setCompanyWebSite(txfCompanyWebSite.getText());
-				company.setCompanyLegalRegime(cbxCompanyLegalRegime.getValue().getLegalRegimeIdt());
-				company.setCompanyCreationDate(dapCompanyCreationDate.getValue());
-				company.setCompanySiren(txfCompanySiren.getText());
-				company.setCompanySiret(txfCompanySiret.getText());
-				company.setCompanyAdminSeat(chkCompanyAdminSeat.isSelected());
-				company.setCompanyMaps(txfCompanyMaps.getText());
+			    company.setCompanyName(txfCompanyName.getText());
+			    company.setCompanyTelephone(txfCompanyTelephone.getText());
+			    company.setCompanyEmail(txfCompanyEmail.getText());
+			    company.setCompanyWebSite(txfCompanyWebSite.getText());
+			    company.setCompanyLegalRegime(cbxCompanyLegalRegime.getValue().getLegalRegimeIdt());
+			    company.setCompanyCreationDate(dapCompanyCreationDate.getValue());
+			    company.setCompanySiren(txfCompanySiren.getText());
+			    company.setCompanySiret(txfCompanySiret.getText());
+			    company.setCompanyAdminSeat(chkCompanyAdminSeat.isSelected());
+			    company.setCompanyMaps(txfCompanyMaps.getText());
+			    insertCompany(company);
+				 
+			} else {
+				company = new Company(
+					    Integer.parseInt(txfCompanyIdt.getText()),
+					    txfCompanyName.getText(),
+					    company.getAdress().getAddressIdt(),
+					    txfCompanyTelephone.getText(),
+					    txfCompanyEmail.getText(),
+					    txfCompanyWebSite.getText(),
+					    cbxCompanyLegalRegime.getValue().getLegalRegimeIdt(),
+					    dapCompanyCreationDate.getValue(),
+					    txfCompanySiren.getText(),
+					    txfCompanySiret.getText(),
+					    chkCompanyAdminSeat.isSelected(),
+					    null,
+					    null,
+					    txfCompanyMaps.getText()
+					);
 
-				updateCompany(company);
+					updateCompany(company);
+
 			}
 		}
+		this.dialogStage.close();
 	}
 	/**
 	 * Description 	: Cette methode appelee lors de la creation du FXMLLoader permet de recuperer l'agence a modifier
@@ -288,6 +289,8 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 		String addressNumero = this.company.getAdress().getAddressNumber();
 		String addresseLibelle = this.company.getAdress().getAddressPortLabel();
 		String addressSuite = this.company.getAdress().getAddressNext();
+		Town addressTown = this.company.getAdress().getTown();
+
 
 		txfCompanyIdt.setText(String.valueOf(companyIdt));
 		txfCompanyName.setText(companyName);
@@ -304,6 +307,8 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 		txfAddressNumber.setText(addressNumero);
 		txfAddressPortLabel.setText(addresseLibelle);
 		txfAddressNext.setText(addressSuite);
+		cbxAddressTown.setValue(addressTown);
+		
 	}
 	/**
 	 * Description 	: Cette methode appelee lors de la creation du FXMLLoader permet de definir l'action CRU en cours
