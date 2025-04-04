@@ -122,18 +122,8 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 		txfCompanySiret.setTooltip(tooltipSiret);
 
 
-		/** Initialisation de la  carte google maps **/	
-		/*if (!company.getCompanyMaps().isEmpty()) {
-			String urlMaps = Cstes.WEBMAPS;
-
-			urlMaps.replace("{carte}", company.getCompanyMaps());
-
-			System.out.println(urlMaps);
-
-			WebEngine webEngine = wbvMaps.getEngine();
-			webEngine.loadContent(urlMaps);
-		}
-		 */
+	
+		 
 	}
 	@Override
 	public void evtOnMouseClickedBtnValider() {
@@ -306,6 +296,18 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 		txfAddressPortLabel.setText(addresseLibelle);
 		txfAddressNext.setText(addressSuite);
 		cbxAddressTown.setValue(addressTown);
+		
+		/** Initialisation de la  carte google maps **/	
+		if (!company.getCompanyMaps().isEmpty()) {
+			String urlMaps = Cstes.WEBMAPS;
+
+			urlMaps =  urlMaps.replace("carte", company.getCompanyMaps());
+
+			System.out.println(urlMaps);
+
+			WebEngine webEngine = wbvMaps.getEngine();
+			webEngine.loadContent(urlMaps);
+		}
 		
 	}
 	/**

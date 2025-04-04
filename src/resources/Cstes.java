@@ -56,7 +56,7 @@ public class Cstes {
 	public final static String TRTCHIFFREMENTAGENT 		= "chiffrementAgent";
 
 	/** Templates **/ 
-	public final static String WEBMAPS = "<!DOCTYPE html><html lang=\"fr\"><body ><iframe src=\"{carte}\" width=\"495\" height=\"500\"style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\"referrerpolicy=\"no-referrer-when-downgrade\"></iframe></body></html>";
+	public final static String WEBMAPS = "<!DOCTYPE html><html lang=\"fr\"><body ><iframe src=\"carte\" width=\"495\" height=\"500\"style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\"referrerpolicy=\"no-referrer-when-downgrade\"></iframe></body></html>";
 	
 	/** Version de l'application **/
 	public final static String  VERSIONAPPLICATION		= "V.02";
