@@ -1,8 +1,15 @@
 package controller;
 
+import static bdd.AgentEnAgenceBdd.deleteAgentEnAgence;
+import static bdd.AgentEnAgenceBdd.insertAgentEnAgence;
+import static bdd.AgentEnAgenceBdd.selectAllAgencesAgent;
+import static bdd.AgentBdd.updateAgent;
 import static bdd.CivilityBdd.selectAllCivility;
 import static bdd.InfoDetailBdd.selectOneInfoDetailDescription;
 import static bdd.TypeAgentBdd.selectAllTypeAgent;
+import static utilities.UtilitiesControls.isEmailAdress;
+import static utilities.UtilitiesControls.isTextFieldEmpty;
+import static utilities.UtilitiesControls.validatePhoneNumber;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,6 +28,7 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 import bdd.AgentBdd;
 import bdd.InfoDetailBdd;
 import interfaces.GestionCbxInfos;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -28,19 +36,27 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
+import javafx.util.Callback;
 import model.Agent;
+import model.AgentEnAgence;
 import model.Civility;
 import model.InfoDetail;
 import model.TypeAgent;
@@ -93,6 +109,8 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 	@FXML private Tooltip tooltipPwd;
 	@FXML private TextArea txaErreur;
 	@FXML private CheckBox chkUpdatePwd;
+	@FXML private TableColumn<AgentEnAgence, String> 	tbcCompanyName;
+	@FXML private TableColumn<AgentEnAgence, Boolean> 	tbcIsAttached;
 
 
 	/**
@@ -106,12 +124,38 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 		lblTitre.setText("Modification d'un Agent");
 		pwfAgentPwd.setDisable(true);
 		pwfAgentPwdConfirme.setDisable(true);
-		
+
+		/** Initialisation de la tableView **/
+		tbcCompanyName.setCellValueFactory(CellDataFeatures -> CellDataFeatures.getValue().getCompany().getCompanyNameProperty());
+		tbcIsAttached.setCellValueFactory(CellDataFeatures -> CellDataFeatures.getValue().getAgentIsAttachedProperty());
+		tbcIsAttached.setCellValueFactory(new Callback<CellDataFeatures<AgentEnAgence, Boolean>, ObservableValue<Boolean>>() {
+			@Override
+			public ObservableValue<Boolean> call(CellDataFeatures<AgentEnAgence, Boolean> param) {
+				AgentEnAgence agentEnAgence 		= param.getValue();
+				SimpleBooleanProperty isAttached 	= new SimpleBooleanProperty(agentEnAgence.getAgentIsAttached());
+
+				isAttached.addListener(new ChangeListener<Boolean>() {
+					@Override
+					public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,Boolean newValue) {
+						agentEnAgence.setAgentIsAttached(newValue);
+					}
+				});
+				return isAttached;
+			}
+		});
+		tbcIsAttached.setCellFactory(new Callback<TableColumn<AgentEnAgence, Boolean>, //
+				TableCell<AgentEnAgence, Boolean>>() {
+			@Override
+			public TableCell<AgentEnAgence, Boolean> call(TableColumn<AgentEnAgence, Boolean> p) {
+				CheckBoxTableCell<AgentEnAgence, Boolean> cell = new CheckBoxTableCell<AgentEnAgence, Boolean>();
+				cell.setAlignment(Pos.CENTER);
+				return cell;
+			}
+		});
 
 
-		
-		
-		
+
+
 		/** Dossier des portraits **/
 		/** Initialisation des tooltip sur les contrôles ayant un format particulier **/
 		// ToolTip Pour le telephone
@@ -195,17 +239,17 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 
 	@FXML
 	private void evtOnActionChkUpdatePwd() {
-	    if (chkUpdatePwd.isSelected()) {
-	        pwfAgentPwd.setDisable(false);
-	        pwfAgentPwdConfirme.setDisable(false);
-	    } else {
-	        pwfAgentPwd.setDisable(true);
-	        pwfAgentPwdConfirme.setDisable(true);
-	    }
+		if (chkUpdatePwd.isSelected()) {
+			pwfAgentPwd.setDisable(false);
+			pwfAgentPwdConfirme.setDisable(false);
+		} else {
+			pwfAgentPwd.setDisable(true);
+			pwfAgentPwdConfirme.setDisable(true);
+		}
 	}
 
-	
-	
+
+
 	/**
 	 * Méthode permettant de recevoir un agent en paramètre de la fenêtre appelante
 	 * @param agent	[Agent] : objet Agent correspondant à l'agent connecté.
@@ -370,43 +414,43 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 
 		// Contrôle du champ Nom
 		if (UtilitiesControls.isTextFieldEmpty(txfAgentNom)) {
-		    messageErreur += "Le nom est obligatoire " + Cstes.CR;
+			messageErreur += "Le nom est obligatoire " + Cstes.CR;
 		}
 
 		// Contrôle du champ prénom
 		if (UtilitiesControls.isTextFieldEmpty(txfAgentPrenom)) {
-		    messageErreur += "Le prénom est obligatoire " + Cstes.CR;
+			messageErreur += "Le prénom est obligatoire " + Cstes.CR;
 		}
 
 		// Contrôle du champ mobile
 		if (!UtilitiesControls.validatePhoneNumber(txfAgentMobile)) {
-		    messageErreur += "Le téléphone est obligatoire ou ne respecte pas le format requis " + Cstes.CR;
+			messageErreur += "Le téléphone est obligatoire ou ne respecte pas le format requis " + Cstes.CR;
 		}
 
 		// Contrôle du champ telephone
 		if (!UtilitiesControls.validatePhoneNumber(txfAgentTelephone)) {
-		    messageErreur += "Le portable est obligatoire ou ne respecte pas le format requis " + Cstes.CR;
+			messageErreur += "Le portable est obligatoire ou ne respecte pas le format requis " + Cstes.CR;
 		}
 
 		// Contrôle du champ email
 		if (!UtilitiesControls.isEmailAdress(txfAgentEmail)) {
-		    messageErreur += "L'adresse email est obligatoire ou ne respecte pas le format requis " + Cstes.CR;
+			messageErreur += "L'adresse email est obligatoire ou ne respecte pas le format requis " + Cstes.CR;
 		}
 
 		// Contrôle du champ mots de passe
 		if (!UtilitiesControls.validatePwd(pwfAgentPwd)) {
-		    messageErreur += "Le mot de passe est obligatoire ou ne respecte pas le format requis " + Cstes.CR;
+			messageErreur += "Le mot de passe est obligatoire ou ne respecte pas le format requis " + Cstes.CR;
 		}
 
 		// Contrôle du champ confirmation de mots de passe
 		if (!pwfAgentPwdConfirme.getText().equals(pwfAgentPwd.getText())) {
-		    messageErreur += "La confirmation du mot de passe ne correspond pas " + Cstes.CR;
+			messageErreur += "La confirmation du mot de passe ne correspond pas " + Cstes.CR;
 		}
 
 		// Affichage de la boîte de dialogue si des erreurs sont présentes
 		if (!messageErreur.isEmpty()) {
-		    DialogBox dialogbox = new DialogBox("Erreur", "Champs invalides ou manquants", messageErreur, AlertType.ERROR, null);
-		    dialogbox.showDialogError();
+			DialogBox dialogbox = new DialogBox("Erreur", "Champs invalides ou manquants", messageErreur, AlertType.ERROR, null);
+			dialogbox.showDialogError();
 		}
 
 
@@ -425,7 +469,7 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 
 				String premiereLettrePrenomLogin = agentPrenom.substring(0, 1).toLowerCase();
 				String nomEnMinusculeLogin 		 = agentNom.toLowerCase().replaceAll(" ", "");
-				
+
 				String agentMobile 				 = txfAgentMobile.getText();
 				String agentTelephone			 = txfAgentTelephone.getText();
 				String agentEmail 				 = txfAgentEmail.getText();
@@ -453,14 +497,14 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 			/** Sortie de la fenêtre **/
 			dialogStage.close();
 		}
-		
-		
+
+
 	}
 
 	public Agent getAgent() {
 		return agent;
 	}
-	
+
 }
 
 

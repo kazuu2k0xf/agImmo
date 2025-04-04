@@ -56,6 +56,23 @@ public class TownBdd extends ConnexionBdd {
 		return listeDonnees;			
 	}
 	/**
+	 * Méthode permettant de contrôler si une ville est utilisée dans le fichier Address
+	 * @param town	[Town]	: Ville à contrôler
+	 * @return 		[int] 	: renvoie 0 si la ville n'est pas utilisée.
+	 */
+	public static int selectTownUsed(Town town){
+		/** Initialisation des variables **/
+		int nbreEnreg = 0;
+		/** Initialisation de la requete **/
+		String SQL		= "";
+		/** Connexion a la base de donnees **/
+		Connection connexion = trtConnexionBdd();
+		if(connexion!=null) {
+			/** Traitements SQL */
+		}
+		return nbreEnreg;			
+	}
+	/**
 	 * Description 	: Methode permettant de recuperer une ville à partir de son identifiant.
 	 * @return  	[Town]		            
 	 */
