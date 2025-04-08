@@ -54,7 +54,7 @@ public class CivilityAdminController extends AdministrationManagementController 
 		lblMessage.setText("");
 
 		//Initilisation des bouton
-		gestionBtn(true, true, false);
+		gestionBtn(true, false, false);
 	}
 
 
@@ -85,7 +85,7 @@ public class CivilityAdminController extends AdministrationManagementController 
 			txfCivilityLbc.setText("");
 			txfCivilityLbl.setText("");
 			lblMessage.setText("");
-			gestionBtn(true, true,false);
+			gestionBtn(true, false,false);
 
 		} else {
 
@@ -165,7 +165,6 @@ public class CivilityAdminController extends AdministrationManagementController 
 				trtAffichageDonnees();
 				civilitySelected = null;
 				trtAffichageZones(civilitySelected);
-				gestionBtn(true, true, false);
 			}	
 		}
 	}

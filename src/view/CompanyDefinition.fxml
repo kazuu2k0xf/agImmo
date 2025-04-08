@@ -130,7 +130,7 @@
                   <TextField fx:id="txfCompanyTelephone" maxWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <TextField fx:id="txfCompanyEmail" maxWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <TextField fx:id="txfCompanyWebSite" maxWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                  <ComboBox fx:id="cbxCompanyLegalRegime" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                  <ComboBox fx:id="cbxCompanyLegalRegime" prefWidth="250.0" promptText="Sélectionnez un régime juridique" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                   <Label styleClass="label14B" text="Date de création" GridPane.rowIndex="6" />
                   <DatePicker fx:id="dapCompanyCreationDate" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="6">
                      <GridPane.margin>

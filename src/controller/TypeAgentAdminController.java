@@ -54,7 +54,7 @@ public class TypeAgentAdminController extends AdministrationManagementController
 		lblMessage.setText("");
 
 		//Initilisation des bouton
-		gestionBtn(true, true, false);
+		gestionBtn(true, false, false);
 	}
 	/**
 	 * Methode 	: trtAffichageDonnees
@@ -82,7 +82,7 @@ public class TypeAgentAdminController extends AdministrationManagementController
 			txfTypeAgentLbl.setText("");
 			txfTypeAgentLbc.setText("");
 			lblMessage.setText("");
-			gestionBtn(true, true,false);
+			gestionBtn(true, false,false);
 
 		} else {
 
@@ -158,7 +158,6 @@ public class TypeAgentAdminController extends AdministrationManagementController
 				trtAffichageDonnees();
 				typeAgentSelected = null;
 				trtAffichageZones(typeAgentSelected);
-				gestionBtn(true, true, false);
 			}	
 		}
 	}
