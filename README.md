@@ -1,7 +1,6 @@
 # AgImmo
 
-Application permettant la gestion d'agence Immobilièere developpé en Java.
-
+Application permettant la gestion d'agence immobilière développée en Java.
 
 ## Documentation
 
