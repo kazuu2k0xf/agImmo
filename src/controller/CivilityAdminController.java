@@ -1,14 +1,12 @@
 package controller;
 
 import static bdd.CivilityBdd.deleteCivility;
-import static bdd.CivilityBdd.selectAllCivility;
-import static bdd.CivilityBdd.updateCivility;
-import static bdd.CivilityBdd.selectNbreCivility;
 import static bdd.CivilityBdd.insertCivility;
+import static bdd.CivilityBdd.selectAllCivility;
+import static bdd.CivilityBdd.selectNbreCivility;
+import static bdd.CivilityBdd.updateCivility;
 import static utilities.UtilitiesControls.isTextFieldEmpty;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -20,8 +18,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import model.Civility;
-import model.Person;
-import resources.Cstes;
 import utilities.DialogBox;
 
 public class CivilityAdminController extends AdministrationManagementController {

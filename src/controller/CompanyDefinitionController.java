@@ -1,21 +1,13 @@
 package controller;
 
 import static bdd.AddressBdd.insertAddress;
-import static bdd.AddressBdd.selectOneAdresse;
 import static bdd.AddressBdd.selectOneAdresseByKey;
 import static bdd.AddressBdd.updateAddress;
-import static bdd.CompanyBdd.controleSiret;
 import static bdd.CompanyBdd.insertCompany;
 import static bdd.CompanyBdd.selectOneCompanyAdminSeat;
 import static bdd.CompanyBdd.updateCompany;
-import static bdd.InfoDetailBdd.selectOneInfoDetailDescription;
 import static bdd.LegalRegimeBdd.selectAllLegalRegime;
 import static bdd.TownBdd.selectAllTown;
-import static utilities.UtilitiesControls.isEmailAdress;
-import static utilities.UtilitiesControls.isItemNotSelected;
-import static utilities.UtilitiesControls.isTextFieldEmpty;
-import static utilities.UtilitiesControls.isTextFieldNumeric;
-import static utilities.UtilitiesControls.validatePhoneNumber;
 import static utilities.UtilitiesPassay.generateKey;
 
 import java.time.LocalDate;
@@ -37,7 +29,6 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import model.Address;
 import model.Company;
-import model.InfoDetail;
 import model.LegalRegime;
 import model.Town;
 import resources.Cstes;
@@ -122,8 +113,8 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 		txfCompanySiret.setTooltip(tooltipSiret);
 
 
-	
-		 
+
+
 	}
 	@Override
 	public void evtOnMouseClickedBtnValider() {
@@ -186,30 +177,30 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 				address.setAddressPortLabel(txfAddressPortLabel.getText());
 				address.setAddressNext(txfAddressNext.getText());
 				address.setAddressGenerationKey(key);
-				
+
 				Town townStringIdt = cbxAddressTown.getSelectionModel().getSelectedItem();
 				int townIdt = townStringIdt.getTownIdt();
 				address.setAddressTownIdt(townIdt);
-				
+
 				insertAddress(address);
 			} else {
 				address = new Address(
 						company.getAdress().getAddressIdt(),
 						txfAddressDeliveryPoint.getText(),
-					    txfAddressNumber.getText(),
-					    txfAddressPortLabel.getText(),
-					    txfAddressNext.getText(),
-					    cbxAddressTown.getValue().getTownIdt(), 
-					    cbxAddressTown.getValue(),               
-					    null
-					);
+						txfAddressNumber.getText(),
+						txfAddressPortLabel.getText(),
+						txfAddressNext.getText(),
+						cbxAddressTown.getValue().getTownIdt(), 
+						cbxAddressTown.getValue(),               
+						null
+						);
 
-						
-				
+
+
 
 
 				updateAddress(address);		
-				 
+
 
 			}
 			/** *************************************************************************************************************
@@ -218,38 +209,38 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 			if(codeAction.equals("create")) {
 				addressIdt = selectOneAdresseByKey(key);
 				company.setCompanyAddressIdt(addressIdt);
-			    company.setCompanyName(txfCompanyName.getText());
-			    company.setCompanyTelephone(txfCompanyTelephone.getText());
-			    company.setCompanyEmail(txfCompanyEmail.getText());
-			    company.setCompanyWebSite(txfCompanyWebSite.getText());
-			    company.setCompanyLegalRegime(cbxCompanyLegalRegime.getValue().getLegalRegimeIdt());
-			    company.setCompanyCreationDate(dapCompanyCreationDate.getValue());
-			    company.setCompanySiren(txfCompanySiren.getText());
-			    company.setCompanySiret(txfCompanySiret.getText());
-			    company.setCompanyAdminSeat(chkCompanyAdminSeat.isSelected());
-			    company.setCompanyMaps(txfCompanyMaps.getText());
-			    insertCompany(company);
-				 
+				company.setCompanyName(txfCompanyName.getText());
+				company.setCompanyTelephone(txfCompanyTelephone.getText());
+				company.setCompanyEmail(txfCompanyEmail.getText());
+				company.setCompanyWebSite(txfCompanyWebSite.getText());
+				company.setCompanyLegalRegime(cbxCompanyLegalRegime.getValue().getLegalRegimeIdt());
+				company.setCompanyCreationDate(dapCompanyCreationDate.getValue());
+				company.setCompanySiren(txfCompanySiren.getText());
+				company.setCompanySiret(txfCompanySiret.getText());
+				company.setCompanyAdminSeat(chkCompanyAdminSeat.isSelected());
+				company.setCompanyMaps(txfCompanyMaps.getText());
+				insertCompany(company);
+
 			} else {
 
 				company = new Company(
-					    Integer.parseInt(txfCompanyIdt.getText()),
-					    txfCompanyName.getText(),
-					    company.getAdress().getAddressIdt(),
-					    txfCompanyTelephone.getText(),
-					    txfCompanyEmail.getText(),
-					    txfCompanyWebSite.getText(),
-					    cbxCompanyLegalRegime.getValue().getLegalRegimeIdt(),
-					    dapCompanyCreationDate.getValue(),
-					    txfCompanySiren.getText(),
-					    txfCompanySiret.getText(),
-					    chkCompanyAdminSeat.isSelected(),
-					    null,
-					    null,
-					    txfCompanyMaps.getText()
-					);
+						Integer.parseInt(txfCompanyIdt.getText()),
+						txfCompanyName.getText(),
+						company.getAdress().getAddressIdt(),
+						txfCompanyTelephone.getText(),
+						txfCompanyEmail.getText(),
+						txfCompanyWebSite.getText(),
+						cbxCompanyLegalRegime.getValue().getLegalRegimeIdt(),
+						dapCompanyCreationDate.getValue(),
+						txfCompanySiren.getText(),
+						txfCompanySiret.getText(),
+						chkCompanyAdminSeat.isSelected(),
+						null,
+						null,
+						txfCompanyMaps.getText()
+						);
 
-					updateCompany(company);
+				updateCompany(company);
 			}
 		}
 		this.dialogStage.close();
@@ -296,7 +287,7 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 		txfAddressPortLabel.setText(addresseLibelle);
 		txfAddressNext.setText(addressSuite);
 		cbxAddressTown.setValue(addressTown);
-		
+
 		/** Initialisation de la  carte google maps **/	
 		if (!company.getCompanyMaps().isEmpty()) {
 			String urlMaps = Cstes.WEBMAPS;
@@ -308,7 +299,7 @@ public class CompanyDefinitionController extends GeneralDefinitionController {
 			WebEngine webEngine = wbvMaps.getEngine();
 			webEngine.loadContent(urlMaps);
 		}
-		
+
 	}
 	/**
 	 * Description 	: Cette methode appelee lors de la creation du FXMLLoader permet de definir l'action CRU en cours

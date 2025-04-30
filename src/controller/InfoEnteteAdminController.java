@@ -1,13 +1,10 @@
 package controller;
 
-import static bdd.CivilityBdd.insertCivility;
-import static bdd.CivilityBdd.updateCivility;
 import static bdd.FenetresBdd.selectOneFenetre;
 import static bdd.InfoEnteteBdd.deleteInfoEntete;
 import static bdd.InfoEnteteBdd.insertInfoEntete;
 import static bdd.InfoEnteteBdd.selectAllInfoEntete;
 import static bdd.InfoEnteteBdd.selectNbreInfoDetail;
-import static bdd.InfoEnteteBdd.selectOneInfoEntete;
 import static bdd.InfoEnteteBdd.updateInfoEntete;
 import static utilities.UtilitiesControls.isTextFieldEmpty;
 
@@ -25,7 +22,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import model.Civility;
 import model.Fenetres;
 import model.InfoEntete;
 import model.LoaderFXML;
@@ -131,7 +127,7 @@ public class InfoEnteteAdminController extends AdministrationManagementControlle
 		/** Retrait de la classe erreur **/
 		textField.getStyleClass().remove(classeErreur);
 	}
-	
+
 	/**
 	 * Méthodes permettant de contrôler les différentes zones de saisie
 	 * @return	[boolean]	: indicateur si présence d'erreurs dans les zones
@@ -194,7 +190,7 @@ public class InfoEnteteAdminController extends AdministrationManagementControlle
 			}	
 		}
 	}
-	
+
 
 	@Override
 	public void evtOnMousePressedTbvDonnees(MouseEvent event) {

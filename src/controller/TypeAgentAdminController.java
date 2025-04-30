@@ -8,8 +8,6 @@ import static bdd.TypeAgentBdd.selectNbreTypeAgent;
 import static bdd.TypeAgentBdd.updateTypeAgent;
 import static utilities.UtilitiesControls.isTextFieldEmpty;
 
-import java.text.ParseException;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -21,7 +19,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import model.TypeAgent;
-import resources.Cstes;
 import utilities.DialogBox;
 
 public class TypeAgentAdminController extends AdministrationManagementController {
