@@ -106,12 +106,12 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 		lblTitre.setText("Modification d'un Agent");
 		pwfAgentPwd.setDisable(true);
 		pwfAgentPwdConfirme.setDisable(true);
-		
 
 
-		
-		
-		
+
+
+
+
 		/** Dossier des portraits **/
 		/** Initialisation des tooltip sur les contrôles ayant un format particulier **/
 		// ToolTip Pour le telephone
@@ -195,17 +195,17 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 
 	@FXML
 	private void evtOnActionChkUpdatePwd() {
-	    if (chkUpdatePwd.isSelected()) {
-	        pwfAgentPwd.setDisable(false);
-	        pwfAgentPwdConfirme.setDisable(false);
-	    } else {
-	        pwfAgentPwd.setDisable(true);
-	        pwfAgentPwdConfirme.setDisable(true);
-	    }
+		if (chkUpdatePwd.isSelected()) {
+			pwfAgentPwd.setDisable(false);
+			pwfAgentPwdConfirme.setDisable(false);
+		} else {
+			pwfAgentPwd.setDisable(true);
+			pwfAgentPwdConfirme.setDisable(true);
+		}
 	}
 
-	
-	
+
+
 	/**
 	 * Méthode permettant de recevoir un agent en paramètre de la fenêtre appelante
 	 * @param agent	[Agent] : objet Agent correspondant à l'agent connecté.
@@ -370,43 +370,44 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 
 		// Contrôle du champ Nom
 		if (UtilitiesControls.isTextFieldEmpty(txfAgentNom)) {
-		    messageErreur += "Le nom est obligatoire " + Cstes.CR;
+			messageErreur += "Le nom est obligatoire " + Cstes.CR;
 		}
 
 		// Contrôle du champ prénom
 		if (UtilitiesControls.isTextFieldEmpty(txfAgentPrenom)) {
-		    messageErreur += "Le prénom est obligatoire " + Cstes.CR;
+			messageErreur += "Le prénom est obligatoire " + Cstes.CR;
 		}
 
 		// Contrôle du champ mobile
 		if (!UtilitiesControls.validatePhoneNumber(txfAgentMobile)) {
-		    messageErreur += "Le téléphone est obligatoire ou ne respecte pas le format requis " + Cstes.CR;
+			messageErreur += "Le téléphone est obligatoire ou ne respecte pas le format requis " + Cstes.CR;
 		}
 
 		// Contrôle du champ telephone
 		if (!UtilitiesControls.validatePhoneNumber(txfAgentTelephone)) {
-		    messageErreur += "Le portable est obligatoire ou ne respecte pas le format requis " + Cstes.CR;
+			messageErreur += "Le portable est obligatoire ou ne respecte pas le format requis " + Cstes.CR;
 		}
 
 		// Contrôle du champ email
 		if (!UtilitiesControls.isEmailAdress(txfAgentEmail)) {
-		    messageErreur += "L'adresse email est obligatoire ou ne respecte pas le format requis " + Cstes.CR;
+			messageErreur += "L'adresse email est obligatoire ou ne respecte pas le format requis " + Cstes.CR;
 		}
 
-		// Contrôle du champ mots de passe
-		if (!UtilitiesControls.validatePwd(pwfAgentPwd)) {
-		    messageErreur += "Le mot de passe est obligatoire ou ne respecte pas le format requis " + Cstes.CR;
-		}
+		if(chkUpdatePwd.isSelected()) {
+			// Contrôle du champ mots de passe
+			if (!UtilitiesControls.validatePwd(pwfAgentPwd)) {
+				messageErreur += "Le mot de passe est obligatoire ou ne respecte pas le format requis " + Cstes.CR;
+			}
 
-		// Contrôle du champ confirmation de mots de passe
-		if (!pwfAgentPwdConfirme.getText().equals(pwfAgentPwd.getText())) {
-		    messageErreur += "La confirmation du mot de passe ne correspond pas " + Cstes.CR;
+			// Contrôle du champ confirmation de mots de passe
+			if (!pwfAgentPwdConfirme.getText().equals(pwfAgentPwd.getText())) {
+				messageErreur += "La confirmation du mot de passe ne correspond pas " + Cstes.CR;
+			}
 		}
-
 		// Affichage de la boîte de dialogue si des erreurs sont présentes
 		if (!messageErreur.isEmpty()) {
-		    DialogBox dialogbox = new DialogBox("Erreur", "Champs invalides ou manquants", messageErreur, AlertType.ERROR, null);
-		    dialogbox.showDialogError();
+			DialogBox dialogbox = new DialogBox("Erreur", "Champs invalides ou manquants", messageErreur, AlertType.ERROR, null);
+			dialogbox.showDialogError();
 		}
 
 
@@ -425,7 +426,7 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 
 				String premiereLettrePrenomLogin = agentPrenom.substring(0, 1).toLowerCase();
 				String nomEnMinusculeLogin 		 = agentNom.toLowerCase().replaceAll(" ", "");
-				
+
 				String agentMobile 				 = txfAgentMobile.getText();
 				String agentTelephone			 = txfAgentTelephone.getText();
 				String agentEmail 				 = txfAgentEmail.getText();
@@ -453,14 +454,14 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 			/** Sortie de la fenêtre **/
 			dialogStage.close();
 		}
-		
-		
+
+
 	}
 
 	public Agent getAgent() {
 		return agent;
 	}
-	
+
 }
 
 
