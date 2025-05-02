@@ -435,13 +435,17 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 				int agentTypeInt 				 = agent.getAgentType();
 				TypeAgent agentType 			 = cbxTypeAgent.getValue();
 				String agentLogin 				 = premiereLettrePrenomLogin + nomEnMinusculeLogin;
-				String agentPwd				     = pwfAgentPwd.getText();
-				String motDePasseHache 			 = BCrypt.withDefaults().hashToString(12, agentPwd.toCharArray());
+				String 		agentPwd			= null;
+				
+				if(chkUpdatePwd.isSelected()) {
+					agentPwd		= BCrypt.withDefaults().hashToString(12,pwfAgentPwd.getText().toCharArray());
+				}else {
+					agentPwd = this.agent.getAgentPwd();
+				}
 				String agentImage 				 = LblAgentImage.getText();
 
 				// Création d'un nouvel objet Agent
-				Agent agent = new Agent(agentIdt, agentNom, agentPrenom, agentMobile, agentTelephone, agentEmail, agentCivility, agentCivilite, agentTypeInt, agentType, agentLogin, motDePasseHache, agentImage
-						);
+				Agent agent = new Agent(agentIdt, premiereLettrePrenomLogin, nomEnMinusculeLogin, agentMobile, agentTelephone, agentEmail, agentCivility, agentCivilite, agentTypeInt, agentType, agentLogin, agentPwd, agentImage);
 				this.agent = agent;
 
 				// Mise à jour des informations de l'agent dans la base de données
