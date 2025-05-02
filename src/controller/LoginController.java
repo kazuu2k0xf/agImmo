@@ -96,7 +96,7 @@ public class LoginController {
 
 	public void setSessionUUID(String sessionUUID) {
 		this.sessionUUID = sessionUUID;
-		System.out.println(sessionUUID);
+		//System.out.println(sessionUUID);
 	}
 
 
@@ -139,7 +139,7 @@ public class LoginController {
 			pwfPwd.setText("");
 			lblErreur.setVisible(true);
 			insertConnexions(sessionUUID);
-			System.out.println(tentativeConnexion);
+			//System.out.println(tentativeConnexion);
 
 
 			if (tentativeConnexion >= nbreErreursConnexions.getInfoDetailValueInt()) {
@@ -192,7 +192,7 @@ public class LoginController {
 			primaryStage.show();
 
 			sessions = new Sessions(0, agent.getPersonIdt(), sessionUUID, LocalDate.now(), LocalTime.now(), null, null , agent);
-			System.out.println(sessions.toString());
+			//System.out.println(sessions.toString());
 		}
 
 		dialogStage.close();

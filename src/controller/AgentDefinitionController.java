@@ -435,7 +435,7 @@ public class AgentDefinitionController extends GeneralDefinitionController imple
 				int agentTypeInt 				 = agent.getAgentType();
 				TypeAgent agentType 			 = cbxTypeAgent.getValue();
 				String agentLogin 				 = premiereLettrePrenomLogin + nomEnMinusculeLogin;
-				String agentPwd				 = pwfAgentPwd.getText();
+				String agentPwd				     = pwfAgentPwd.getText();
 				String motDePasseHache 			 = BCrypt.withDefaults().hashToString(12, agentPwd.toCharArray());
 				String agentImage 				 = LblAgentImage.getText();
 

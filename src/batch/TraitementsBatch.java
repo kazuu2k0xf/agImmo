@@ -65,7 +65,7 @@ public class TraitementsBatch extends ConnexionBdd {
 			/** Suppression de l'enregistrement infoEntete dans la Bdd **/
 			deleteInfoEntete(traitement);
 		} else {
-			System.out.println("L'enregistrement n'existe pas dans la base de données");
+			//System.out.println("L'enregistrement n'existe pas dans la base de données");
 		}
 	}
 	/** ***************************************************************************************************************
